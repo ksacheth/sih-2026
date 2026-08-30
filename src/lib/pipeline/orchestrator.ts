@@ -25,6 +25,7 @@ import {
   buildTargetedQueries,
   exposedOrNotConnector,
   findBrokerResults,
+  hydrateUrlsWithFirecrawl,
   runConnector,
   serperConnector,
 } from "@/lib/connectors";
@@ -33,7 +34,21 @@ import { getDb } from "@/lib/models/db";
 import { audit } from "@/lib/security/audit";
 import { applyReScan, type ExposureCandidate } from "@/lib/monitoring/store";
 import { normalizeUrl } from "./url";
-import { FetchBudget, guardedFetch } from "./fetchGuard";
+import {
+  selectUrlsForHydration,
+  canonicalizeUrl,
+} from "@/lib/discovery";
+import {
+  normalizeHydratedDocument,
+  createSnippetFallbackDocument,
+  type NormalizedDocument,
+} from "@/lib/content";
+import { extractAndFusePII } from "@/lib/extraction";
+import {
+  correlateExtractedEntities,
+  type MonitoredIdentity,
+  type ExtractedEntity,
+} from "@/lib/correlation";
 import {
   aggregateScanStatus,
   breachCandidate,
@@ -41,6 +56,7 @@ import {
   isStaleScan,
   SCAN_STUCK_THRESHOLD_MS,
 } from "./scanState";
+
 
 /** §5.6 soft scan deadline: stop starting new work, finish in-flight, persist. */
 export const SCAN_SOFT_DEADLINE_MS = 90_000;
@@ -185,51 +201,173 @@ export async function runScanPipeline(scanId: string): Promise<void> {
     }
     if (await checkCancel()) return;
 
-    // ---- stage 2: fetch guard / two-tier evidence (§5.6) ----------------------
-    // Each html result is fetched under the guard: document tier on success,
-    // snippet tier (with the recorded reason) on any block/failure/denylist.
-    // The 10-page budget and the 90s soft deadline gate STARTING new fetches.
-    const budget = new FetchBudget();
-    for (const result of webResults) {
-      if (budget.exhausted || Date.now() > deadlineMs) break;
-      if (result.contentType !== "text/html") continue; // PDFs: no parser in MVP
-      const outcome = await guardedFetch(result.url, { budget });
-      if (outcome.status === "ok") {
-        result.evidenceTier = "document";
-        result.rawMetadata = {
-          ...result.rawMetadata,
+    // ---- stage 2: Firecrawl URL hydration & local extraction (architecture.md §3, §4.3, §8) ----
+    await setSource("firecrawl", "RUNNING");
+    await setSource("extraction", "RUNNING");
+
+    const selection = selectUrlsForHydration(webResults, searchIds);
+    const selectedUrls = selection.selectedForHydration;
+    const snippetOnlyUrls = selection.snippetOnlyResults;
+
+    const webCandidates: ExposureCandidate[] = [];
+    let firecrawlSuccessCount = 0;
+    let extractionFailures = 0;
+
+    const hydrateRequests = selectedUrls.map((r) => ({
+      url: r.url,
+      canonicalUrl: canonicalizeUrl(r.url) || r.url,
+    }));
+
+    const hydrationMap =
+      selectedUrls.length > 0
+        ? await hydrateUrlsWithFirecrawl(hydrateRequests, { concurrencyLimit: 3 })
+        : new Map();
+
+    const normalizedDocs: NormalizedDocument[] = [];
+
+    for (const r of selectedUrls) {
+      const res = hydrationMap.get(r.url);
+      if (res && res.status === "completed" && res.document) {
+        r.evidenceTier = "document";
+        const doc = normalizeHydratedDocument(res.document);
+        normalizedDocs.push(doc);
+        firecrawlSuccessCount++;
+        r.rawMetadata = {
+          ...r.rawMetadata,
           fetched: {
-            finalUrl: outcome.finalUrl,
-            bytes: outcome.bytes,
-            contentSha256: outcome.contentSha256,
-            fetchedAt: new Date().toISOString(),
+            finalUrl: doc.sourceUrl,
+            contentSha256: doc.contentHash,
+            fetchedAt: doc.retrievedAt,
           },
         };
-        // Minimal document metadata + content fingerprint (§10.1, §11.5).
         await db.collection("documents").insertOne({
           scanId: scan._id,
           userId: scan.userId,
           identityId: scan.identityId,
-          url: outcome.finalUrl,
-          canonicalUrl: normalizeUrl(outcome.finalUrl) ?? outcome.finalUrl,
-          contentType: outcome.contentType,
-          bytes: outcome.bytes,
-          contentSha256: outcome.contentSha256,
-          textPreview: outcome.text.slice(0, 2000),
+          url: doc.sourceUrl,
+          canonicalUrl: doc.canonicalUrl,
+          contentType: doc.contentType,
+          contentSha256: doc.contentHash,
+          textPreview: doc.text.slice(0, 2000),
           retrievedAt: new Date(),
         });
       } else {
-        // A blocked page is a lower-confidence lead, not a dropped lead (§5.6).
-        result.rawMetadata = {
-          ...result.rawMetadata,
-          fetchBlocked: { reason: outcome.reason, detail: outcome.detail },
+        r.evidenceTier = "snippet";
+        const errCode = res?.error?.code || "FIRECRAWL_HYDRATION_FAILED";
+        r.rawMetadata = {
+          ...r.rawMetadata,
+          fetchBlocked: { reason: errCode },
         };
+        normalizedDocs.push(createSnippetFallbackDocument(r, errCode));
       }
+
       await resultsCollection.updateOne(
-        { scanId: scan._id, sourceId: result.sourceId },
-        { $set: { evidenceTier: result.evidenceTier, rawMetadata: result.rawMetadata } },
+        { scanId: scan._id, sourceId: r.sourceId },
+        { $set: { evidenceTier: r.evidenceTier, rawMetadata: r.rawMetadata } },
       );
     }
+
+    for (const r of snippetOnlyUrls) {
+      r.evidenceTier = "snippet";
+      normalizedDocs.push(createSnippetFallbackDocument(r, "SNIPPET_TIER_UNSELECTED"));
+    }
+
+    await setSource(
+      "firecrawl",
+      selectedUrls.length === 0
+        ? "SKIPPED"
+        : firecrawlSuccessCount === selectedUrls.length
+          ? "OK"
+          : firecrawlSuccessCount > 0
+            ? "PARTIAL"
+            : "UNAVAILABLE",
+    );
+
+    // Run local extraction & correlation on normalized documents
+    for (const doc of normalizedDocs) {
+      const extraction = await extractAndFusePII(doc.text);
+      if (
+        extraction.partial ||
+        (extraction.sidecarStatus !== "online" && extraction.sidecarStatus !== "skipped")
+      ) {
+        extractionFailures++;
+      }
+
+      if (extraction.entities.length > 0) {
+        await db.collection("pii_entities").insertMany(
+          extraction.entities.map((e) => ({
+            scanId: scan._id,
+            userId: scan.userId,
+            identityId: scan.identityId,
+            documentId: doc.documentId,
+            sourceUrl: doc.sourceUrl,
+            ...e,
+            createdAt: new Date(),
+          })),
+        );
+
+        if (identity) {
+          const monitored: MonitoredIdentity = {
+            id: scan.identityId,
+            userId: scan.userId,
+            email: searchIds.email,
+            username: searchIds.username,
+            name: searchIds.name,
+            organization: searchIds.org,
+          };
+          const isDocTier = doc.evidenceTier === "document";
+          const outcome = correlateExtractedEntities(
+            extraction.entities as unknown as ExtractedEntity[],
+            monitored,
+            {
+              sourceDomain: doc.domain,
+              evidenceConfidence: isDocTier ? 0.98 : 0.70,
+            },
+          );
+
+          if (outcome.matchLabel === "CONFIRMED" || outcome.matchLabel === "POTENTIAL") {
+            webCandidates.push({
+              source: "serper",
+              exposureType: outcome.exposureType,
+              entity: doc.canonicalUrl,
+              entityMasked: doc.domain,
+              severity: outcome.severity,
+              identityConfidence: outcome.identityConfidence,
+              evidenceConfidence: outcome.evidenceConfidence,
+              matchLabel: outcome.matchLabel,
+              threats: outcome.threats,
+              recommendations: outcome.recommendations.map((t) => ({
+                action: t.actionCode,
+                title: t.title,
+                optOutUrl: t.optOutUrl,
+              })),
+              ruleVersion: outcome.ruleVersion,
+              evidence: {
+                source: "serper",
+                sourceId: doc.canonicalUrl,
+                url: doc.sourceUrl,
+                domain: doc.domain,
+                title: doc.title,
+                snippet: doc.text.slice(0, 300),
+                evidenceTier: doc.evidenceTier,
+                discoveredAt: doc.retrievedAt,
+                contentSha256: doc.contentHash,
+              },
+            });
+          }
+        }
+      }
+    }
+
+    await setSource(
+      "extraction",
+      normalizedDocs.length === 0
+        ? "SKIPPED"
+        : extractionFailures > 0
+          ? "PARTIAL"
+          : "OK",
+    );
+
     if (await checkCancel()) return;
 
     // ---- stage 3: breach intelligence (per verified email) --------------------
@@ -267,12 +405,12 @@ export async function runScanPipeline(scanId: string): Promise<void> {
     await setSource("brokers", "OK");
 
     // ---- finalize: monitoring state machine + terminal status -----------------
-    // Only structured sources become exposure candidates here; web findings
-    // stay discovery-tier until ML-1 extraction/correlation lands.
     const candidates: ExposureCandidate[] = [
+      ...webCandidates,
       ...breachResults.map(breachCandidate),
       ...brokerResults.map(brokerCandidate),
     ];
+
     const monitoring = await applyReScan(db, {
       userId: scan.userId,
       identityId: scan.identityId,
