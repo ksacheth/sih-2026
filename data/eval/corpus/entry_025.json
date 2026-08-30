@@ -1,0 +1,19 @@
+{
+  "id": "corpus_025",
+  "discovery_date": "2025-10-23T11:01:03.092735",
+  "exposure_type": "directory",
+  "severity": "medium",
+  "person_id": "person_2",
+  "source_description": "Listed in online directory",
+  "name": "Priya Singh",
+  "organization": "FinTech Solutions",
+  "location": "Bangalore",
+  "city": "Bangalore",
+  "identifier_type": "composite",
+  "match_strength": "composite",
+  "corroborating_signals": [
+    "Bangalore",
+    "Bangalore"
+  ],
+  "raw_content": "Name: Priya Singh | Bangalore | Bangalore"
+}

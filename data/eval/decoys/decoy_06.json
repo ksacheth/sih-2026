@@ -1,0 +1,10 @@
+{
+  "decoy_type": "similar_org_location",
+  "name": "Neha Sharma",
+  "email": "neha.sharma@abc-tech.in",
+  "organization": "FinTech Solutions",
+  "location": "Bangalore",
+  "phone": "+91 99999 88888",
+  "person_id": "person_2",
+  "expected_classification": "NO_MATCH"
+}

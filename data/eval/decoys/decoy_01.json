@@ -1,0 +1,9 @@
+{
+  "decoy_type": "partial_overlap",
+  "name": "Rahul Kumar",
+  "email": "r.kumar@different-domain.com",
+  "phone": "+91 98765 00000",
+  "note": "Multiple near-matches but no exact identifier",
+  "person_id": "person_1",
+  "expected_classification": "NO_MATCH"
+}

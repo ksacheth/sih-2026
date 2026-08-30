@@ -1,0 +1,14 @@
+{
+  "id": "corpus_037",
+  "discovery_date": "2026-05-19T11:01:03.093838",
+  "exposure_type": "conference",
+  "severity": "low",
+  "person_id": "person_3",
+  "source_description": "Public conference attendee list",
+  "name": "Amit Patel",
+  "phone": "+91 76543 21098",
+  "location": "Mumbai",
+  "identifier_type": "phone",
+  "match_strength": "strong",
+  "raw_content": "Phone: +91 76543 21098 | Name: Amit Patel | City: Mumbai"
+}

@@ -1,0 +1,15 @@
+{
+  "id": "corpus_007",
+  "discovery_date": "2025-11-13T11:01:03.091284",
+  "exposure_type": "breach",
+  "severity": "critical",
+  "person_id": "person_1",
+  "source_description": "Part of confirmed data breach",
+  "name": "Rahul Kumar",
+  "phone": "+91 98765 43210",
+  "location": "Delhi",
+  "identifier_type": "phone",
+  "match_strength": "strong",
+  "breach_name": "DataBreach_2024",
+  "raw_content": "Phone: +91 98765 43210 | Name: Rahul Kumar | City: Delhi"
+}
