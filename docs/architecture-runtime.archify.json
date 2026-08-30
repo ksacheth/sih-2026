@@ -234,7 +234,7 @@
       "sublabel": "codes · attestation",
       "tag": "trust spine",
       "pos": [
-        150,
+        154,
         416
       ],
       "size": [
@@ -368,11 +368,11 @@
       "from": "connectors",
       "to": "eon",
       "label": "breach lookup",
-      "fromSide": "top",
+      "fromSide": "right",
       "toSide": "bottom",
       "labelAt": [
-        515,
-        113
+        592,
+        130
       ]
     },
     {
@@ -393,7 +393,11 @@
       "to": "mongo",
       "label": "exposures",
       "fromSide": "bottom",
-      "toSide": "top"
+      "toSide": "top",
+      "labelAt": [
+        833,
+        388
+      ]
     },
     {
       "id": "local-ner",
@@ -402,7 +406,11 @@
       "label": "text stays local",
       "variant": "security",
       "fromSide": "bottom",
-      "toSide": "top"
+      "toSide": "top",
+      "labelAt": [
+        635,
+        388
+      ]
     },
     {
       "id": "explain",
@@ -410,21 +418,21 @@
       "to": "gemini",
       "label": "redacted findings",
       "variant": "dashed",
-      "fromSide": "bottom",
-      "toSide": "left",
+      "fromSide": "left",
+      "toSide": "top",
       "via": [
         [
-          200,
-          395
+          142,
+          356
         ],
         [
-          90,
-          395
-        ],
-        [
-          90,
+          142,
           576
         ]
+      ],
+      "labelAt": [
+        142,
+        400
       ]
     }
   ],

@@ -54,7 +54,13 @@ export function DashboardClient() {
     fetch("/api/exposures")
       .then(async (response) => (response.ok ? response.json() : []))
       .then((data) => {
-        setFindings(Array.isArray(data) ? data : []);
+        const fresh: Finding[] = Array.isArray(data) ? data : [];
+        setFindings(fresh);
+        // The drawer renders a snapshot; keep it on the freshest copy of the
+        // same finding (e.g. when an LLM explanation lands post-scan).
+        setSelected((prev) =>
+          prev ? (fresh.find((item) => item.id === prev.id) ?? prev) : null,
+        );
       })
       .catch(() => undefined);
 
