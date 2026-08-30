@@ -51,7 +51,7 @@ sidecar/                     # GLiNER-small FastAPI sidecar (127.0.0.1)
 npm install
 
 # 2. Configure environment
-cp .env.example .env.local   # fill in MONGODB_URI, APP_SECRET, API keys
+cp .env.example .env.local   # fill in DATABASE_URL, APP_SECRET, API keys
 
 # 3. Run the dev server
 npm run dev
