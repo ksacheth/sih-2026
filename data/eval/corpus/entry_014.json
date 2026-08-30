@@ -1,0 +1,13 @@
+{
+  "id": "corpus_014",
+  "discovery_date": "2025-11-09T11:01:03.091888",
+  "exposure_type": "paste_site",
+  "severity": "high",
+  "person_id": "person_1",
+  "source_description": "Data exposed on paste site",
+  "name": "Rahul Kumar",
+  "organization": "ABC Technologies",
+  "identifier_type": "name_only",
+  "match_strength": "weak",
+  "raw_content": "Name: Rahul Kumar | Organization: ABC Technologies"
+}

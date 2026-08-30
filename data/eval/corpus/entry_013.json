@@ -1,0 +1,14 @@
+{
+  "id": "corpus_013",
+  "discovery_date": "2026-06-19T11:01:03.091807",
+  "exposure_type": "breach",
+  "severity": "critical",
+  "person_id": "person_1",
+  "source_description": "Part of confirmed data breach",
+  "name": "Rahul Kumar",
+  "organization": "ABC Technologies",
+  "identifier_type": "name_only",
+  "match_strength": "weak",
+  "breach_name": "DataBreach_2024",
+  "raw_content": "Name: Rahul Kumar | Organization: ABC Technologies"
+}
