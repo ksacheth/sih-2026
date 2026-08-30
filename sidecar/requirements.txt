@@ -1,0 +1,4 @@
+fastapi
+uvicorn[standard]
+gliner==0.2.19
+pydantic
