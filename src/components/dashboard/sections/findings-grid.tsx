@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronRight, FileText, ShieldAlert } from "lucide-react";
+import { ChevronRight, FileText, ScanSearch, ShieldAlert } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -67,8 +67,9 @@ export function FindingsGrid({
         </div>
       </CardHeader>
       <CardContent>
-        <div className="divide-y divide-slate-100 overflow-hidden rounded-xl border border-slate-200">
-          {visible.map((finding) => (
+        {visible.length > 0 ? (
+          <div className="divide-y divide-slate-100 overflow-hidden rounded-xl border border-slate-200">
+            {visible.map((finding) => (
             <button
               type="button"
               className="group grid w-full gap-4 bg-white p-4 text-left transition hover:bg-slate-50 focus-visible:bg-slate-50 focus-visible:outline-none sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center"
@@ -127,11 +128,21 @@ export function FindingsGrid({
                 <ChevronRight className="size-4 text-slate-400 transition group-hover:translate-x-0.5 group-hover:text-slate-700" />
               </div>
             </button>
-          ))}
-        </div>
-        {visible.length === 0 && (
-          <div className="rounded-xl border border-dashed border-slate-300 py-10 text-center text-sm text-slate-500">
-            No findings match this severity filter.
+            ))}
+          </div>
+        ) : (
+          <div className="flex min-h-52 flex-col items-center justify-center rounded-xl border border-dashed border-slate-300 bg-slate-50/70 px-5 text-center">
+            <span className="grid size-11 place-items-center rounded-full bg-blue-50 text-blue-600">
+              <ScanSearch className="size-5" />
+            </span>
+            <p className="mt-3 font-medium text-slate-800">
+              {findings.length === 0 ? "No findings yet" : "No findings match this filter"}
+            </p>
+            <p className="mt-1 max-w-sm text-sm leading-6 text-slate-500">
+              {findings.length === 0
+                ? "Run an exposure scan to look for matches across your verified identifiers."
+                : "Try another severity to review the rest of your scan results."}
+            </p>
           </div>
         )}
       </CardContent>

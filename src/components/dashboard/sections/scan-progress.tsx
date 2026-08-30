@@ -2,6 +2,7 @@
 
 import {
   CheckCircle2,
+  CircleAlert,
   CircleDashed,
   LoaderCircle,
   Play,
@@ -30,12 +31,14 @@ export function ScanProgress({
   active,
   completed,
   scanAccepted,
+  error,
   onStart,
 }: {
   verified: boolean;
   active: boolean;
   completed: ScanSource[];
   scanAccepted: boolean;
+  error: string;
   onStart: () => void;
 }) {
   const current = sources[completed.length]?.name;
@@ -74,6 +77,20 @@ export function ScanProgress({
             <AlertDescription>
               We&apos;ll update this page as each source completes.
             </AlertDescription>
+          </Alert>
+        )}
+        {!verified && (
+          <Alert className="border-amber-200 bg-amber-50/70 text-amber-950">
+            <CircleAlert className="text-amber-600" />
+            <AlertTitle>Verification required</AlertTitle>
+            <AlertDescription>Verify an email identifier before you can start an exposure scan.</AlertDescription>
+          </Alert>
+        )}
+        {error && (
+          <Alert className="border-red-200 bg-red-50/70 text-red-950">
+            <CircleAlert className="text-red-600" />
+            <AlertTitle>Scan could not start</AlertTitle>
+            <AlertDescription>{error}</AlertDescription>
           </Alert>
         )}
         <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-4">

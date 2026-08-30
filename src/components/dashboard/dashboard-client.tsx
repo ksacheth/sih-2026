@@ -1,14 +1,18 @@
 "use client";
 
 import { useEffect, useMemo, useState, type ReactNode } from "react";
+import Link from "next/link";
 import {
   CheckCircle2,
+  Fingerprint,
   LockKeyhole,
   ScanSearch,
+  Settings2,
   ShieldCheck,
   ShieldAlert,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { mockFindings, mockIdentifiers } from "./mock-data";
@@ -34,6 +38,7 @@ export function DashboardClient() {
   const [scanning, setScanning] = useState(false);
   const [completed, setCompleted] = useState<ScanSource[]>([]);
   const [scanAccepted, setScanAccepted] = useState(false);
+  const [scanError, setScanError] = useState("");
   const [erased, setErased] = useState(false);
   const verified = identifiers.some((item) => item.status === "VERIFIED");
 
@@ -76,11 +81,25 @@ export function DashboardClient() {
 
   const startScan = async () => {
     const identifierIds = identifiers.filter((item) => item.status === "VERIFIED" || item.status === "ATTESTED").map((item) => item.id);
-    const response = await fetch("/api/scan", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ identifierIds }) });
-    if (!response.ok) return;
-    setCompleted([]);
-    setScanning(true);
-    setScanAccepted(true);
+    setScanError("");
+    setScanAccepted(false);
+    if (identifierIds.length === 0) {
+      setScanError("Verify or attest at least one identifier before scanning.");
+      return;
+    }
+    try {
+      const response = await fetch("/api/scan", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ identifierIds }) });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        setScanError(data.error ?? "The scan was rejected. Please try again.");
+        return;
+      }
+      setCompleted([]);
+      setScanning(true);
+      setScanAccepted(true);
+    } catch {
+      setScanError("We couldn't reach the scan service. Check your connection and try again.");
+    }
   };
   const remediate = (id: number) => {
     setFindings((items) =>
@@ -109,16 +128,18 @@ export function DashboardClient() {
 
   if (erased)
     return (
-      <main className="grid min-h-screen place-items-center bg-slate-50 p-5">
-        <Card className="w-full max-w-md border-emerald-200 text-center shadow-xl shadow-emerald-100">
-          <CardContent className="items-center py-10">
-            <span className="grid size-14 place-items-center rounded-full bg-emerald-100">
+      <main className="grid min-h-screen place-items-center bg-[#f7f9fc] p-5">
+        <Card className="w-full max-w-md border-emerald-200 text-center shadow-xl shadow-emerald-100/70">
+          <CardContent className="items-center py-12">
+            <span className="grid size-16 place-items-center rounded-full bg-emerald-100">
               <CheckCircle2 className="size-7 text-emerald-700" />
             </span>
-            <h1 className="text-xl font-semibold">Your data has been erased</h1>
-            <p className="max-w-sm text-slate-600">
-              All dashboard records have been removed from this session.
+            <p className="mt-5 text-sm font-semibold text-emerald-700">ERASURE COMPLETE</p>
+            <h1 className="mt-2 text-2xl font-semibold tracking-tight">Your account data has been erased</h1>
+            <p className="mt-3 max-w-sm leading-7 text-slate-600">
+              Your identifiers, scan history, findings, recommendations, and consent records have been removed.
             </p>
+            <Button className="mt-7" asChild><Link href="/onboarding">Start a new private workspace</Link></Button>
           </CardContent>
         </Card>
       </main>
@@ -147,8 +168,8 @@ export function DashboardClient() {
         </div>
       </header>
       <div className="mx-auto max-w-7xl px-5 py-8 lg:px-8 lg:py-10">
-        <section className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white px-6 py-7 shadow-sm sm:px-8">
-          <div className="absolute inset-y-0 right-0 w-1/2 bg-[radial-gradient(circle_at_90%_20%,rgba(59,130,246,.13),transparent_55%)]" />
+        <section className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white px-6 py-7 shadow-sm sm:px-8 sm:py-8">
+          <div className="absolute inset-y-0 right-0 w-2/3 bg-[radial-gradient(circle_at_90%_20%,rgba(59,130,246,.15),transparent_58%)]" />
           <div className="relative">
             <p className="text-sm font-semibold text-blue-600">Overview</p>
             <h1 className="mt-2 text-3xl font-semibold tracking-[-0.03em] sm:text-4xl">
@@ -159,7 +180,7 @@ export function DashboardClient() {
               remediation work moving from one trusted workspace.
             </p>
           </div>
-          <div className="relative mt-6 grid gap-3 sm:grid-cols-3">
+          <div className="relative mt-7 grid gap-3 sm:grid-cols-3">
             <SummaryCard
               icon={<ShieldAlert className="text-red-600" />}
               label="Open findings"
@@ -181,10 +202,45 @@ export function DashboardClient() {
           </div>
         </section>
         <Tabs defaultValue="scan" className="mt-7">
-          <TabsList className="w-full justify-start border border-slate-200 bg-white p-1 shadow-sm sm:w-fit">
-            <TabsTrigger value="scan">Monitor</TabsTrigger>
-            <TabsTrigger value="identifiers">Identifiers</TabsTrigger>
-            <TabsTrigger value="settings">Account</TabsTrigger>
+          <TabsList className="dashboard-tabs grid !h-auto w-full grid-cols-3 gap-1 rounded-2xl border border-slate-200/90 bg-white p-1.5 shadow-sm shadow-slate-200/50">
+            <TabsTrigger
+              value="scan"
+              data-tone="monitor"
+              className="group/tab relative h-10 flex-row items-center justify-start gap-2 rounded-xl px-3 text-left whitespace-nowrap transition-all duration-200 after:hidden data-[state=inactive]:text-slate-600 data-[state=inactive]:hover:bg-slate-100/80 data-[state=inactive]:hover:text-slate-900"
+            >
+              <div className="flex items-center gap-2.5">
+                <span className="grid size-8 place-items-center rounded-lg bg-blue-50 text-blue-600 transition-colors group-data-[state=active]/tab:!bg-white/20 group-data-[state=active]/tab:!text-white shrink-0">
+                  <ScanSearch className="size-4.5" />
+                </span>
+                <span className="font-semibold text-sm">Monitor</span>
+              </div>
+            </TabsTrigger>
+
+            <TabsTrigger
+              value="identifiers"
+              data-tone="identifiers"
+              className="group/tab relative h-10 flex-row items-center justify-start gap-2 rounded-xl px-3 text-left whitespace-nowrap transition-all duration-200 after:hidden data-[state=inactive]:text-slate-600 data-[state=inactive]:hover:bg-slate-100/80 data-[state=inactive]:hover:text-slate-900"
+            >
+              <div className="flex items-center gap-2.5">
+                <span className="grid size-8 place-items-center rounded-lg bg-emerald-50 text-emerald-600 transition-colors group-data-[state=active]/tab:!bg-white/20 group-data-[state=active]/tab:!text-white shrink-0">
+                  <Fingerprint className="size-4.5" />
+                </span>
+                <span className="font-semibold text-sm">Identifiers</span>
+              </div>
+            </TabsTrigger>
+
+            <TabsTrigger
+              value="settings"
+              data-tone="account"
+              className="group/tab relative h-10 flex-row items-center justify-start gap-2 rounded-xl px-3 text-left whitespace-nowrap transition-all duration-200 after:hidden data-[state=inactive]:text-slate-600 data-[state=inactive]:hover:bg-slate-100/80 data-[state=inactive]:hover:text-slate-900"
+            >
+              <div className="flex items-center gap-2.5">
+                <span className="grid size-8 place-items-center rounded-lg bg-violet-50 text-violet-600 transition-colors group-data-[state=active]/tab:!bg-white/20 group-data-[state=active]/tab:!text-white shrink-0">
+                  <Settings2 className="size-4.5" />
+                </span>
+                <span className="font-semibold text-sm">Account</span>
+              </div>
+            </TabsTrigger>
           </TabsList>
           <TabsContent value="scan" className="mt-5 space-y-5">
             <ScanProgress
@@ -192,6 +248,7 @@ export function DashboardClient() {
               active={scanning}
               completed={completed}
               scanAccepted={scanAccepted}
+              error={scanError}
               onStart={startScan}
             />
             <FindingsGrid findings={findings} onSelect={setSelected} />
@@ -246,8 +303,8 @@ function SummaryCard({
   hint: string;
 }) {
   return (
-    <div className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white/80 p-4">
-      <span className="grid size-10 place-items-center rounded-lg bg-slate-50">
+    <div className="flex items-center gap-3 rounded-2xl border border-slate-200/90 bg-white/85 p-4 shadow-sm shadow-slate-200/30 transition hover:-translate-y-0.5 hover:shadow-md">
+      <span className="grid size-10 place-items-center rounded-xl bg-slate-50">
         {icon}
       </span>
       <div>

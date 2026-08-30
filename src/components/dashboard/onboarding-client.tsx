@@ -31,19 +31,29 @@ export function OnboardingClient() {
     if (!isValid) return;
     setScreen("sending");
     setError("");
-    const response = await fetch("/api/auth/magic-link", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email }),
-    });
-    const data = await response.json();
-    if (!response.ok) {
-      setError(data.error ?? "Unable to send a magic link.");
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 15_000);
+    try {
+      const response = await fetch("/api/auth/magic-link", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+        signal: controller.signal,
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        setError(data.error ?? "Unable to send a magic link.");
+        setScreen("form");
+        return;
+      }
+      setDevMagicLink(data.devMagicLink ?? "");
+      setScreen("sent");
+    } catch {
+      setError("We couldn't send your magic link. Check your connection and try again.");
       setScreen("form");
-      return;
+    } finally {
+      window.clearTimeout(timeout);
     }
-    setDevMagicLink(data.devMagicLink ?? "");
-    setScreen("sent");
   };
 
   return (

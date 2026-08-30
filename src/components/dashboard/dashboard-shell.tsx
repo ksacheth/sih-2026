@@ -143,12 +143,84 @@ export function DashboardShell() {
                 ))}
               </div>
               <Separator />
-              <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 px-4 py-5 text-center">
-                <p className="font-medium text-slate-700">
-                  Your evidence workspace is ready
+              <div className="rounded-2xl border border-slate-200 bg-slate-50/70 p-5 space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="relative flex size-2.5">
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                      <span className="relative inline-flex size-2.5 rounded-full bg-emerald-500" />
+                    </span>
+                    <p className="text-sm font-semibold text-slate-800">
+                      Evidence workspace ready
+                    </p>
+                  </div>
+                  <Badge variant="outline" className="border-blue-200 bg-blue-50 text-[11px] font-medium text-blue-700">
+                    4 sources active
+                  </Badge>
+                </div>
+
+                <p className="text-xs leading-5 text-slate-500">
+                  Verify an identifier to activate continuous exposure monitoring across verified intelligence streams:
                 </p>
-                <p className="mt-1 text-sm text-slate-500">
-                  Verify an identifier and start exploring your exposure.
+
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between rounded-xl border border-slate-200/80 bg-white px-3.5 py-2.5 shadow-xs">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="grid size-8 place-items-center rounded-lg bg-blue-50 text-blue-600 shrink-0">
+                        <ScanSearch className="size-4" />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-xs font-semibold text-slate-800">Web Search & Paste Dumps</p>
+                        <p className="text-[11px] text-slate-400">Targeted Serper discovery</p>
+                      </div>
+                    </div>
+                    <span className="inline-flex items-center gap-1 text-[11px] font-medium text-emerald-600 shrink-0">
+                      <span className="size-1.5 rounded-full bg-emerald-500" />
+                      Ready
+                    </span>
+                  </div>
+
+                  <div className="flex items-center justify-between rounded-xl border border-slate-200/80 bg-white px-3.5 py-2.5 shadow-xs">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="grid size-8 place-items-center rounded-lg bg-red-50 text-red-600 shrink-0">
+                        <ShieldCheck className="size-4" />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-xs font-semibold text-slate-800">Breach Intelligence Corpus</p>
+                        <p className="text-[11px] text-slate-400">ExposedOrNot 1.2B+ index</p>
+                      </div>
+                    </div>
+                    <span className="inline-flex items-center gap-1 text-[11px] font-medium text-blue-600 shrink-0">
+                      <span className="size-1.5 rounded-full bg-blue-500" />
+                      Indexed
+                    </span>
+                  </div>
+
+                  <div className="flex items-center justify-between rounded-xl border border-slate-200/80 bg-white px-3.5 py-2.5 shadow-xs">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="grid size-8 place-items-center rounded-lg bg-violet-50 text-violet-600 shrink-0">
+                        <Fingerprint className="size-4" />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-xs font-semibold text-slate-800">Data Broker Removal Registry</p>
+                        <p className="text-[11px] text-slate-400">42 opt-out directories</p>
+                      </div>
+                    </div>
+                    <span className="inline-flex items-center gap-1 text-[11px] font-medium text-violet-600 shrink-0">
+                      <span className="size-1.5 rounded-full bg-violet-500" />
+                      Monitored
+                    </span>
+                  </div>
+                </div>
+
+                <Button className="w-full justify-center gap-2" asChild>
+                  <Link href="/onboarding">
+                    Start verified scan <ArrowRight className="size-4" />
+                  </Link>
+                </Button>
+
+                <p className="text-center text-[11px] text-slate-400">
+                  Privacy-first &bull; Zero-knowledge &bull; DPDP Act 2023 compliant
                 </p>
               </div>
             </CardContent>
