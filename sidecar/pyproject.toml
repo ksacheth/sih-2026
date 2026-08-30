@@ -6,6 +6,9 @@ requires-python = ">=3.11"
 dependencies = [
     "fastapi>=0.110.0",
     "gliner>=0.2.0",
+    # gliner 0.2.x is incompatible with huggingface_hub 1.x (breaks the image
+    # build's model pre-download step) — pin below 1.0, mirroring main's fix.
+    "huggingface-hub>=0.24.0,<1.0",
     "pydantic>=2.6.0",
     "torch>=2.0.0",
     "uvicorn[standard]>=0.28.0",
