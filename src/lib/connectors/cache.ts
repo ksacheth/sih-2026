@@ -15,7 +15,8 @@ import { createHmac } from "node:crypto";
 export const CACHE_TTL_HOURS = 6;
 
 export function cacheKey(source: string, query: string): string {
-  const secret = process.env.CACHE_HMAC_SECRET ?? "dev-only-insecure-hmac";
+  // Platform env template name is HMAC_SECRET (distinct from AUTH_SECRET).
+  const secret = process.env.HMAC_SECRET ?? process.env.CACHE_HMAC_SECRET ?? "dev-only-insecure-hmac";
   return createHmac("sha256", secret).update(`${source}:${query}`).digest("hex");
 }
 
