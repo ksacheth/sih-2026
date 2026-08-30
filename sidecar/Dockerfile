@@ -1,6 +1,6 @@
 FROM python:3.11-slim AS model
 WORKDIR /opt/model
-RUN pip install --no-cache-dir gliner==0.2.19
+RUN pip install --no-cache-dir gliner==0.2.19 "huggingface_hub<1.0"
 RUN python -c "from gliner import GLiNER; GLiNER.from_pretrained('urchade/gliner_small-v2.1')"
 
 FROM python:3.11-slim
