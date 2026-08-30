@@ -50,6 +50,32 @@ export function DashboardClient() {
       .catch(() => undefined);
   }, []);
 
+  const loadFindings = () =>
+    fetch("/api/exposures")
+      .then(async (response) => (response.ok ? response.json() : []))
+      .then((data) => {
+        setFindings(Array.isArray(data) ? data : []);
+      })
+      .catch(() => undefined);
+
+  useEffect(() => {
+    loadFindings();
+  }, []);
+
+  // The scan runs server-side after acceptance and outlives the source
+  // animation; poll while it plays, then refresh once more after it ends.
+  useEffect(() => {
+    if (!scanning) return;
+    const poll = window.setInterval(loadFindings, 2000);
+    return () => window.clearInterval(poll);
+  }, [scanning]);
+
+  useEffect(() => {
+    if (scanning) return;
+    const refresh = window.setTimeout(loadFindings, 6000);
+    return () => window.clearTimeout(refresh);
+  }, [scanning]);
+
   useEffect(() => {
     if (!scanning) return;
     if (completed.length === scanSources.length) {
