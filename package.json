@@ -11,8 +11,10 @@
   },
   "dependencies": {
     "@auth/mongodb-adapter": "^3.11.3",
+    "@google/genai": "^2.19.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "groq-sdk": "^1.6.0",
     "lucide-react": "^1.37.0",
     "mongodb": "^6.20.0",
     "mongoose": "^9.9.4",
