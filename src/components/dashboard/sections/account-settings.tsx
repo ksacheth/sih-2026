@@ -65,19 +65,13 @@ export function AccountSettings({
       </Card>
       {open && (
         <div
+          ref={dialogRef}
           role="dialog"
           aria-modal="true"
           aria-labelledby="erase-title"
-          className="fixed inset-0 z-50 grid place-items-center bg-slate-950/40 p-4"
+          tabIndex={-1}
+          className="fixed inset-0 z-50 grid place-items-center bg-slate-950/40 p-4 outline-none"
         >
-          <div
-            ref={dialogRef}
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="erase-title"
-            tabIndex={-1}
-            className="outline-none"
-          >
           <Card className="relative w-full max-w-md border-red-100 shadow-2xl">
             <button
               aria-label="Close account erasure confirmation"
@@ -107,7 +101,14 @@ export function AccountSettings({
                 placeholder="Type DELETE"
                 className="mt-2 h-10 rounded-md border border-slate-300 px-3 outline-none focus:border-red-500"
               />
-              {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
+              {error && (
+                <p role="alert" className="mt-3 text-sm text-red-600">
+                  {error}
+                </p>
+              )}
+              <p aria-live="polite" className="sr-only">
+                {erasing ? "Erasing account data, please wait." : ""}
+              </p>
               <Button
                 className="mt-4"
                 variant="destructive"
@@ -119,7 +120,6 @@ export function AccountSettings({
               </Button>
             </CardContent>
           </Card>
-          </div>
         </div>
       )}
     </>
