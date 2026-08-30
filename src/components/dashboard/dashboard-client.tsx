@@ -92,11 +92,14 @@ export function DashboardClient() {
 
   const summary = useMemo(
     () => ({
-      active: findings.filter((finding) => finding.status !== "REMEDIATED")
-        .length,
+      active: findings.filter(
+        (finding) => finding.status !== "REMEDIATED" && !finding.unlinked,
+      ).length,
       critical: findings.filter(
         (finding) =>
-          finding.severity === "CRITICAL" && finding.status !== "REMEDIATED",
+          finding.severity === "CRITICAL" &&
+          finding.status !== "REMEDIATED" &&
+          !finding.unlinked,
       ).length,
       protected: identifiers.filter((item) => item.status !== "PENDING").length,
     }),

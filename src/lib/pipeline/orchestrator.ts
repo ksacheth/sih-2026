@@ -32,6 +32,7 @@ import type { DiscoveryResult } from "@/lib/connectors";
 import { getDb } from "@/lib/models/db";
 import { audit } from "@/lib/security/audit";
 import { applyReScan, type ExposureCandidate } from "@/lib/monitoring/store";
+import { explainTopExposures, type ExposureWithPriority } from "@/lib/llm/explain";
 import { normalizeUrl } from "./url";
 import { FetchBudget, guardedFetch } from "./fetchGuard";
 import {
@@ -289,6 +290,44 @@ export async function runScanPipeline(scanId: string): Promise<void> {
       { $set: { status: finalStatus, completedAt: new Date(), monitoring } },
     );
     await audit("SCAN_COMPLETED", scan.userId, { scanId: scan._id, status: finalStatus });
+
+    // Post-hoc LLM explanations for the top findings (CONTEXT.md §9.0). Runs
+    // detached so scan completion never waits on the LLM round-trip; any
+    // failure just leaves the deterministic template in the drawer.
+    void explainTopExposures(
+      candidates.map((c) => ({
+        ...c,
+        recommendations: c.recommendations.map((r) => ({ actionCode: r.action })),
+        evidence: c.evidence
+          ? [{ domain: c.evidence.domain, url: c.evidence.url, snippet: c.evidence.snippet }]
+          : undefined,
+      })),
+    )
+      .then((explained) => {
+        // explainTopExposures returns T[], so the attached explanation and the
+        // candidate identity fields need widening to be visible here.
+        type ExplainedCandidate = ExposureWithPriority & {
+          source: string;
+          entity: string;
+        };
+        const withExplanations = explained as ExplainedCandidate[];
+        const ops = withExplanations
+          .filter((e) => e.explanation)
+          .map((e) => ({
+            updateOne: {
+              filter: {
+                userId: scan.userId,
+                identityId: scan.identityId,
+                source: e.source,
+                entity: e.entity,
+              },
+              update: { $set: { explanation: e.explanation } },
+            },
+          }));
+        if (ops.length === 0) return;
+        return db.collection("exposures").bulkWrite(ops);
+      })
+      .catch((err) => console.error("[llm] explanation generation failed:", err));
   } catch (err) {
     // Never throw out of the pipeline (fire-and-forget); record the failure.
     console.error(`[pipeline] scan ${scanId} failed:`, describeError(err));

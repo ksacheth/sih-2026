@@ -25,10 +25,11 @@ CRITICAL INSTRUCTIONS:
 4. Do NOT output markdown code fences (\`\`\`json), output raw JSON string only.
 `;
 
-const GEMINI_MODELS = ["gemini-2.5-flash", "gemini-2.0-flash"];
+// Current-gen models only: Google sunset gemini-2.x generateContent for new
+// API keys (404), and the 3.x thinking models blow the 5s budget — the lite
+// variants answer in ~1-3s. Re-verify aliases if these ever 404.
+const GEMINI_MODELS = ["gemini-3.1-flash-lite", "gemini-3-flash-preview"];
 const GROQ_MODELS = [
-  "groq/compound-mini",
-  "groq/compound",
   "openai/gpt-oss-20b",
   "qwen/qwen3.8-27b",
 ];

@@ -87,6 +87,14 @@ export function FindingsGrid({
                       Reappeared
                     </Badge>
                   )}
+                  {finding.unlinked && (
+                    <Badge
+                      variant="outline"
+                      className="border-slate-200 bg-slate-50 text-slate-500"
+                    >
+                      Unlinked
+                    </Badge>
+                  )}
                   {finding.status === "REMEDIATED" && (
                     <Badge
                       variant="outline"
