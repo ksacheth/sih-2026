@@ -20,7 +20,11 @@ export const metadata: Metadata = {
   description: "Privacy-preserving exposure intelligence platform | SIH 2026",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <html
       lang="en"
