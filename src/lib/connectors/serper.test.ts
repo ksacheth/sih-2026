@@ -1,4 +1,4 @@
-import { describe, expect, it } from "bun:test";
+import { describe, expect, it } from "vitest";
 import { findBrokerResults } from "./brokers";
 import { runConnector } from "./index";
 import { buildTargetedQueries, sanitizeQueryValue, serperConnector } from "./serper";
