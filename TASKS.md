@@ -139,22 +139,22 @@ Build the external discovery connectors, fetch guard/SSRF protector, in-process 
      - Match discovered result domains against broker list; surface direct opt-out URL.
    - [x] **Fixture Mode Switch:** If `FIXTURES=1` or API key missing, seamlessly route connector calls to recorded JSON files in `data/fixtures/`.
 2. **Fetch Guard & Two-Tier Evidence Processor (`lib/pipeline/fetcher.ts`)**
-   - [ ] SSRF protector: Validate URLs before fetching, block local/private IP ranges (`127.0.0.1`, `10.0.0.0/8`, `192.168.0.0/16`, `169.254.169.254`), block `file://`.
-   - [ ] Denylist filter: Skip fetching known login-walled domains (LinkedIn, Facebook, Instagram, Twitter/X).
-   - [ ] Enforce fetch limits: Max 10 pages/scan, max 512KB/page, 10s timeout/page.
-   - [ ] Two-Tier Evidence Assignment:
+   - [x] SSRF protector: Validate URLs before fetching, block local/private IP ranges (`127.0.0.1`, `10.0.0.0/8`, `192.168.0.0/16`, `169.254.169.254`), block `file://`.
+   - [x] Denylist filter: Skip fetching known login-walled domains (LinkedIn, Facebook, Instagram, Twitter/X).
+   - [x] Enforce fetch limits: Max 10 pages/scan, max 512KB/page, 10s timeout/page.
+   - [x] Two-Tier Evidence Assignment:
      - Fetched & parsed page -> `evidence_tier: "document"`.
      - Blocked / failed / denylisted fetch -> fallback to search snippet as `evidence_tier: "snippet"`.
-   - [ ] Canonical URL normalizer: Strip UTM parameters, tracking query params, remove `www.`, normalize protocols.
+   - [x] Canonical URL normalizer: Strip UTM parameters, tracking query params, remove `www.`, normalize protocols.
 3. **Async Scan Orchestrator (`lib/pipeline/orchestrator.ts`)**
-   - [ ] `POST /api/scan` handler: Verify caller owns identifiers, check all are `VERIFIED`/`ATTESTED`, enforce daily rate limit, create scan record (`QUEUED`), return `202 { scan_id }` immediately.
-   - [ ] In-process fire-and-forget runner (`void runScanPipeline(scanId)`).
-   - [ ] **Incremental Persistence:** Persist findings to MongoDB per source as each connector completes.
-   - [ ] Scan state machine: `QUEUED` -> `RUNNING` -> (`COMPLETED` | `PARTIAL` | `FAILED`).
-   - [ ] Graceful cancellation: Handle `POST /api/scan/:id` cancel flag between pipeline stages.
-   - [ ] Boot crash recovery: On app startup, auto-mark any scan stuck in `RUNNING` for >10 minutes as `PARTIAL`.
+   - [x] `POST /api/scan` handler: Verify caller owns identifiers, check all are `VERIFIED`/`ATTESTED`, enforce daily rate limit, create scan record (`QUEUED`), return `202 { scan_id }` immediately.
+   - [x] In-process fire-and-forget runner (`void runScanPipeline(scanId)`).
+   - [x] **Incremental Persistence:** Persist findings to MongoDB per source as each connector completes.
+   - [x] Scan state machine: `QUEUED` -> `RUNNING` -> (`COMPLETED` | `PARTIAL` | `FAILED`).
+   - [x] Graceful cancellation: Handle `POST /api/scan/:id` cancel flag between pipeline stages.
+   - [x] Boot crash recovery: On app startup, auto-mark any scan stuck in `RUNNING` for >10 minutes as `PARTIAL`.
 4. **Monitoring & Re-Scan Fingerprint Engine (`lib/monitoring/stateMachine.ts`)**
-   - [ ] Fingerprint generator: `SHA256(identity_id + normalized_source + exposure_type + normalized_entity)`.
+   - [x] Fingerprint generator: `SHA256(identity_id + normalized_source + exposure_type + normalized_entity)`.
    - [ ] Re-scan state machine transitions:
      - `FIRST_SEEN` -> `ACTIVE`
      - `ACTIVE` -> `UNCHANGED` or `NOT_FOUND`
