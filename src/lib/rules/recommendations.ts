@@ -1,3 +1,5 @@
+import { lookupBrokerByDomain } from "./brokerLookup";
+
 export const RULE_VERSION = "v1.0.0";
 
 export type ActionCode =
@@ -25,6 +27,7 @@ export interface RecommendationInput {
   threats: string[];
   matchLabel: "CONFIRMED" | "POTENTIAL";
   optOutUrl?: string;
+  sourceDomain?: string;
 }
 
 export const ACTION_CATALOG: Record<
@@ -98,6 +101,7 @@ export const ACTION_CATALOG: Record<
 
 /**
  * Derives concrete remediation action recommendations for an exposure (CONTEXT.md §8.3).
+ * Auto-resolves broker opt-out links & instructions via data/brokers.json when available.
  *
  * @param input - RecommendationInput
  * @returns Array of RecommendationTask objects ordered by priority
@@ -111,6 +115,20 @@ export function generateRecommendations(
   const piiSet = new Set(input.piiTypes.map((p) => p.toUpperCase()));
   const exposureTypeUpper = input.exposureType.toUpperCase();
   const threatsSet = new Set(input.threats.map((t) => t.toUpperCase()));
+
+  // Auto-lookup broker entry by sourceDomain if present
+  let resolvedOptOutUrl = input.optOutUrl;
+  let brokerInstructions: string | undefined;
+
+  if (input.sourceDomain) {
+    const brokerEntry = lookupBrokerByDomain(input.sourceDomain);
+    if (brokerEntry) {
+      if (!resolvedOptOutUrl) {
+        resolvedOptOutUrl = brokerEntry.optOutUrl;
+      }
+      brokerInstructions = brokerEntry.instructions;
+    }
+  }
 
   // 1. If match is unconfirmed (POTENTIAL), suggest verification first
   if (!isConfirmed) {
@@ -134,10 +152,14 @@ export function generateRecommendations(
   }
 
   // 3. Data Broker Opt-Out Actions
-  if (exposureTypeUpper.includes("BROKER") || input.optOutUrl) {
+  if (exposureTypeUpper.includes("BROKER") || resolvedOptOutUrl || brokerInstructions) {
+    const defaultOptOut = ACTION_CATALOG.OPT_OUT_BROKER;
     actionsMap.set("OPT_OUT_BROKER", {
-      ...ACTION_CATALOG.OPT_OUT_BROKER,
-      optOutUrl: input.optOutUrl,
+      ...defaultOptOut,
+      description: brokerInstructions
+        ? `${defaultOptOut.description} (${brokerInstructions})`
+        : defaultOptOut.description,
+      optOutUrl: resolvedOptOutUrl,
     });
   }
 
