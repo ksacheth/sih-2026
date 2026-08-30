@@ -1,0 +1,16 @@
+{
+  "id": "corpus_004",
+  "discovery_date": "2025-12-11T11:01:03.091009",
+  "exposure_type": "breach",
+  "severity": "critical",
+  "person_id": "person_1",
+  "source_description": "Part of confirmed data breach",
+  "name": "Rahul Kumar",
+  "username": "rahul_kumar_dev",
+  "email": "rahul.kumar@abc-tech.in",
+  "organization": "ABC Technologies",
+  "identifier_type": "username",
+  "match_strength": "strong",
+  "breach_name": "DataBreach_2024",
+  "raw_content": "Username: rahul_kumar_dev | Email: rahul.kumar@abc-tech.in | Organization: ABC Technologies"
+}

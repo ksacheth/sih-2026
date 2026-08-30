@@ -1,0 +1,15 @@
+{
+  "id": "corpus_017",
+  "discovery_date": "2026-08-23T11:01:03.092130",
+  "exposure_type": "people_broker",
+  "severity": "high",
+  "person_id": "person_2",
+  "source_description": "Listed on people search broker",
+  "name": "Priya Singh",
+  "phone": "+91 87654 32109",
+  "location": "Bangalore",
+  "identifier_type": "phone",
+  "match_strength": "strong",
+  "broker_name": "Whitepages",
+  "raw_content": "Phone: +91 87654 32109 | Name: Priya Singh | City: Bangalore"
+}

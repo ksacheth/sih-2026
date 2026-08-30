@@ -1,0 +1,14 @@
+{
+  "id": "corpus_029",
+  "discovery_date": "2026-04-20T11:01:03.093049",
+  "exposure_type": "social_media",
+  "severity": "low",
+  "person_id": "person_3",
+  "source_description": "Public social media profile",
+  "name": "Amit Patel",
+  "phone": "+91 76543 21098",
+  "location": "Mumbai",
+  "identifier_type": "phone",
+  "match_strength": "strong",
+  "raw_content": "Phone: +91 76543 21098 | Name: Amit Patel | City: Mumbai"
+}

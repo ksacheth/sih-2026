@@ -1,0 +1,1546 @@
+{
+  "evaluation_date": "{\n  \"dataset_version\": \"2.0\",\n  \"generated_date\": \"2026-08-30T11:01:03.090607\",\n  \"target_profiles\": [\n    {\n      \"id\": \"person_1\",\n      \"name\": \"Rahul Kumar\",\n      \"email\": \"rahul.kumar@abc-tech.in\",\n      \"phone\": \"+91 98765 43210\",\n      \"username\": \"rahul_kumar_dev\",\n      \"organization\": \"ABC Technologies\",\n      \"location\": \"Delhi\",\n      \"linkedin\": \"linkedin.com/in/rahul-kumar-abc\",\n      \"dob\": \"1990-03-15\",\n      \"city\": \"New Delhi\",\n      \"state\": \"Delhi\",\n      \"country\": \"India\"\n    },\n    {\n      \"id\": \"person_2\",\n      \"name\": \"Priya Singh\",\n      \"email\": \"priya.singh@fintech-co.com\",\n      \"phone\": \"+91 87654 32109\",\n      \"username\": \"priya_singh_fintech\",\n      \"organization\": \"FinTech Solutions\",\n      \"location\": \"Bangalore\",\n      \"linkedin\": \"linkedin.com/in/priya-singh\",\n      \"dob\": \"1992-07-22\",\n      \"city\": \"Bangalore\",\n      \"state\": \"Karnataka\",\n      \"country\": \"India\"\n    },\n    {\n      \"id\": \"person_3\",\n      \"name\": \"Amit Patel\",\n      \"email\": \"amit.patel@cloudservices.io\",\n      \"phone\": \"+91 76543 21098\",\n      \"username\": \"amit_patel_cloud\",\n      \"organization\": \"Cloud Services Inc\",\n      \"location\": \"Mumbai\",\n      \"linkedin\": \"linkedin.com/in/amit-patel-cloud\",\n      \"dob\": \"1988-11-08\",\n      \"city\": \"Mumbai\",\n      \"state\": \"Maharashtra\",\n      \"country\": \"India\"\n    }\n  ],\n  \"corpus_structure\": {\n    \"strong_matches\": [\n      {\n        \"file\": \"eval/corpus/entry_001.json\",\n        \"person_id\": \"person_1\",\n        \"expected_classification\": \"CONFIRMED\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_002.json\",\n        \"person_id\": \"person_1\",\n        \"expected_classification\": \"CONFIRMED\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_003.json\",\n        \"person_id\": \"person_1\",\n        \"expected_classification\": \"CONFIRMED\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_004.json\",\n        \"person_id\": \"person_1\",\n        \"expected_classification\": \"CONFIRMED\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_005.json\",\n        \"person_id\": \"person_1\",\n        \"expected_classification\": \"CONFIRMED\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_006.json\",\n        \"person_id\": \"person_1\",\n        \"expected_classification\": \"CONFIRMED\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_007.json\",\n        \"person_id\": \"person_1\",\n        \"expected_classification\": \"CONFIRMED\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_008.json\",\n        \"person_id\": \"person_1\",\n        \"expected_classification\": \"CONFIRMED\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_015.json\",\n        \"person_id\": \"person_2\",\n        \"expected_classification\": \"CONFIRMED\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_016.json\",\n        \"person_id\": \"person_2\",\n        \"expected_classification\": \"CONFIRMED\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_017.json\",\n        \"person_id\": \"person_2\",\n        \"expected_classification\": \"CONFIRMED\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_018.json\",\n        \"person_id\": \"person_2\",\n        \"expected_classification\": \"CONFIRMED\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_019.json\",\n        \"person_id\": \"person_2\",\n        \"expected_classification\": \"CONFIRMED\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_020.json\",\n        \"person_id\": \"person_2\",\n        \"expected_classification\": \"CONFIRMED\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_021.json\",\n        \"person_id\": \"person_2\",\n        \"expected_classification\": \"CONFIRMED\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_022.json\",\n        \"person_id\": \"person_2\",\n        \"expected_classification\": \"CONFIRMED\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_028.json\",\n        \"person_id\": \"person_3\",\n        \"expected_classification\": \"CONFIRMED\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_029.json\",\n        \"person_id\": \"person_3\",\n        \"expected_classification\": \"CONFIRMED\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_030.json\",\n        \"person_id\": \"person_3\",\n        \"expected_classification\": \"CONFIRMED\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_031.json\",\n        \"person_id\": \"person_3\",\n        \"expected_classification\": \"CONFIRMED\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_032.json\",\n        \"person_id\": \"person_3\",\n        \"expected_classification\": \"CONFIRMED\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_033.json\",\n        \"person_id\": \"person_3\",\n        \"expected_classification\": \"CONFIRMED\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_034.json\",\n        \"person_id\": \"person_3\",\n        \"expected_classification\": \"CONFIRMED\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_035.json\",\n        \"person_id\": \"person_3\",\n        \"expected_classification\": \"CONFIRMED\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_036.json\",\n        \"person_id\": \"person_3\",\n        \"expected_classification\": \"CONFIRMED\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_037.json\",\n        \"person_id\": \"person_3\",\n        \"expected_classification\": \"CONFIRMED\"\n      }\n    ],\n    \"composite_matches\": [\n      {\n        \"file\": \"eval/corpus/entry_009.json\",\n        \"person_id\": \"person_1\",\n        \"expected_classification\": \"POTENTIAL\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_010.json\",\n        \"person_id\": \"person_1\",\n        \"expected_classification\": \"POTENTIAL\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_011.json\",\n        \"person_id\": \"person_1\",\n        \"expected_classification\": \"POTENTIAL\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_012.json\",\n        \"person_id\": \"person_1\",\n        \"expected_classification\": \"POTENTIAL\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_023.json\",\n        \"person_id\": \"person_2\",\n        \"expected_classification\": \"POTENTIAL\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_024.json\",\n        \"person_id\": \"person_2\",\n        \"expected_classification\": \"POTENTIAL\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_025.json\",\n        \"person_id\": \"person_2\",\n        \"expected_classification\": \"POTENTIAL\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_038.json\",\n        \"person_id\": \"person_3\",\n        \"expected_classification\": \"POTENTIAL\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_039.json\",\n        \"person_id\": \"person_3\",\n        \"expected_classification\": \"POTENTIAL\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_040.json\",\n        \"person_id\": \"person_3\",\n        \"expected_classification\": \"POTENTIAL\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_041.json\",\n        \"person_id\": \"person_3\",\n        \"expected_classification\": \"POTENTIAL\"\n      }\n    ],\n    \"weak_matches\": [\n      {\n        \"file\": \"eval/corpus/entry_013.json\",\n        \"person_id\": \"person_1\",\n        \"expected_classification\": \"NO_MATCH\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_014.json\",\n        \"person_id\": \"person_1\",\n        \"expected_classification\": \"NO_MATCH\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_026.json\",\n        \"person_id\": \"person_2\",\n        \"expected_classification\": \"NO_MATCH\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_027.json\",\n        \"person_id\": \"person_2\",\n        \"expected_classification\": \"NO_MATCH\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_042.json\",\n        \"person_id\": \"person_3\",\n        \"expected_classification\": \"NO_MATCH\"\n      },\n      {\n        \"file\": \"eval/corpus/entry_043.json\",\n        \"person_id\": \"person_3\",\n        \"expected_classification\": \"NO_MATCH\"\n      }\n    ],\n    \"ambiguous_cases\": []\n  },\n  \"evaluation_rules\": {\n    \"confirmed\": \"Exact email, phone, or username match (strong identifier)\",\n    \"potential\": \"Name + 2+ corroborating signals (composite match)\",\n    \"no_match\": \"Name only, or conflicting identifiers\",\n    \"hard_rule\": \"Name similarity alone must NEVER become CONFIRMED\"\n  },\n  \"decoy_profiles\": [\n    {\n      \"file\": \"eval/decoys/decoy_01.json\",\n      \"person_id\": \"person_1\",\n      \"decoy_type\": \"partial_overlap\",\n      \"expected_classification\": \"NO_MATCH\"\n    },\n    {\n      \"file\": \"eval/decoys/decoy_02.json\",\n      \"person_id\": \"person_1\",\n      \"decoy_type\": \"similar_org_location\",\n      \"expected_classification\": \"NO_MATCH\"\n    },\n    {\n      \"file\": \"eval/decoys/decoy_03.json\",\n      \"person_id\": \"person_1\",\n      \"decoy_type\": \"similar_name_diff_contact\",\n      \"expected_classification\": \"NO_MATCH\"\n    },\n    {\n      \"file\": \"eval/decoys/decoy_04.json\",\n      \"person_id\": \"person_2\",\n      \"decoy_type\": \"similar_name_diff_contact\",\n      \"expected_classification\": \"NO_MATCH\"\n    },\n    {\n      \"file\": \"eval/decoys/decoy_05.json\",\n      \"person_id\": \"person_2\",\n      \"decoy_type\": \"name_typo_real_contact\",\n      \"expected_classification\": \"NO_MATCH\"\n    },\n    {\n      \"file\": \"eval/decoys/decoy_06.json\",\n      \"person_id\": \"person_2\",\n      \"decoy_type\": \"similar_org_location\",\n      \"expected_classification\": \"NO_MATCH\"\n    },\n    {\n      \"file\": \"eval/decoys/decoy_07.json\",\n      \"person_id\": \"person_3\",\n      \"decoy_type\": \"similar_name_diff_contact\",\n      \"expected_classification\": \"NO_MATCH\"\n    },\n    {\n      \"file\": \"eval/decoys/decoy_08.json\",\n      \"person_id\": \"person_3\",\n      \"decoy_type\": \"name_typo_real_contact\",\n      \"expected_classification\": \"NO_MATCH\"\n    },\n    {\n      \"file\": \"eval/decoys/decoy_09.json\",\n      \"person_id\": \"person_3\",\n      \"decoy_type\": \"name_typo_real_contact\",\n      \"expected_classification\": \"NO_MATCH\"\n    }\n  ],\n  \"expected_results\": {\n    \"person_1\": {\n      \"confirmed\": 8,\n      \"potential\": 4,\n      \"no_match\": 2\n    },\n    \"person_2\": {\n      \"confirmed\": 8,\n      \"potential\": 3,\n      \"no_match\": 2\n    },\n    \"person_3\": {\n      \"confirmed\": 10,\n      \"potential\": 4,\n      \"no_match\": 2\n    }\n  }\n}",
+  "summary": {
+    "total_entries": 86,
+    "confirmed_count": 52,
+    "potential_count": 22,
+    "no_match_count": 12,
+    "false_positives": 0,
+    "decoy_accuracy": "PASS"
+  },
+  "by_person": {
+    "person_1": {
+      "name": "Rahul Kumar",
+      "confirmed": 16,
+      "potential": 8,
+      "no_match": 4,
+      "total": 28
+    },
+    "person_2": {
+      "name": "Priya Singh",
+      "confirmed": 16,
+      "potential": 6,
+      "no_match": 4,
+      "total": 26
+    },
+    "person_3": {
+      "name": "Amit Patel",
+      "confirmed": 20,
+      "potential": 8,
+      "no_match": 4,
+      "total": 32
+    }
+  },
+  "results": {
+    "total_entries": 86,
+    "confirmed": [
+      {
+        "file": "eval/corpus/entry_001.json",
+        "person_id": "person_1",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_1",
+          "person_name": "Rahul Kumar",
+          "has_strong_identifier": true,
+          "identifier_type": "email",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "breach",
+        "severity": "critical"
+      },
+      {
+        "file": "eval/corpus/entry_002.json",
+        "person_id": "person_1",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_1",
+          "person_name": "Rahul Kumar",
+          "has_strong_identifier": true,
+          "identifier_type": "email",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "search_engine",
+        "severity": "medium"
+      },
+      {
+        "file": "eval/corpus/entry_003.json",
+        "person_id": "person_1",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_1",
+          "person_name": "Rahul Kumar",
+          "has_strong_identifier": true,
+          "identifier_type": "phone",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "social_media",
+        "severity": "low"
+      },
+      {
+        "file": "eval/corpus/entry_004.json",
+        "person_id": "person_1",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_1",
+          "person_name": "Rahul Kumar",
+          "has_strong_identifier": true,
+          "identifier_type": "email",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "breach",
+        "severity": "critical"
+      },
+      {
+        "file": "eval/corpus/entry_005.json",
+        "person_id": "person_1",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_1",
+          "person_name": "Rahul Kumar",
+          "has_strong_identifier": true,
+          "identifier_type": "email",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "resume_db",
+        "severity": "high"
+      },
+      {
+        "file": "eval/corpus/entry_006.json",
+        "person_id": "person_1",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_1",
+          "person_name": "Rahul Kumar",
+          "has_strong_identifier": true,
+          "identifier_type": "email",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "resume_db",
+        "severity": "high"
+      },
+      {
+        "file": "eval/corpus/entry_007.json",
+        "person_id": "person_1",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_1",
+          "person_name": "Rahul Kumar",
+          "has_strong_identifier": true,
+          "identifier_type": "phone",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "breach",
+        "severity": "critical"
+      },
+      {
+        "file": "eval/corpus/entry_008.json",
+        "person_id": "person_1",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_1",
+          "person_name": "Rahul Kumar",
+          "has_strong_identifier": true,
+          "identifier_type": "email",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "social_media",
+        "severity": "low"
+      },
+      {
+        "file": "eval/corpus/entry_015.json",
+        "person_id": "person_2",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_2",
+          "person_name": "Priya Singh",
+          "has_strong_identifier": true,
+          "identifier_type": "phone",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "resume_db",
+        "severity": "high"
+      },
+      {
+        "file": "eval/corpus/entry_016.json",
+        "person_id": "person_2",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_2",
+          "person_name": "Priya Singh",
+          "has_strong_identifier": true,
+          "identifier_type": "email",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "directory",
+        "severity": "medium"
+      },
+      {
+        "file": "eval/corpus/entry_017.json",
+        "person_id": "person_2",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_2",
+          "person_name": "Priya Singh",
+          "has_strong_identifier": true,
+          "identifier_type": "phone",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "people_broker",
+        "severity": "high"
+      },
+      {
+        "file": "eval/corpus/entry_018.json",
+        "person_id": "person_2",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_2",
+          "person_name": "Priya Singh",
+          "has_strong_identifier": true,
+          "identifier_type": "email",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "conference",
+        "severity": "low"
+      },
+      {
+        "file": "eval/corpus/entry_019.json",
+        "person_id": "person_2",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_2",
+          "person_name": "Priya Singh",
+          "has_strong_identifier": true,
+          "identifier_type": "email",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "paste_site",
+        "severity": "high"
+      },
+      {
+        "file": "eval/corpus/entry_020.json",
+        "person_id": "person_2",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_2",
+          "person_name": "Priya Singh",
+          "has_strong_identifier": true,
+          "identifier_type": "email",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "conference",
+        "severity": "low"
+      },
+      {
+        "file": "eval/corpus/entry_021.json",
+        "person_id": "person_2",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_2",
+          "person_name": "Priya Singh",
+          "has_strong_identifier": true,
+          "identifier_type": "email",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "paste_site",
+        "severity": "high"
+      },
+      {
+        "file": "eval/corpus/entry_022.json",
+        "person_id": "person_2",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_2",
+          "person_name": "Priya Singh",
+          "has_strong_identifier": true,
+          "identifier_type": "email",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "paste_site",
+        "severity": "high"
+      },
+      {
+        "file": "eval/corpus/entry_028.json",
+        "person_id": "person_3",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_3",
+          "person_name": "Amit Patel",
+          "has_strong_identifier": true,
+          "identifier_type": "email",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "directory",
+        "severity": "medium"
+      },
+      {
+        "file": "eval/corpus/entry_029.json",
+        "person_id": "person_3",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_3",
+          "person_name": "Amit Patel",
+          "has_strong_identifier": true,
+          "identifier_type": "phone",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "social_media",
+        "severity": "low"
+      },
+      {
+        "file": "eval/corpus/entry_030.json",
+        "person_id": "person_3",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_3",
+          "person_name": "Amit Patel",
+          "has_strong_identifier": true,
+          "identifier_type": "email",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "breach",
+        "severity": "critical"
+      },
+      {
+        "file": "eval/corpus/entry_031.json",
+        "person_id": "person_3",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_3",
+          "person_name": "Amit Patel",
+          "has_strong_identifier": true,
+          "identifier_type": "email",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "directory",
+        "severity": "medium"
+      },
+      {
+        "file": "eval/corpus/entry_032.json",
+        "person_id": "person_3",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_3",
+          "person_name": "Amit Patel",
+          "has_strong_identifier": true,
+          "identifier_type": "email",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "breach",
+        "severity": "critical"
+      },
+      {
+        "file": "eval/corpus/entry_033.json",
+        "person_id": "person_3",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_3",
+          "person_name": "Amit Patel",
+          "has_strong_identifier": true,
+          "identifier_type": "email",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "directory",
+        "severity": "medium"
+      },
+      {
+        "file": "eval/corpus/entry_034.json",
+        "person_id": "person_3",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_3",
+          "person_name": "Amit Patel",
+          "has_strong_identifier": true,
+          "identifier_type": "email",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "social_media",
+        "severity": "low"
+      },
+      {
+        "file": "eval/corpus/entry_035.json",
+        "person_id": "person_3",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_3",
+          "person_name": "Amit Patel",
+          "has_strong_identifier": true,
+          "identifier_type": "email",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "directory",
+        "severity": "medium"
+      },
+      {
+        "file": "eval/corpus/entry_036.json",
+        "person_id": "person_3",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_3",
+          "person_name": "Amit Patel",
+          "has_strong_identifier": true,
+          "identifier_type": "phone",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "breach",
+        "severity": "critical"
+      },
+      {
+        "file": "eval/corpus/entry_037.json",
+        "person_id": "person_3",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_3",
+          "person_name": "Amit Patel",
+          "has_strong_identifier": true,
+          "identifier_type": "phone",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "conference",
+        "severity": "low"
+      },
+      {
+        "file": "eval/corpus/entry_001.json",
+        "person_id": "person_1",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_1",
+          "person_name": "Rahul Kumar",
+          "has_strong_identifier": true,
+          "identifier_type": "email",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "breach",
+        "severity": "critical"
+      },
+      {
+        "file": "eval/corpus/entry_002.json",
+        "person_id": "person_1",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_1",
+          "person_name": "Rahul Kumar",
+          "has_strong_identifier": true,
+          "identifier_type": "email",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "search_engine",
+        "severity": "medium"
+      },
+      {
+        "file": "eval/corpus/entry_003.json",
+        "person_id": "person_1",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_1",
+          "person_name": "Rahul Kumar",
+          "has_strong_identifier": true,
+          "identifier_type": "phone",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "social_media",
+        "severity": "low"
+      },
+      {
+        "file": "eval/corpus/entry_004.json",
+        "person_id": "person_1",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_1",
+          "person_name": "Rahul Kumar",
+          "has_strong_identifier": true,
+          "identifier_type": "email",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "breach",
+        "severity": "critical"
+      },
+      {
+        "file": "eval/corpus/entry_005.json",
+        "person_id": "person_1",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_1",
+          "person_name": "Rahul Kumar",
+          "has_strong_identifier": true,
+          "identifier_type": "email",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "resume_db",
+        "severity": "high"
+      },
+      {
+        "file": "eval/corpus/entry_006.json",
+        "person_id": "person_1",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_1",
+          "person_name": "Rahul Kumar",
+          "has_strong_identifier": true,
+          "identifier_type": "email",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "resume_db",
+        "severity": "high"
+      },
+      {
+        "file": "eval/corpus/entry_007.json",
+        "person_id": "person_1",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_1",
+          "person_name": "Rahul Kumar",
+          "has_strong_identifier": true,
+          "identifier_type": "phone",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "breach",
+        "severity": "critical"
+      },
+      {
+        "file": "eval/corpus/entry_008.json",
+        "person_id": "person_1",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_1",
+          "person_name": "Rahul Kumar",
+          "has_strong_identifier": true,
+          "identifier_type": "email",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "social_media",
+        "severity": "low"
+      },
+      {
+        "file": "eval/corpus/entry_015.json",
+        "person_id": "person_2",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_2",
+          "person_name": "Priya Singh",
+          "has_strong_identifier": true,
+          "identifier_type": "phone",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "resume_db",
+        "severity": "high"
+      },
+      {
+        "file": "eval/corpus/entry_016.json",
+        "person_id": "person_2",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_2",
+          "person_name": "Priya Singh",
+          "has_strong_identifier": true,
+          "identifier_type": "email",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "directory",
+        "severity": "medium"
+      },
+      {
+        "file": "eval/corpus/entry_017.json",
+        "person_id": "person_2",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_2",
+          "person_name": "Priya Singh",
+          "has_strong_identifier": true,
+          "identifier_type": "phone",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "people_broker",
+        "severity": "high"
+      },
+      {
+        "file": "eval/corpus/entry_018.json",
+        "person_id": "person_2",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_2",
+          "person_name": "Priya Singh",
+          "has_strong_identifier": true,
+          "identifier_type": "email",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "conference",
+        "severity": "low"
+      },
+      {
+        "file": "eval/corpus/entry_019.json",
+        "person_id": "person_2",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_2",
+          "person_name": "Priya Singh",
+          "has_strong_identifier": true,
+          "identifier_type": "email",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "paste_site",
+        "severity": "high"
+      },
+      {
+        "file": "eval/corpus/entry_020.json",
+        "person_id": "person_2",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_2",
+          "person_name": "Priya Singh",
+          "has_strong_identifier": true,
+          "identifier_type": "email",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "conference",
+        "severity": "low"
+      },
+      {
+        "file": "eval/corpus/entry_021.json",
+        "person_id": "person_2",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_2",
+          "person_name": "Priya Singh",
+          "has_strong_identifier": true,
+          "identifier_type": "email",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "paste_site",
+        "severity": "high"
+      },
+      {
+        "file": "eval/corpus/entry_022.json",
+        "person_id": "person_2",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_2",
+          "person_name": "Priya Singh",
+          "has_strong_identifier": true,
+          "identifier_type": "email",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "paste_site",
+        "severity": "high"
+      },
+      {
+        "file": "eval/corpus/entry_028.json",
+        "person_id": "person_3",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_3",
+          "person_name": "Amit Patel",
+          "has_strong_identifier": true,
+          "identifier_type": "email",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "directory",
+        "severity": "medium"
+      },
+      {
+        "file": "eval/corpus/entry_029.json",
+        "person_id": "person_3",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_3",
+          "person_name": "Amit Patel",
+          "has_strong_identifier": true,
+          "identifier_type": "phone",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "social_media",
+        "severity": "low"
+      },
+      {
+        "file": "eval/corpus/entry_030.json",
+        "person_id": "person_3",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_3",
+          "person_name": "Amit Patel",
+          "has_strong_identifier": true,
+          "identifier_type": "email",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "breach",
+        "severity": "critical"
+      },
+      {
+        "file": "eval/corpus/entry_031.json",
+        "person_id": "person_3",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_3",
+          "person_name": "Amit Patel",
+          "has_strong_identifier": true,
+          "identifier_type": "email",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "directory",
+        "severity": "medium"
+      },
+      {
+        "file": "eval/corpus/entry_032.json",
+        "person_id": "person_3",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_3",
+          "person_name": "Amit Patel",
+          "has_strong_identifier": true,
+          "identifier_type": "email",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "breach",
+        "severity": "critical"
+      },
+      {
+        "file": "eval/corpus/entry_033.json",
+        "person_id": "person_3",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_3",
+          "person_name": "Amit Patel",
+          "has_strong_identifier": true,
+          "identifier_type": "email",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "directory",
+        "severity": "medium"
+      },
+      {
+        "file": "eval/corpus/entry_034.json",
+        "person_id": "person_3",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_3",
+          "person_name": "Amit Patel",
+          "has_strong_identifier": true,
+          "identifier_type": "email",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "social_media",
+        "severity": "low"
+      },
+      {
+        "file": "eval/corpus/entry_035.json",
+        "person_id": "person_3",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_3",
+          "person_name": "Amit Patel",
+          "has_strong_identifier": true,
+          "identifier_type": "email",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "directory",
+        "severity": "medium"
+      },
+      {
+        "file": "eval/corpus/entry_036.json",
+        "person_id": "person_3",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_3",
+          "person_name": "Amit Patel",
+          "has_strong_identifier": true,
+          "identifier_type": "phone",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "breach",
+        "severity": "critical"
+      },
+      {
+        "file": "eval/corpus/entry_037.json",
+        "person_id": "person_3",
+        "classification": "CONFIRMED",
+        "reasoning": {
+          "person_id": "person_3",
+          "person_name": "Amit Patel",
+          "has_strong_identifier": true,
+          "identifier_type": "phone",
+          "name_match": false,
+          "corroborating_signals": 0,
+          "signals_list": [],
+          "classification": "CONFIRMED"
+        },
+        "exposure_type": "conference",
+        "severity": "low"
+      }
+    ],
+    "potential": [
+      {
+        "file": "eval/corpus/entry_009.json",
+        "person_id": "person_1",
+        "classification": "POTENTIAL",
+        "reasoning": {
+          "person_id": "person_1",
+          "person_name": "Rahul Kumar",
+          "has_strong_identifier": false,
+          "identifier_type": null,
+          "name_match": true,
+          "corroborating_signals": 3,
+          "signals_list": [],
+          "classification": "POTENTIAL"
+        },
+        "exposure_type": "resume_db",
+        "severity": "high"
+      },
+      {
+        "file": "eval/corpus/entry_010.json",
+        "person_id": "person_1",
+        "classification": "POTENTIAL",
+        "reasoning": {
+          "person_id": "person_1",
+          "person_name": "Rahul Kumar",
+          "has_strong_identifier": false,
+          "identifier_type": null,
+          "name_match": true,
+          "corroborating_signals": 3,
+          "signals_list": [],
+          "classification": "POTENTIAL"
+        },
+        "exposure_type": "paste_site",
+        "severity": "high"
+      },
+      {
+        "file": "eval/corpus/entry_011.json",
+        "person_id": "person_1",
+        "classification": "POTENTIAL",
+        "reasoning": {
+          "person_id": "person_1",
+          "person_name": "Rahul Kumar",
+          "has_strong_identifier": false,
+          "identifier_type": null,
+          "name_match": true,
+          "corroborating_signals": 3,
+          "signals_list": [],
+          "classification": "POTENTIAL"
+        },
+        "exposure_type": "resume_db",
+        "severity": "high"
+      },
+      {
+        "file": "eval/corpus/entry_012.json",
+        "person_id": "person_1",
+        "classification": "POTENTIAL",
+        "reasoning": {
+          "person_id": "person_1",
+          "person_name": "Rahul Kumar",
+          "has_strong_identifier": false,
+          "identifier_type": null,
+          "name_match": true,
+          "corroborating_signals": 3,
+          "signals_list": [],
+          "classification": "POTENTIAL"
+        },
+        "exposure_type": "conference",
+        "severity": "low"
+      },
+      {
+        "file": "eval/corpus/entry_023.json",
+        "person_id": "person_2",
+        "classification": "POTENTIAL",
+        "reasoning": {
+          "person_id": "person_2",
+          "person_name": "Priya Singh",
+          "has_strong_identifier": false,
+          "identifier_type": null,
+          "name_match": true,
+          "corroborating_signals": 3,
+          "signals_list": [],
+          "classification": "POTENTIAL"
+        },
+        "exposure_type": "paste_site",
+        "severity": "high"
+      },
+      {
+        "file": "eval/corpus/entry_024.json",
+        "person_id": "person_2",
+        "classification": "POTENTIAL",
+        "reasoning": {
+          "person_id": "person_2",
+          "person_name": "Priya Singh",
+          "has_strong_identifier": false,
+          "identifier_type": null,
+          "name_match": true,
+          "corroborating_signals": 3,
+          "signals_list": [],
+          "classification": "POTENTIAL"
+        },
+        "exposure_type": "social_media",
+        "severity": "low"
+      },
+      {
+        "file": "eval/corpus/entry_025.json",
+        "person_id": "person_2",
+        "classification": "POTENTIAL",
+        "reasoning": {
+          "person_id": "person_2",
+          "person_name": "Priya Singh",
+          "has_strong_identifier": false,
+          "identifier_type": null,
+          "name_match": true,
+          "corroborating_signals": 3,
+          "signals_list": [],
+          "classification": "POTENTIAL"
+        },
+        "exposure_type": "directory",
+        "severity": "medium"
+      },
+      {
+        "file": "eval/corpus/entry_038.json",
+        "person_id": "person_3",
+        "classification": "POTENTIAL",
+        "reasoning": {
+          "person_id": "person_3",
+          "person_name": "Amit Patel",
+          "has_strong_identifier": false,
+          "identifier_type": null,
+          "name_match": true,
+          "corroborating_signals": 3,
+          "signals_list": [],
+          "classification": "POTENTIAL"
+        },
+        "exposure_type": "resume_db",
+        "severity": "high"
+      },
+      {
+        "file": "eval/corpus/entry_039.json",
+        "person_id": "person_3",
+        "classification": "POTENTIAL",
+        "reasoning": {
+          "person_id": "person_3",
+          "person_name": "Amit Patel",
+          "has_strong_identifier": false,
+          "identifier_type": null,
+          "name_match": true,
+          "corroborating_signals": 3,
+          "signals_list": [],
+          "classification": "POTENTIAL"
+        },
+        "exposure_type": "directory",
+        "severity": "medium"
+      },
+      {
+        "file": "eval/corpus/entry_040.json",
+        "person_id": "person_3",
+        "classification": "POTENTIAL",
+        "reasoning": {
+          "person_id": "person_3",
+          "person_name": "Amit Patel",
+          "has_strong_identifier": false,
+          "identifier_type": null,
+          "name_match": true,
+          "corroborating_signals": 3,
+          "signals_list": [],
+          "classification": "POTENTIAL"
+        },
+        "exposure_type": "search_engine",
+        "severity": "medium"
+      },
+      {
+        "file": "eval/corpus/entry_041.json",
+        "person_id": "person_3",
+        "classification": "POTENTIAL",
+        "reasoning": {
+          "person_id": "person_3",
+          "person_name": "Amit Patel",
+          "has_strong_identifier": false,
+          "identifier_type": null,
+          "name_match": true,
+          "corroborating_signals": 3,
+          "signals_list": [],
+          "classification": "POTENTIAL"
+        },
+        "exposure_type": "social_media",
+        "severity": "low"
+      },
+      {
+        "file": "eval/corpus/entry_009.json",
+        "person_id": "person_1",
+        "classification": "POTENTIAL",
+        "reasoning": {
+          "person_id": "person_1",
+          "person_name": "Rahul Kumar",
+          "has_strong_identifier": false,
+          "identifier_type": null,
+          "name_match": true,
+          "corroborating_signals": 3,
+          "signals_list": [],
+          "classification": "POTENTIAL"
+        },
+        "exposure_type": "resume_db",
+        "severity": "high"
+      },
+      {
+        "file": "eval/corpus/entry_010.json",
+        "person_id": "person_1",
+        "classification": "POTENTIAL",
+        "reasoning": {
+          "person_id": "person_1",
+          "person_name": "Rahul Kumar",
+          "has_strong_identifier": false,
+          "identifier_type": null,
+          "name_match": true,
+          "corroborating_signals": 3,
+          "signals_list": [],
+          "classification": "POTENTIAL"
+        },
+        "exposure_type": "paste_site",
+        "severity": "high"
+      },
+      {
+        "file": "eval/corpus/entry_011.json",
+        "person_id": "person_1",
+        "classification": "POTENTIAL",
+        "reasoning": {
+          "person_id": "person_1",
+          "person_name": "Rahul Kumar",
+          "has_strong_identifier": false,
+          "identifier_type": null,
+          "name_match": true,
+          "corroborating_signals": 3,
+          "signals_list": [],
+          "classification": "POTENTIAL"
+        },
+        "exposure_type": "resume_db",
+        "severity": "high"
+      },
+      {
+        "file": "eval/corpus/entry_012.json",
+        "person_id": "person_1",
+        "classification": "POTENTIAL",
+        "reasoning": {
+          "person_id": "person_1",
+          "person_name": "Rahul Kumar",
+          "has_strong_identifier": false,
+          "identifier_type": null,
+          "name_match": true,
+          "corroborating_signals": 3,
+          "signals_list": [],
+          "classification": "POTENTIAL"
+        },
+        "exposure_type": "conference",
+        "severity": "low"
+      },
+      {
+        "file": "eval/corpus/entry_023.json",
+        "person_id": "person_2",
+        "classification": "POTENTIAL",
+        "reasoning": {
+          "person_id": "person_2",
+          "person_name": "Priya Singh",
+          "has_strong_identifier": false,
+          "identifier_type": null,
+          "name_match": true,
+          "corroborating_signals": 3,
+          "signals_list": [],
+          "classification": "POTENTIAL"
+        },
+        "exposure_type": "paste_site",
+        "severity": "high"
+      },
+      {
+        "file": "eval/corpus/entry_024.json",
+        "person_id": "person_2",
+        "classification": "POTENTIAL",
+        "reasoning": {
+          "person_id": "person_2",
+          "person_name": "Priya Singh",
+          "has_strong_identifier": false,
+          "identifier_type": null,
+          "name_match": true,
+          "corroborating_signals": 3,
+          "signals_list": [],
+          "classification": "POTENTIAL"
+        },
+        "exposure_type": "social_media",
+        "severity": "low"
+      },
+      {
+        "file": "eval/corpus/entry_025.json",
+        "person_id": "person_2",
+        "classification": "POTENTIAL",
+        "reasoning": {
+          "person_id": "person_2",
+          "person_name": "Priya Singh",
+          "has_strong_identifier": false,
+          "identifier_type": null,
+          "name_match": true,
+          "corroborating_signals": 3,
+          "signals_list": [],
+          "classification": "POTENTIAL"
+        },
+        "exposure_type": "directory",
+        "severity": "medium"
+      },
+      {
+        "file": "eval/corpus/entry_038.json",
+        "person_id": "person_3",
+        "classification": "POTENTIAL",
+        "reasoning": {
+          "person_id": "person_3",
+          "person_name": "Amit Patel",
+          "has_strong_identifier": false,
+          "identifier_type": null,
+          "name_match": true,
+          "corroborating_signals": 3,
+          "signals_list": [],
+          "classification": "POTENTIAL"
+        },
+        "exposure_type": "resume_db",
+        "severity": "high"
+      },
+      {
+        "file": "eval/corpus/entry_039.json",
+        "person_id": "person_3",
+        "classification": "POTENTIAL",
+        "reasoning": {
+          "person_id": "person_3",
+          "person_name": "Amit Patel",
+          "has_strong_identifier": false,
+          "identifier_type": null,
+          "name_match": true,
+          "corroborating_signals": 3,
+          "signals_list": [],
+          "classification": "POTENTIAL"
+        },
+        "exposure_type": "directory",
+        "severity": "medium"
+      },
+      {
+        "file": "eval/corpus/entry_040.json",
+        "person_id": "person_3",
+        "classification": "POTENTIAL",
+        "reasoning": {
+          "person_id": "person_3",
+          "person_name": "Amit Patel",
+          "has_strong_identifier": false,
+          "identifier_type": null,
+          "name_match": true,
+          "corroborating_signals": 3,
+          "signals_list": [],
+          "classification": "POTENTIAL"
+        },
+        "exposure_type": "search_engine",
+        "severity": "medium"
+      },
+      {
+        "file": "eval/corpus/entry_041.json",
+        "person_id": "person_3",
+        "classification": "POTENTIAL",
+        "reasoning": {
+          "person_id": "person_3",
+          "person_name": "Amit Patel",
+          "has_strong_identifier": false,
+          "identifier_type": null,
+          "name_match": true,
+          "corroborating_signals": 3,
+          "signals_list": [],
+          "classification": "POTENTIAL"
+        },
+        "exposure_type": "social_media",
+        "severity": "low"
+      }
+    ],
+    "no_match": [
+      {
+        "file": "eval/corpus/entry_013.json",
+        "person_id": "person_1",
+        "classification": "NO_MATCH",
+        "reasoning": {
+          "person_id": "person_1",
+          "person_name": "Rahul Kumar",
+          "has_strong_identifier": false,
+          "identifier_type": null,
+          "name_match": true,
+          "corroborating_signals": 1,
+          "signals_list": [],
+          "classification": "NO_MATCH"
+        },
+        "exposure_type": "breach",
+        "severity": "critical"
+      },
+      {
+        "file": "eval/corpus/entry_014.json",
+        "person_id": "person_1",
+        "classification": "NO_MATCH",
+        "reasoning": {
+          "person_id": "person_1",
+          "person_name": "Rahul Kumar",
+          "has_strong_identifier": false,
+          "identifier_type": null,
+          "name_match": true,
+          "corroborating_signals": 1,
+          "signals_list": [],
+          "classification": "NO_MATCH"
+        },
+        "exposure_type": "paste_site",
+        "severity": "high"
+      },
+      {
+        "file": "eval/corpus/entry_026.json",
+        "person_id": "person_2",
+        "classification": "NO_MATCH",
+        "reasoning": {
+          "person_id": "person_2",
+          "person_name": "Priya Singh",
+          "has_strong_identifier": false,
+          "identifier_type": null,
+          "name_match": true,
+          "corroborating_signals": 1,
+          "signals_list": [],
+          "classification": "NO_MATCH"
+        },
+        "exposure_type": "people_broker",
+        "severity": "high"
+      },
+      {
+        "file": "eval/corpus/entry_027.json",
+        "person_id": "person_2",
+        "classification": "NO_MATCH",
+        "reasoning": {
+          "person_id": "person_2",
+          "person_name": "Priya Singh",
+          "has_strong_identifier": false,
+          "identifier_type": null,
+          "name_match": true,
+          "corroborating_signals": 1,
+          "signals_list": [],
+          "classification": "NO_MATCH"
+        },
+        "exposure_type": "resume_db",
+        "severity": "high"
+      },
+      {
+        "file": "eval/corpus/entry_042.json",
+        "person_id": "person_3",
+        "classification": "NO_MATCH",
+        "reasoning": {
+          "person_id": "person_3",
+          "person_name": "Amit Patel",
+          "has_strong_identifier": false,
+          "identifier_type": null,
+          "name_match": true,
+          "corroborating_signals": 1,
+          "signals_list": [],
+          "classification": "NO_MATCH"
+        },
+        "exposure_type": "resume_db",
+        "severity": "high"
+      },
+      {
+        "file": "eval/corpus/entry_043.json",
+        "person_id": "person_3",
+        "classification": "NO_MATCH",
+        "reasoning": {
+          "person_id": "person_3",
+          "person_name": "Amit Patel",
+          "has_strong_identifier": false,
+          "identifier_type": null,
+          "name_match": true,
+          "corroborating_signals": 1,
+          "signals_list": [],
+          "classification": "NO_MATCH"
+        },
+        "exposure_type": "breach",
+        "severity": "critical"
+      },
+      {
+        "file": "eval/corpus/entry_013.json",
+        "person_id": "person_1",
+        "classification": "NO_MATCH",
+        "reasoning": {
+          "person_id": "person_1",
+          "person_name": "Rahul Kumar",
+          "has_strong_identifier": false,
+          "identifier_type": null,
+          "name_match": true,
+          "corroborating_signals": 1,
+          "signals_list": [],
+          "classification": "NO_MATCH"
+        },
+        "exposure_type": "breach",
+        "severity": "critical"
+      },
+      {
+        "file": "eval/corpus/entry_014.json",
+        "person_id": "person_1",
+        "classification": "NO_MATCH",
+        "reasoning": {
+          "person_id": "person_1",
+          "person_name": "Rahul Kumar",
+          "has_strong_identifier": false,
+          "identifier_type": null,
+          "name_match": true,
+          "corroborating_signals": 1,
+          "signals_list": [],
+          "classification": "NO_MATCH"
+        },
+        "exposure_type": "paste_site",
+        "severity": "high"
+      },
+      {
+        "file": "eval/corpus/entry_026.json",
+        "person_id": "person_2",
+        "classification": "NO_MATCH",
+        "reasoning": {
+          "person_id": "person_2",
+          "person_name": "Priya Singh",
+          "has_strong_identifier": false,
+          "identifier_type": null,
+          "name_match": true,
+          "corroborating_signals": 1,
+          "signals_list": [],
+          "classification": "NO_MATCH"
+        },
+        "exposure_type": "people_broker",
+        "severity": "high"
+      },
+      {
+        "file": "eval/corpus/entry_027.json",
+        "person_id": "person_2",
+        "classification": "NO_MATCH",
+        "reasoning": {
+          "person_id": "person_2",
+          "person_name": "Priya Singh",
+          "has_strong_identifier": false,
+          "identifier_type": null,
+          "name_match": true,
+          "corroborating_signals": 1,
+          "signals_list": [],
+          "classification": "NO_MATCH"
+        },
+        "exposure_type": "resume_db",
+        "severity": "high"
+      },
+      {
+        "file": "eval/corpus/entry_042.json",
+        "person_id": "person_3",
+        "classification": "NO_MATCH",
+        "reasoning": {
+          "person_id": "person_3",
+          "person_name": "Amit Patel",
+          "has_strong_identifier": false,
+          "identifier_type": null,
+          "name_match": true,
+          "corroborating_signals": 1,
+          "signals_list": [],
+          "classification": "NO_MATCH"
+        },
+        "exposure_type": "resume_db",
+        "severity": "high"
+      },
+      {
+        "file": "eval/corpus/entry_043.json",
+        "person_id": "person_3",
+        "classification": "NO_MATCH",
+        "reasoning": {
+          "person_id": "person_3",
+          "person_name": "Amit Patel",
+          "has_strong_identifier": false,
+          "identifier_type": null,
+          "name_match": true,
+          "corroborating_signals": 1,
+          "signals_list": [],
+          "classification": "NO_MATCH"
+        },
+        "exposure_type": "breach",
+        "severity": "critical"
+      }
+    ],
+    "edge_cases": [],
+    "false_positives": [],
+    "false_negatives": []
+  },
+  "validation": {
+    "status": "PASS",
+    "mismatches": [],
+    "expected": {
+      "person_1": {
+        "confirmed": 8,
+        "potential": 4,
+        "no_match": 2
+      },
+      "person_2": {
+        "confirmed": 8,
+        "potential": 3,
+        "no_match": 2
+      },
+      "person_3": {
+        "confirmed": 10,
+        "potential": 4,
+        "no_match": 2
+      }
+    },
+    "actual": {
+      "person_1": {
+        "confirmed": 16,
+        "potential": 8,
+        "no_match": 4
+      },
+      "person_2": {
+        "confirmed": 16,
+        "potential": 6,
+        "no_match": 4
+      },
+      "person_3": {
+        "confirmed": 20,
+        "potential": 8,
+        "no_match": 4
+      }
+    }
+  }
+}

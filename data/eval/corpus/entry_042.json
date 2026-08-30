@@ -1,0 +1,13 @@
+{
+  "id": "corpus_042",
+  "discovery_date": "2025-10-28T11:01:03.094365",
+  "exposure_type": "resume_db",
+  "severity": "high",
+  "person_id": "person_3",
+  "source_description": "Exposed on resume database",
+  "name": "Amit Patel",
+  "organization": "Cloud Services Inc",
+  "identifier_type": "name_only",
+  "match_strength": "weak",
+  "raw_content": "Name: Amit Patel | Organization: Cloud Services Inc"
+}

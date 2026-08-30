@@ -1,0 +1,19 @@
+{
+  "id": "corpus_024",
+  "discovery_date": "2026-08-04T11:01:03.092655",
+  "exposure_type": "social_media",
+  "severity": "low",
+  "person_id": "person_2",
+  "source_description": "Public social media profile",
+  "name": "Priya Singh",
+  "organization": "FinTech Solutions",
+  "location": "Bangalore",
+  "city": "Bangalore",
+  "identifier_type": "composite",
+  "match_strength": "composite",
+  "corroborating_signals": [
+    "Bangalore",
+    "FinTech Solutions"
+  ],
+  "raw_content": "Name: Priya Singh | Bangalore | FinTech Solutions"
+}

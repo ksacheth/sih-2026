@@ -1,0 +1,15 @@
+{
+  "id": "corpus_008",
+  "discovery_date": "2026-08-27T11:01:03.091362",
+  "exposure_type": "social_media",
+  "severity": "low",
+  "person_id": "person_1",
+  "source_description": "Public social media profile",
+  "name": "Rahul Kumar",
+  "username": "rahul_kumar_dev",
+  "email": "rahul.kumar@abc-tech.in",
+  "organization": "ABC Technologies",
+  "identifier_type": "username",
+  "match_strength": "strong",
+  "raw_content": "Username: rahul_kumar_dev | Email: rahul.kumar@abc-tech.in | Organization: ABC Technologies"
+}

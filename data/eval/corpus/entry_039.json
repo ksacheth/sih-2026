@@ -1,0 +1,19 @@
+{
+  "id": "corpus_039",
+  "discovery_date": "2025-11-16T11:01:03.094081",
+  "exposure_type": "directory",
+  "severity": "medium",
+  "person_id": "person_3",
+  "source_description": "Listed in online directory",
+  "name": "Amit Patel",
+  "organization": "Cloud Services Inc",
+  "location": "Mumbai",
+  "city": "Mumbai",
+  "identifier_type": "composite",
+  "match_strength": "composite",
+  "corroborating_signals": [
+    "Mumbai",
+    "Cloud Services Inc"
+  ],
+  "raw_content": "Name: Amit Patel | Mumbai | Cloud Services Inc"
+}

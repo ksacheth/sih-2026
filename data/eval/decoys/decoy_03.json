@@ -1,0 +1,9 @@
+{
+  "decoy_type": "similar_name_diff_contact",
+  "name": "Rahul Singh",
+  "email": "user812@gmail.com",
+  "phone": "+91 14402 98078",
+  "organization": "ABC Technologies",
+  "person_id": "person_1",
+  "expected_classification": "NO_MATCH"
+}

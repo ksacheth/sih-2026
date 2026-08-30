@@ -1,0 +1,14 @@
+{
+  "id": "corpus_018",
+  "discovery_date": "2026-07-07T11:01:03.092208",
+  "exposure_type": "conference",
+  "severity": "low",
+  "person_id": "person_2",
+  "source_description": "Public conference attendee list",
+  "name": "Priya Singh",
+  "email": "priya.singh@fintech-co.com",
+  "organization": "FinTech Solutions",
+  "identifier_type": "email",
+  "match_strength": "strong",
+  "raw_content": "Contact: priya.singh@fintech-co.com | Name: Priya Singh | Org: FinTech Solutions"
+}
