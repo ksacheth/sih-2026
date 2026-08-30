@@ -2,52 +2,14 @@
   "schema_version": 1,
   "diagram_type": "architecture",
   "meta": {
-    "title": "Intelligent Personal Data Exposure Monitor — Runtime Architecture",
+    "title": "Intelligent Personal Data Exposure Monitor",
     "output": "docs/architecture-runtime.html",
     "quality_profile": "showcase",
     "locale": "en",
     "repository": {
       "url": "https://github.com/ksacheth/sih-2026",
       "revision": "33d347f7f1ef82d270cba832b18c65256df28f2a"
-    },
-    "views": [
-      {
-        "id": "scan-path",
-        "label": "Primary scan path",
-        "focus": [
-          "browser",
-          "app",
-          "pipeline",
-          "extraction",
-          "rules",
-          "mongo"
-        ],
-        "note": "From a verified request to persisted, rule-stamped exposures."
-      },
-      {
-        "id": "discovery",
-        "label": "Discovery fan-out",
-        "focus": [
-          "pipeline",
-          "connectors",
-          "serper",
-          "eon"
-        ],
-        "note": "Connectors run in parallel under per-scan budgets."
-      },
-      {
-        "id": "privacy",
-        "label": "Privacy boundaries",
-        "focus": [
-          "app",
-          "verify",
-          "extraction",
-          "gliner",
-          "gemini"
-        ],
-        "note": "Verification gate, local-only PII zone, redacted LLM input."
-      }
-    ]
+    }
   },
   "components": [
     {
@@ -56,12 +18,12 @@
       "label": "User Browser",
       "sublabel": "magic-link session",
       "pos": [
-        20,
-        300
+        16,
+        170
       ],
       "size": [
-        100,
-        64
+        90,
+        60
       ]
     },
     {
@@ -71,12 +33,12 @@
       "sublabel": "dashboard + API",
       "tag": "Node 20",
       "pos": [
-        164,
-        300
+        152,
+        170
       ],
       "size": [
-        110,
-        72
+        124,
+        60
       ],
       "sources": [
         {
@@ -90,14 +52,14 @@
       "type": "backend",
       "label": "Scan Orchestrator",
       "sublabel": "fire-and-forget",
-      "tag": "1 scan / identity",
+      "tag": "1 scan/identity",
       "pos": [
-        360,
-        300
+        352,
+        170
       ],
       "size": [
-        124,
-        72
+        146,
+        60
       ],
       "sources": [
         {
@@ -112,12 +74,12 @@
       "label": "PII Extraction",
       "sublabel": "regex + fusion",
       "pos": [
-        580,
-        300
+        574,
+        170
       ],
       "size": [
-        110,
-        72
+        124,
+        60
       ],
       "sources": [
         {
@@ -132,12 +94,12 @@
       "label": "Correlation & Rules",
       "sublabel": "confidence · severity",
       "pos": [
-        768,
-        300
+        772,
+        170
       ],
       "size": [
-        130,
-        72
+        144,
+        60
       ],
       "sources": [
         {
@@ -151,14 +113,13 @@
       "type": "database",
       "label": "MongoDB",
       "sublabel": "scans · exposures",
-      "tag": "replSet rs0",
       "pos": [
-        771,
-        416
+        782,
+        256
       ],
       "size": [
         124,
-        64
+        52
       ],
       "sources": [
         {
@@ -174,11 +135,11 @@
       "sublabel": "web · breach · brokers",
       "pos": [
         347,
-        140
+        92
       ],
       "size": [
-        150,
-        64
+        156,
+        52
       ],
       "sources": [
         {
@@ -193,12 +154,12 @@
       "label": "Serper.dev",
       "sublabel": "web search",
       "pos": [
-        357,
-        30
+        580,
+        10
       ],
       "size": [
         130,
-        56
+        46
       ],
       "sources": [
         {
@@ -213,12 +174,12 @@
       "label": "ExposedOrNot",
       "sublabel": "breach lookup",
       "pos": [
-        527,
-        30
+        749,
+        10
       ],
       "size": [
-        130,
-        56
+        152,
+        46
       ],
       "sources": [
         {
@@ -234,12 +195,12 @@
       "sublabel": "codes · attestation",
       "tag": "trust spine",
       "pos": [
-        154,
-        416
+        150,
+        256
       ],
       "size": [
-        130,
-        64
+        128,
+        52
       ],
       "sources": [
         {
@@ -253,14 +214,13 @@
       "type": "backend",
       "label": "GLiNER Sidecar",
       "sublabel": "FastAPI · 127.0.0.1:8000",
-      "tag": "local container",
       "pos": [
-        565,
-        416
+        566,
+        256
       ],
       "size": [
         140,
-        64
+        52
       ],
       "sources": [
         {
@@ -275,12 +235,12 @@
       "label": "Gemini",
       "sublabel": "explanation only",
       "pos": [
-        140,
-        546
+        24,
+        10
       ],
       "size": [
-        120,
-        60
+        130,
+        46
       ],
       "sources": [
         {
@@ -308,15 +268,6 @@
     },
     {
       "kind": "security-group",
-      "label": "Untrusted ingress — snippets & metadata only",
-      "wraps": [
-        "serper",
-        "eon"
-      ],
-      "pad": 12
-    },
-    {
-      "kind": "security-group",
       "label": "PII zone — raw page text never leaves the host",
       "wraps": [
         "extraction",
@@ -337,7 +288,7 @@
       "id": "scan-req",
       "from": "app",
       "to": "pipeline",
-      "label": "202 {scan_id}",
+      "label": "202 scan_id",
       "variant": "emphasis"
     },
     {
@@ -347,21 +298,35 @@
       "label": "codes · consent",
       "variant": "security",
       "fromSide": "bottom",
-      "toSide": "top"
+      "toSide": "top",
+      "labelAt": [
+        214,
+        243
+      ]
     },
     {
       "id": "fanout",
       "from": "pipeline",
       "to": "connectors",
-      "label": "parallel · budgeted"
+      "label": "parallel · budgeted",
+      "fromSide": "top",
+      "toSide": "bottom",
+      "labelAt": [
+        425,
+        157
+      ]
     },
     {
       "id": "serper-q",
       "from": "connectors",
       "to": "serper",
       "label": "web search",
-      "fromSide": "top",
-      "toSide": "bottom"
+      "fromSide": "right",
+      "toSide": "bottom",
+      "labelAt": [
+        645,
+        87
+      ]
     },
     {
       "id": "eon-q",
@@ -371,7 +336,7 @@
       "fromSide": "right",
       "toSide": "bottom",
       "labelAt": [
-        592,
+        730,
         130
       ]
     },
@@ -379,7 +344,7 @@
       "id": "normalize",
       "from": "pipeline",
       "to": "extraction",
-      "label": "normalized text"
+      "label": "normalize"
     },
     {
       "id": "candidates",
@@ -395,8 +360,8 @@
       "fromSide": "bottom",
       "toSide": "top",
       "labelAt": [
-        833,
-        388
+        844,
+        243
       ]
     },
     {
@@ -408,8 +373,8 @@
       "fromSide": "bottom",
       "toSide": "top",
       "labelAt": [
-        635,
-        388
+        636,
+        243
       ]
     },
     {
@@ -418,21 +383,21 @@
       "to": "gemini",
       "label": "redacted findings",
       "variant": "dashed",
-      "fromSide": "left",
-      "toSide": "top",
+      "fromSide": "top",
+      "toSide": "bottom",
       "via": [
         [
-          142,
-          356
+          214,
+          110
         ],
         [
-          142,
-          576
+          89,
+          110
         ]
       ],
       "labelAt": [
-        142,
-        400
+        151,
+        110
       ]
     }
   ],
@@ -441,52 +406,30 @@
       "dot": "cyan",
       "title": "Async Scan Lifecycle",
       "items": [
-        "POST /api/scan checks ownership + VERIFIED status, then returns 202 {scan_id}",
-        "Pipeline runs fire-and-forget in-process; status lives only in MongoDB",
-        "Findings persist incrementally per source; a 90s soft deadline yields PARTIAL, never a false clean result",
-        "Dashboard polls GET /api/scan/:id every 2s while sources report progress"
-      ]
-    },
-    {
-      "dot": "amber",
-      "title": "Fetch Guard & Evidence Tiers",
-      "items": [
-        "Budgets: ≤10 pages/scan · ≤512KB/page · 10s/page · 30s/connector",
-        "SSRF checks reject private-network and file:// targets; login-walled domains are denylisted",
-        "A blocked or failed fetch downgrades to snippet-tier evidence instead of dropping the lead",
-        "Broker exposure = a discovered result whose domain matches brokers.json (no crawling)"
+        "POST /api/scan verifies ownership + VERIFIED status, returns 202 {scan_id}",
+        "Fire-and-forget in-process; status and per-source progress live only in MongoDB",
+        "Findings persist incrementally; the 90s deadline yields PARTIAL, never a false clean result",
+        "Fingerprints drive NEW / REAPPEARED / REMEDIATED across manual re-scans"
       ]
     },
     {
       "dot": "rose",
-      "title": "Trust Boundaries",
+      "title": "Trust Boundaries & Fetch Guard",
       "items": [
-        "Unverified identifiers can never be scanned; every route is scoped by the session user",
-        "External content is untrusted input — page text is data, never instructions",
-        "Raw page text stays on-host: GLiNER runs at 127.0.0.1; the cloud LLM is not in the extraction path",
-        "Gemini sees a redacted finding schema — never raw PII; a deterministic template is the fallback",
-        "Name-only similarity caps at POTENTIAL and can never confirm a match"
+        "Unverified identifiers are never scanned; every route is scoped by the session user",
+        "Fetch guard: SSRF checks, ≤10 pages/scan, 512KB/10s caps, login-walled denylist",
+        "Blocked fetches downgrade to snippet-tier evidence; broker hits match brokers.json",
+        "Raw text stays on-host (GLiNER at 127.0.0.1); Gemini gets a redacted schema only"
       ]
     },
     {
       "dot": "emerald",
       "title": "External Dependencies & Ops",
       "items": [
-        "Serper.dev: ≤6 queries/scan; an HMAC-keyed TTL cache (6h) protects the free-tier quota",
-        "ExposedOrNot is keyless; an outage records the source unavailable, never faked",
-        "Resend delivers 6-digit verification codes; dev mode prints them to the server console",
-        "docker compose runs app + sidecar + mongo (single-node replSet for transactions)",
-        "GLiNER weights are baked into the sidecar image; /api/health probes Mongo and the sidecar"
-      ]
-    },
-    {
-      "dot": "violet",
-      "title": "Deterministic Core & Monitoring",
-      "items": [
-        "Correlation, severity, and priority are versioned rules — every exposure stamps rule_version",
-        "Fingerprints drive ACTIVE → NOT_FOUND → REAPPEARED / REMEDIATED across re-scans",
-        "Auto-close after 3 consecutive NOT_FOUND scans keeps findings from accumulating",
-        "DELETE /api/account erases identifiers, scans, and exposures in one transaction (DPDP)"
+        "Serper.dev ≤6 queries/scan with HMAC-keyed TTL cache (6h); ExposedOrNot keyless",
+        "Resend delivers 6-digit codes; dev mode prints them to the server console",
+        "docker compose: app + sidecar + mongo (replSet rs0); GLiNER weights baked in",
+        "Deterministic rules stamp rule_version; DELETE /api/account erases all data (DPDP)"
       ]
     }
   ]
