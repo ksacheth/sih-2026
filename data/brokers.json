@@ -165,7 +165,10 @@
     "domain": "justdial.com",
     "category": "local-directory",
     "optOutUrl": "https://www.justdial.com/Privacy",
-    "instructions": "Request removal from the public directory listing."
+    "instructions": "Request removal from the public directory listing.",
+    "domains": [
+      "jdmagicbox.com"
+    ]
   },
   {
     "name": "Sulekha",
@@ -250,5 +253,166 @@
     "category": "professional-directory",
     "optOutUrl": "https://www.timesjobs.com/candidate/privacy-policy.html",
     "instructions": "Hide public contact details in the candidate profile."
+  },
+  {
+    "name": "TruthFinder",
+    "domain": "truthfinder.com",
+    "category": "people-search",
+    "optOutUrl": "https://www.truthfinder.com/opt-out/",
+    "instructions": "Search your record and request removal; confirmation required."
+  },
+  {
+    "name": "ThatsThem",
+    "domain": "thatsthem.com",
+    "category": "people-search",
+    "optOutUrl": "https://thatsthem.com/opt-out",
+    "instructions": "Enter the exact record URL in the opt-out form."
+  },
+  {
+    "name": "FamilyTreeNow",
+    "domain": "familytreenow.com",
+    "category": "people-search",
+    "optOutUrl": "https://www.familytreenow.com/optout",
+    "instructions": "Locate your record, copy the URL, submit the opt-out request."
+  },
+  {
+    "name": "TruePeopleSearch",
+    "domain": "truepeoplesearch.com",
+    "category": "people-search",
+    "optOutUrl": "https://www.truepeoplesearch.com/removal",
+    "instructions": "Agree to terms, find your record, request removal."
+  },
+  {
+    "name": "PeopleLooker",
+    "domain": "peoplelooker.com",
+    "category": "people-search",
+    "optOutUrl": "https://www.peoplelooker.com/opt-out",
+    "instructions": "Search your record, then complete the opt-out request."
+  },
+  {
+    "name": "US Search",
+    "domain": "ussearch.com",
+    "category": "people-search",
+    "optOutUrl": "https://www.ussearch.com/optout",
+    "instructions": "Submit the opt-out request with the listing URL."
+  },
+  {
+    "name": "WebMii",
+    "domain": "webmii.com",
+    "category": "people-search",
+    "optOutUrl": "https://webmii.com/optout",
+    "instructions": "Use the site's removal request form."
+  },
+  {
+    "name": "FastBackgroundCheck",
+    "domain": "fastbackgroundcheck.com",
+    "category": "people-search",
+    "optOutUrl": "https://www.fastbackgroundcheck.com/opt-out",
+    "instructions": "Submit the listing URL through the opt-out page."
+  },
+  {
+    "name": "CyberBackgroundChecks",
+    "domain": "cyberbackgroundchecks.com",
+    "category": "people-search",
+    "optOutUrl": "https://www.cyberbackgroundchecks.com/removal",
+    "instructions": "Search your name and request removal per listing."
+  },
+  {
+    "name": "SmartBackgroundChecks",
+    "domain": "smartbackgroundchecks.com",
+    "category": "people-search",
+    "optOutUrl": "https://www.smartbackgroundchecks.com/opt-out",
+    "instructions": "Enter the listing URL in the opt-out form."
+  },
+  {
+    "name": "Instant Checkmate",
+    "domain": "instantcheckmate.com",
+    "category": "people-search",
+    "optOutUrl": "https://www.instantcheckmate.com/opt-out/",
+    "instructions": "Search your record and submit the removal request; email confirmation required."
+  },
+  {
+    "name": "CheckPeople",
+    "domain": "checkpeople.com",
+    "category": "people-search",
+    "optOutUrl": "https://checkpeople.com/opt-out",
+    "instructions": "Submit the opt-out form with the profile URL."
+  },
+  {
+    "name": "USPhoneBook",
+    "domain": "usphonebook.com",
+    "category": "phone-directory",
+    "optOutUrl": "https://www.usphonebook.com/opt-out",
+    "instructions": "Find your listing, copy its URL, and submit the opt-out form."
+  },
+  {
+    "name": "PeopleSearchNow",
+    "domain": "peoplesearchnow.com",
+    "category": "people-search",
+    "optOutUrl": "https://www.peoplesearchnow.com/opt-out",
+    "instructions": "Search your record and complete the suppression request."
+  },
+  {
+    "name": "411.com",
+    "domain": "411.com",
+    "category": "phone-directory",
+    "optOutUrl": "https://www.411.com/optout",
+    "instructions": "Locate your listing and submit the opt-out request."
+  },
+  {
+    "name": "Addresses.com",
+    "domain": "addresses.com",
+    "category": "people-search",
+    "optOutUrl": "https://www.addresses.com/opt-out",
+    "instructions": "Submit the removal form with the exact listing URL."
+  },
+  {
+    "name": "Xlek",
+    "domain": "xlek.com",
+    "category": "people-search",
+    "optOutUrl": "https://xlek.com/opt-out/",
+    "instructions": "Search for your record and follow the removal link."
+  },
+  {
+    "name": "ClustrMaps",
+    "domain": "clustrmaps.com",
+    "category": "people-directory",
+    "optOutUrl": "https://clustrmaps.com/bl/opt-out",
+    "instructions": "Request listing removal through the site's contact/opt-out page."
+  },
+  {
+    "name": "Pipl",
+    "domain": "pipl.com",
+    "category": "search-engine",
+    "optOutUrl": "https://pipl.com/do-not-sell-my-personal-information",
+    "instructions": "Submit a Do Not Sell/Share request referencing your profile URL."
+  },
+  {
+    "name": "YellowPages India",
+    "domain": "yellowpages.in",
+    "category": "business-directory",
+    "optOutUrl": "https://www.yellowpages.in/contact-us",
+    "instructions": "Request listing removal via the contact form."
+  },
+  {
+    "name": "AskLaila",
+    "domain": "asklaila.com",
+    "category": "business-directory",
+    "optOutUrl": "https://www.asklaila.com/contact",
+    "instructions": "Request listing removal via the contact page."
+  },
+  {
+    "name": "ExportersIndia",
+    "domain": "exportersindia.com",
+    "category": "business-directory",
+    "optOutUrl": "https://www.exportersindia.com/contact-us.htm",
+    "instructions": "Request listing removal through the site contact form."
+  },
+  {
+    "name": "IndiaCom",
+    "domain": "indiacom.com",
+    "category": "business-directory",
+    "optOutUrl": "https://www.indiacom.com/contact-us",
+    "instructions": "Request listing removal through the site contact page."
   }
 ]

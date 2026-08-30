@@ -114,6 +114,104 @@
           "evidence_tier": "username_match"
         }
       ]
+    },
+    {
+      "person_id": "person_1",
+      "person_name": "Rahul Kumar",
+      "query": "\"rahul_kumar_dev\"",
+      "results": [
+        {
+          "title": "rahul_kumar_dev — GitHub",
+          "url": "https://github.com/rahul_kumar_dev",
+          "snippet": "rahul_kumar_dev (Rahul Kumar) · Backend engineer at ABC Technologies. Noida / Delhi NCR, India.",
+          "source": "serper",
+          "source_id": "serper-gh-1046082603",
+          "discovered_at": "2026-08-28T11:15:00Z",
+          "confidence": 0.9,
+          "evidence_tier": "username_match"
+        },
+        {
+          "title": "DevForum thread by rahul_kumar_dev",
+          "url": "https://forum.example-devcommunity.net/u/rahul_kumar_dev",
+          "snippet": "Member since 2021. Bio: backend @ ABC Technologies — rkumar builds payment APIs.",
+          "source": "serper",
+          "source_id": "serper-forum-771",
+          "discovered_at": "2026-08-20T18:40:00Z",
+          "confidence": 0.82,
+          "evidence_tier": "username_match"
+        }
+      ]
+    },
+    {
+      "person_id": "person_1",
+      "person_name": "Rahul Kumar",
+      "query": "\"Rahul Kumar\" \"rahul.kumar@abc-tech.in\"",
+      "results": [
+        {
+          "title": "IndiaDev Summit 2025 — Attendee Directory",
+          "url": "https://conf.indiadevsummit.test/attendees-2025",
+          "snippet": "Attendee list: Rahul Kumar, ABC Technologies — rahul.kumar@abc-tech.in (Delhi).",
+          "source": "serper",
+          "source_id": "serper-conf-2025",
+          "discovered_at": "2025-12-04T00:00:00Z",
+          "confidence": 0.94,
+          "evidence_tier": "direct_match"
+        }
+      ]
+    },
+    {
+      "person_id": "person_1",
+      "person_name": "Rahul Kumar",
+      "query": "\"rahul.kumar@abc-tech.in\" filetype:pdf",
+      "results": [
+        {
+          "title": "Rahul Kumar — Resume (PDF)",
+          "url": "https://rahulkumar.dev/rahul-kumar-resume.pdf",
+          "snippet": "Resume: Rahul Kumar, Senior Systems Engineer, ABC Technologies, Delhi. Contact: rahul.kumar@abc-tech.in, +91 98765 43210.",
+          "source": "serper",
+          "source_id": "serper-pdf-4471",
+          "discovered_at": "2026-01-12T00:00:00Z",
+          "confidence": 0.93,
+          "evidence_tier": "direct_match"
+        }
+      ]
+    },
+    {
+      "person_id": "person_1",
+      "person_name": "Rahul Kumar",
+      "query": "\"Rahul Kumar\" \"ABC Technologies\"",
+      "results": [
+        {
+          "title": "Team — ABC Technologies",
+          "url": "https://abc-tech.in/team",
+          "snippet": "Our engineers include Rahul Kumar (Senior Systems Engineer, Delhi office).",
+          "source": "serper",
+          "source_id": "serper-team-201",
+          "discovered_at": "2025-10-11T00:00:00Z",
+          "confidence": 0.92,
+          "evidence_tier": "direct_match"
+        },
+        {
+          "title": "Rahul Kumar — contact details and address history | Radaris",
+          "url": "https://radaris.com/p/Rahul-Kumar/Delhi/",
+          "snippet": "Rahul Kumar, New Delhi — phone +91 98765 43210, email rahul.kumar@abc-tech.in, relatives and addresses. Data broker profile.",
+          "source": "serper",
+          "source_id": "serper-radaris-908",
+          "discovered_at": "2026-08-30T08:10:00Z",
+          "confidence": 0.88,
+          "evidence_tier": "direct_match"
+        },
+        {
+          "title": "Rahul Kumar - ABC Technologies | LinkedIn",
+          "url": "https://linkedin.com/in/rahul-kumar-abc",
+          "snippet": "Rahul Kumar — Senior Systems Engineer at ABC Technologies, Delhi, India.",
+          "source": "serper",
+          "source_id": "serper-li-9",
+          "discovered_at": "2026-08-27T09:00:00Z",
+          "confidence": 0.82,
+          "evidence_tier": "composite"
+        }
+      ]
     }
   ],
   "summary": {
@@ -125,6 +223,8 @@
       "composite": 3,
       "social_media": 1,
       "username_match": 2
-    }
+    },
+    "search_count": 7,
+    "note": "searches[3:] added by Dev-2 connector work to cover the planner's full query set (username, name+email, filetype:pdf, name+org incl. a broker listing)"
   }
 }
