@@ -241,3 +241,70 @@ export interface EonFixtureResponse {
   checkEmail: EonCheckEmailResponse;
   breachAnalytics?: EonBreachAnalyticsResponse | null;
 }
+
+// ---- firecrawl player -------------------------------------------------------
+
+import firecrawlFixtureJson from "../../../data/fixtures/firecrawl_response.json";
+
+export interface FirecrawlScrapeResponse {
+  success?: boolean;
+  data?: {
+    markdown?: string;
+    title?: string;
+    metadata?: {
+      title?: string;
+      description?: string;
+      language?: string;
+      statusCode?: number;
+      contentType?: string;
+      [key: string]: unknown;
+    };
+    [key: string]: unknown;
+  };
+  error?: string;
+}
+
+interface FirecrawlFixtureDocument {
+  url: string;
+  success?: boolean;
+  data?: {
+    markdown?: string;
+    title?: string;
+    metadata?: Record<string, unknown>;
+  };
+  error?: string;
+}
+
+const firecrawlFixture = firecrawlFixtureJson as unknown as {
+  documents?: FirecrawlFixtureDocument[];
+};
+
+/**
+ * Resolves the recorded Firecrawl response for a given target URL.
+ */
+export function pickFirecrawlFixture(url: string): FirecrawlScrapeResponse | null {
+  const norm = url.trim().toLowerCase().replace(/\/+$/, "");
+  if (!norm) return null;
+  const docs = firecrawlFixture.documents ?? [];
+  const exact = docs.find((d) => d.url.trim().toLowerCase().replace(/\/+$/, "") === norm);
+  if (exact) {
+    return {
+      success: exact.success !== false,
+      data: exact.data,
+      error: exact.error,
+    };
+  }
+  const partial = docs.find((d) => {
+    const docNorm = d.url.trim().toLowerCase().replace(/\/+$/, "");
+    return docNorm.length > 0 && (norm.includes(docNorm) || docNorm.includes(norm));
+  });
+  if (partial) {
+    return {
+      success: partial.success !== false,
+      data: partial.data,
+      error: partial.error,
+    };
+  }
+  return null;
+}
+

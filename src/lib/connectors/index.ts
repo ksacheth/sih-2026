@@ -38,8 +38,18 @@ export {
   shouldUseFixtures,
   pickSerperFixture,
   pickExposedOrNotFixture,
+  pickFirecrawlFixture,
 } from "./fixtures";
 export { cacheGet, cacheSet, cacheKey, CACHE_TTL_HOURS } from "./cache";
+export {
+  scrapeUrlWithFirecrawl,
+  hydrateUrlsWithFirecrawl,
+  buildHydratedDocument,
+  sha256Hex,
+  FIRECRAWL_CONCURRENCY_LIMIT,
+  MAX_HYDRATE_URLS_PER_SCAN,
+} from "./firecrawl";
+
 
 /** §5.6 per-connector soft budget (30s). */
 export const CONNECTOR_BUDGET_MS = 30_000;

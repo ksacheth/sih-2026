@@ -1,0 +1,167 @@
+{
+  "status": "ok",
+  "version": "v2.0-firecrawl",
+  "description": "Recorded Firecrawl v2 scrape fixtures for web hydration replay",
+  "documents": [
+    {
+      "url": "https://abc-tech.in/team/rahul-kumar",
+      "success": true,
+      "data": {
+        "title": "Rahul Kumar | ABC Technologies",
+        "markdown": "# Rahul Kumar\n\n**Role:** Senior Systems Engineer\n**Company:** ABC Technologies\n**Location:** New Delhi, Delhi NCR, India\n**Email:** rahul.kumar@abc-tech.in\n**Phone:** +91 98765 43210\n\n## About\nRahul is a senior infrastructure engineer specializing in distributed systems, high-availability clusters, and cloud security architecture at ABC Technologies.",
+        "metadata": {
+          "title": "Rahul Kumar | ABC Technologies",
+          "description": "Team profile of Rahul Kumar at ABC Technologies",
+          "language": "en",
+          "statusCode": 200
+        }
+      }
+    },
+    {
+      "url": "https://rahulkumar.dev",
+      "success": true,
+      "data": {
+        "title": "Rahul Kumar - Portfolio & Blog",
+        "markdown": "# Rahul Kumar\n\nFull-Stack & Systems Developer based in Noida, Delhi NCR.\n\n- **Email:** rahul.kumar@abc-tech.in\n- **Phone:** +91 98765 43210\n- **GitHub:** [rahul_kumar_dev](https://github.com/rahul_kumar_dev)\n- **PAN Card:** ABCDE1234F\n\n## Current Work\nWorking at ABC Technologies building scalable payment gateways and monitoring tools.",
+        "metadata": {
+          "title": "Rahul Kumar - Portfolio & Blog",
+          "statusCode": 200
+        }
+      }
+    },
+    {
+      "url": "https://github.com/rahul_kumar_dev",
+      "success": true,
+      "data": {
+        "title": "rahul_kumar_dev (Rahul Kumar) / GitHub",
+        "markdown": "# rahul_kumar_dev\n\n**Name:** Rahul Kumar\n**Bio:** Backend engineer at ABC Technologies. Noida / Delhi NCR, India.\n**Email:** rahul.kumar@abc-tech.in\n**Organizations:** ABC Technologies\n**Pinned Repositories:**\n- `payment-core`: High throughput distributed ledger\n- `exposure-guard`: Security monitor",
+        "metadata": {
+          "title": "rahul_kumar_dev (Rahul Kumar) / GitHub",
+          "statusCode": 200
+        }
+      }
+    },
+    {
+      "url": "https://forum.example-devcommunity.net/u/rahul_kumar_dev",
+      "success": true,
+      "data": {
+        "title": "DevForum Profile: rahul_kumar_dev",
+        "markdown": "# DevForum Member: rahul_kumar_dev\n\n**User:** rahul_kumar_dev\n**Full Name:** Rahul Kumar\n**Work:** ABC Technologies\n**Contact:** rahul.kumar@abc-tech.in\n\nActive in threads related to Node.js backend infrastructure and database performance tuning.",
+        "metadata": {
+          "title": "DevForum Profile: rahul_kumar_dev",
+          "statusCode": 200
+        }
+      }
+    },
+    {
+      "url": "https://conf.indiadevsummit.test/attendees-2025",
+      "success": true,
+      "data": {
+        "title": "IndiaDev Summit 2025 Attendees",
+        "markdown": "# IndiaDev Summit 2025 — Confirmed Attendees\n\n- **Rahul Kumar** — Senior Systems Engineer, ABC Technologies (Delhi) | Email: rahul.kumar@abc-tech.in | Phone: +91 98765 43210\n- **Suresh Sharma** — Cloud Architect, Apex Cloud Systems\n- **Ananya Verma** — Security Analyst, CyberSec India",
+        "metadata": {
+          "title": "IndiaDev Summit 2025 Attendees",
+          "statusCode": 200
+        }
+      }
+    },
+    {
+      "url": "https://rahulkumar.dev/rahul-kumar-resume.pdf",
+      "success": true,
+      "data": {
+        "title": "Rahul Kumar - Resume",
+        "markdown": "# CURRICULUM VITAE\n\n**Rahul Kumar**\nSenior Systems Engineer — ABC Technologies\nNew Delhi, India\nEmail: rahul.kumar@abc-tech.in\nPhone: +91 98765 43210\n\n## Experience\n- **ABC Technologies**, Senior Systems Engineer (2022 - Present)\n- **TechCorp India**, Software Engineer (2019 - 2022)\n\n## Education\n- B.Tech in Computer Science, Delhi Technological University",
+        "metadata": {
+          "title": "Rahul Kumar - Resume",
+          "contentType": "application/pdf",
+          "statusCode": 200
+        }
+      }
+    },
+    {
+      "url": "https://abc-tech.in/team",
+      "success": true,
+      "data": {
+        "title": "Engineering Team — ABC Technologies",
+        "markdown": "# ABC Technologies — Engineering Team\n\nOur Delhi infrastructure team:\n- **Rahul Kumar** — Senior Systems Engineer\n- **Pooja Gupta** — Lead Frontend Architect\n- **Vikram Malhotra** — DevOps Specialist",
+        "metadata": {
+          "title": "Engineering Team — ABC Technologies",
+          "statusCode": 200
+        }
+      }
+    },
+    {
+      "url": "https://fintech-co.com/team/priya-singh",
+      "success": true,
+      "data": {
+        "title": "Priya Singh - FinTech Solutions",
+        "markdown": "# Priya Singh\n\n**Role:** Product Manager\n**Company:** FinTech Solutions\n**Location:** Bangalore, Karnataka, India\n**Email:** priya.singh@fintech-co.com\n**Phone:** +91 87654 32109\n\nLeading payment product security at FinTech Solutions.",
+        "metadata": {
+          "title": "Priya Singh - FinTech Solutions",
+          "statusCode": 200
+        }
+      }
+    },
+    {
+      "url": "https://priyasingh-fintech.io",
+      "success": true,
+      "data": {
+        "title": "Priya Singh Professional Profile",
+        "markdown": "# Priya Singh\n\nProduct Leader at FinTech Solutions, Bangalore.\n\n- **Email:** priya.singh@fintech-co.com\n- **Phone:** +91 87654 32109\n- **Location:** Bangalore, India",
+        "metadata": {
+          "title": "Priya Singh Professional Profile",
+          "statusCode": 200
+        }
+      }
+    },
+    {
+      "url": "https://cloudservices.io/team/amit-patel",
+      "success": true,
+      "data": {
+        "title": "Amit Patel - Cloud Services Inc",
+        "markdown": "# Amit Patel\n\n**Role:** Senior Cloud Architect\n**Company:** Cloud Services Inc\n**Location:** Mumbai, Maharashtra, India\n**Email:** amit.patel@cloudservices.io\n**Phone:** +91 76543 21098",
+        "metadata": {
+          "title": "Amit Patel - Cloud Services Inc",
+          "statusCode": 200
+        }
+      }
+    },
+    {
+      "url": "https://aws.amazon.com/developer/community/amit-patel",
+      "success": true,
+      "data": {
+        "title": "AWS Community Builder - Amit Patel",
+        "markdown": "# AWS Community Builder: Amit Patel\n\nSenior Cloud Architect at Cloud Services Inc.\nLocation: Mumbai, India.\nContact: amit.patel@cloudservices.io, Phone: +91 76543 21098",
+        "metadata": {
+          "title": "AWS Community Builder - Amit Patel",
+          "statusCode": 200
+        }
+      }
+    },
+    {
+      "url": "https://github.com/amit_patel_cloud",
+      "success": true,
+      "data": {
+        "title": "GitHub - amit_patel_cloud",
+        "markdown": "# amit_patel_cloud (Amit Patel)\n\nCloud Architect at Cloud Services Inc, Mumbai.\nEmail: amit.patel@cloudservices.io",
+        "metadata": {
+          "title": "GitHub - amit_patel_cloud",
+          "statusCode": 200
+        }
+      }
+    },
+    {
+      "url": "https://radaris.com/p/Rahul-Kumar/Delhi/",
+      "success": true,
+      "data": {
+        "title": "Rahul Kumar — contact details and address history | Radaris",
+        "markdown": "# Radaris Public Records: Rahul Kumar\n\n**Name:** Rahul Kumar\n**Location:** New Delhi, Delhi, India\n**Email:** rahul.kumar@abc-tech.in\n**Phone:** +91 98765 43210\n**Workplace:** ABC Technologies\n\nPublic directory records aggregator.",
+        "metadata": {
+          "title": "Rahul Kumar — Radaris",
+          "statusCode": 200
+        }
+      }
+    }
+  ]
+}
+

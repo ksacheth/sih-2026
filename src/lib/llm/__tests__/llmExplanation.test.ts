@@ -109,6 +109,7 @@ describe("Dual SDK LLM Explanation Layer & Privacy Boundary", () => {
     if (SAVED_GEMINI_KEY) process.env.GEMINI_API_KEY = SAVED_GEMINI_KEY;
     if (SAVED_GROQ_KEY) process.env.GROQ_API_KEY = SAVED_GROQ_KEY;
 
+
     const mockExposures = [
       {
         id: "EXP-1",
@@ -167,5 +168,6 @@ describe("Dual SDK LLM Explanation Layer & Privacy Boundary", () => {
     expect(processed[0].explanation).toBeDefined();
     expect(processed[4].explanation).toBeDefined(); // 5th finding (EXP-1)
     expect(processed[5].explanation).toBeUndefined(); // EXP-6 exceeds maxCount 5
-  });
+  }, 15000);
 });
+

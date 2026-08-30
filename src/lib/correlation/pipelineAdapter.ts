@@ -25,11 +25,12 @@ export interface ExtractedEntity {
     | "PAN";
   rawValue: string;
   normalizedValue: string;
-  detector: "regex" | "checksum" | "gliner" | "fused";
+  detector: "regex" | "checksum" | "gliner" | "fused" | "regex_checksum";
   detectorConfidence: number;
   offsetStart?: number;
   offsetEnd?: number;
 }
+
 
 /**
  * Monitored User Identity profile.

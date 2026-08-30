@@ -6,11 +6,53 @@
  * TypeScript contract. CONTEXT.md §5.1 is the same shape in snake_case.
  */
 
-export type DiscoverySource = "serper" | "exposedornot" | "brokers";
+export type DiscoverySource = "serper" | "exposedornot" | "brokers" | "firecrawl";
 
 export type EvidenceTier = "document" | "snippet";
 
-export type ContentType = "text/html" | "application/pdf" | "breach_record";
+export type ContentType = "text/html" | "application/pdf" | "breach_record" | "text/plain";
+
+/**
+ * Common provider status per architecture.md §4.1
+ */
+export type ProviderStatus =
+  | "completed"
+  | "partial"
+  | "rate_limited"
+  | "unavailable"
+  | "invalid_response";
+
+export interface ProviderError {
+  code: string; // safe code, never raw response body
+  retryable: boolean;
+  statusCode?: number;
+}
+
+export interface HydrateRequest {
+  url: string;
+  canonicalUrl: string;
+}
+
+export interface HydratedDocument {
+  source: "firecrawl";
+  sourceId: string; // hash of canonical URL
+  url: string;
+  canonicalUrl: string;
+  domain: string;
+  title?: string;
+  markdown: string;
+  contentType?: "text/html" | "application/pdf" | "text/plain";
+  retrievedAt: string;
+  evidenceTier: "document";
+  contentHash: string;
+  providerRequestId?: string;
+}
+
+export interface HydrateResponse {
+  status: ProviderStatus;
+  document?: HydratedDocument;
+  error?: ProviderError;
+}
 
 export interface DiscoveryResult {
   source: DiscoverySource;
@@ -24,8 +66,8 @@ export interface DiscoveryResult {
   discoveredAt: string;
   contentType?: ContentType;
   /**
-   * Always "snippet" at discovery time; the fetch guard (lib/pipeline) may
-   * upgrade to "document" after a successful fetch + parse (§5.6).
+   * Always "snippet" at discovery time; the fetch guard or Firecrawl
+   * upgrades to "document" after a successful fetch/scrape + parse.
    * Breach records are structured API data and are "document" tier by origin.
    */
   evidenceTier: EvidenceTier;
@@ -73,7 +115,13 @@ export interface SearchIdentifierSet {
 export const CREDENTIAL_EXPOSURE_SIGNAL = "CREDENTIAL_EXPOSURE";
 
 /** Failure codes a connector can surface to the pipeline. */
-export type ConnectorFailureCode = "unreachable" | "bad_response" | "timeout" | "bad_request";
+export type ConnectorFailureCode =
+  | "unreachable"
+  | "bad_response"
+  | "timeout"
+  | "bad_request"
+  | "rate_limited"
+  | "invalid_response";
 
 export class ConnectorError extends Error {
   constructor(
@@ -84,3 +132,4 @@ export class ConnectorError extends Error {
     this.name = "ConnectorError";
   }
 }
+
