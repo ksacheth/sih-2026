@@ -1,10 +1,131 @@
 "use client";
-import { CheckCircle2, ExternalLink, FileText, Sparkles, X } from "lucide-react";
+import {
+  CheckCircle2,
+  ExternalLink,
+  FileText,
+  Sparkles,
+  X,
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import type { Finding } from "../types";
-export function EvidenceDrawer({ finding, onClose, onRemediate }: { finding: Finding | null; onClose: () => void; onRemediate: (id: number) => void }) {
+export function EvidenceDrawer({
+  finding,
+  onClose,
+  onRemediate,
+}: {
+  finding: Finding | null;
+  onClose: () => void;
+  onRemediate: (id: number) => void;
+}) {
   if (!finding) return null;
-  return <div role="dialog" aria-modal="true" aria-labelledby="finding-title" className="fixed inset-0 z-50 flex justify-end bg-slate-950/35"><section className="h-full w-full max-w-xl overflow-y-auto bg-white p-4 shadow-2xl sm:p-6"><button aria-label="Close finding details" onClick={onClose} className="ml-auto flex size-9 items-center justify-center rounded-md text-slate-500 hover:bg-slate-100"><X /></button><div className="space-y-5"><div><Badge variant="outline" className="border-slate-200">{finding.status}</Badge><h2 id="finding-title" className="mt-3 text-2xl font-semibold tracking-tight">{finding.title}</h2><p className="mt-1 text-sm text-slate-500">{finding.source} · {finding.discoveredAt}</p></div><Card className="border-slate-200 shadow-sm"><CardHeader><CardTitle className="flex items-center gap-2 text-base"><FileText className="size-4 text-blue-600" />Evidence</CardTitle><CardDescription><a className="inline-flex items-center gap-1 text-blue-600 hover:underline" href={finding.sourceUrl} target="_blank" rel="noreferrer">{finding.sourceUrl}<ExternalLink className="size-3" /></a></CardDescription></CardHeader><CardContent><p className="rounded-lg bg-slate-50 p-3 text-sm leading-6 text-slate-600">“{finding.snippet}”</p><div className="flex flex-wrap gap-2">{finding.threats.map((threat) => <Badge variant="outline" key={threat}>{threat}</Badge>)}</div></CardContent></Card><Card className="border-blue-100 bg-blue-50/40 shadow-sm"><CardHeader><CardTitle className="flex items-center gap-2 text-base"><Sparkles className="size-4 text-blue-600" />{finding.aiGenerated ? "AI explanation" : "Deterministic explanation"}</CardTitle></CardHeader><CardContent><p className="text-sm leading-6 text-slate-700">{finding.explanation}</p></CardContent></Card><Card className="border-slate-200 shadow-sm"><CardHeader><CardTitle className="text-base">Action checklist</CardTitle></CardHeader><CardContent>{finding.actions.map((action) => <p className="flex gap-2 text-sm text-slate-700" key={action}><CheckCircle2 className="size-4 shrink-0 text-emerald-600" />{action}</p>)}<Button className="mt-2 w-full" disabled={finding.status === "REMEDIATED"} onClick={() => onRemediate(finding.id)}>{finding.status === "REMEDIATED" ? "Marked remediated" : "Mark as remediated"}</Button></CardContent></Card></div></section></div>;
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="finding-title"
+      className="fixed inset-0 z-50 flex justify-end bg-slate-950/35"
+    >
+      <section className="h-full w-full max-w-xl overflow-y-auto bg-white p-4 shadow-2xl sm:p-6">
+        <button
+          aria-label="Close finding details"
+          onClick={onClose}
+          className="ml-auto flex size-9 items-center justify-center rounded-md text-slate-500 hover:bg-slate-100"
+        >
+          <X />
+        </button>
+        <div className="space-y-5">
+          <div>
+            <Badge variant="outline" className="border-slate-200">
+              {finding.status}
+            </Badge>
+            <h2
+              id="finding-title"
+              className="mt-3 text-2xl font-semibold tracking-tight"
+            >
+              {finding.title}
+            </h2>
+            <p className="mt-1 text-sm text-slate-500">
+              {finding.source} · {finding.discoveredAt}
+            </p>
+          </div>
+          <Card className="border-slate-200 shadow-sm">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-base">
+                <FileText className="size-4 text-blue-600" />
+                Evidence
+              </CardTitle>
+              <CardDescription>
+                <a
+                  className="inline-flex items-center gap-1 text-blue-600 hover:underline"
+                  href={finding.sourceUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {finding.sourceUrl}
+                  <ExternalLink className="size-3" />
+                </a>
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="rounded-lg bg-slate-50 p-3 text-sm leading-6 text-slate-600">
+                “{finding.snippet}”
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {finding.threats.map((threat) => (
+                  <Badge variant="outline" key={threat}>
+                    {threat}
+                  </Badge>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="border-blue-100 bg-blue-50/40 shadow-sm">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-base">
+                <Sparkles className="size-4 text-blue-600" />
+                {finding.aiGenerated
+                  ? "AI explanation"
+                  : "Deterministic explanation"}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm leading-6 text-slate-700">
+                {finding.explanation}
+              </p>
+            </CardContent>
+          </Card>
+          <Card className="border-slate-200 shadow-sm">
+            <CardHeader>
+              <CardTitle className="text-base">Action checklist</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {finding.actions.map((action) => (
+                <p className="flex gap-2 text-sm text-slate-700" key={action}>
+                  <CheckCircle2 className="size-4 shrink-0 text-emerald-600" />
+                  {action}
+                </p>
+              ))}
+              <Button
+                className="mt-2 w-full"
+                disabled={finding.status === "REMEDIATED"}
+                onClick={() => onRemediate(finding.id)}
+              >
+                {finding.status === "REMEDIATED"
+                  ? "Marked remediated"
+                  : "Mark as remediated"}
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+    </div>
+  );
 }
