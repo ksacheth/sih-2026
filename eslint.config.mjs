@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Local Python virtual environment for the GLiNER sidecar.
+    "sidecar/.venv/**",
+    "sidecar/__pycache__/**",
   ]),
 ]);
 

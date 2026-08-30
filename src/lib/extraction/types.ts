@@ -11,7 +11,7 @@ export type EntityType =
 export type DetectorType = "regex_checksum" | "gliner" | "fused";
 export type DetectorProvenance = "regex" | "checksum" | "gliner";
 
-export type SidecarStatus = "online" | "sidecar_down" | "timeout" | "error";
+export type SidecarStatus = "online" | "skipped" | "sidecar_down" | "timeout" | "error";
 
 export interface ExtractedEntity {
   type: EntityType;

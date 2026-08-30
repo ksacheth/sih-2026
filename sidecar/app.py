@@ -3,6 +3,7 @@ import os
 import threading
 import time
 from contextlib import asynccontextmanager
+from typing import Any
 from fastapi import FastAPI, HTTPException, status
 
 from schemas import (
@@ -11,7 +12,7 @@ from schemas import (
     HealthResponse,
     MAX_TEXT_CHARS,
 )
-from runtime import predict_windowed
+from runtime import predict_windowed, DEADLINE_S
 
 logging.basicConfig(
     level=logging.INFO,
@@ -22,6 +23,19 @@ logger = logging.getLogger("sidecar")
 MODEL_ID = "urchade/gliner_small-v2.1"
 
 
+def load_gliner_model(model_id: str) -> tuple[Any, str]:
+    """Loads GLiNER weights and returns (model, device). Injectable in tests so
+    the lifespan never touches the network or real weights."""
+    import torch
+    from gliner import GLiNER
+
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    logger.info(f"Loading {model_id} on device: {device}")
+    model = GLiNER.from_pretrained(model_id).to(device)
+    logger.info(f"GLiNER model loaded successfully on {device}")
+    return model, device
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     logger.info("Initializing GLiNER model...")
@@ -29,13 +43,7 @@ async def lifespan(app: FastAPI):
     model = None
 
     try:
-        import torch
-        from gliner import GLiNER
-
-        device = "cuda" if torch.cuda.is_available() else "cpu"
-        logger.info(f"Loading {MODEL_ID} on device: {device}")
-        model = GLiNER.from_pretrained(MODEL_ID).to(device)
-        logger.info(f"GLiNER model loaded successfully on {device}")
+        model, device = load_gliner_model(MODEL_ID)
     except Exception as e:
         # No mock mode: without weights /extract returns 503 and /health reports
         # unready, so orchestrators see a degraded sidecar instead of a false healthy one.
@@ -92,12 +100,25 @@ def extract(req: ExtractRequest):
     text = req.text[:MAX_TEXT_CHARS]
     text_truncated = len(req.text) > MAX_TEXT_CHARS
 
-    with app.state.infer_lock:
+    # Inference is serialized, so the lock wait counts against the same
+    # cooperative deadline as the forward passes: a queued request can never
+    # exceed DEADLINE_S from arrival, staying inside the 15s client timeout.
+    acquired = app.state.infer_lock.acquire(timeout=DEADLINE_S)
+    if not acquired:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="inference_busy",
+        )
+    try:
+        remaining = DEADLINE_S - (time.monotonic() - start_t)
         entities, is_partial = predict_windowed(
             model=model,
             text=text,
             threshold=req.threshold,
+            deadline_s=max(remaining, 0.0),
         )
+    finally:
+        app.state.infer_lock.release()
 
     elapsed_ms = int((time.monotonic() - start_t) * 1000)
     # Log safe metrics only (no raw text or PII)

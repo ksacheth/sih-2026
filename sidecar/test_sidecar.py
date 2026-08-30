@@ -1,5 +1,5 @@
 import time
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 import pytest
 from fastapi.testclient import TestClient
 
@@ -17,7 +17,7 @@ from runtime import predict_windowed, calculate_iou
 class MockGlinerModel:
     """Mock GLiNER model for deterministic unit tests without loading neural weights."""
 
-    def __init__(self, mock_responses: Dict[str, List[Dict[str, Any]]] = None):
+    def __init__(self, mock_responses: Optional[Dict[str, List[Dict[str, Any]]]] = None):
         self.mock_responses = mock_responses or {}
         self.call_count = 0
 
@@ -50,11 +50,14 @@ class MockGlinerModel:
 
 
 @pytest.fixture
-def client():
+def client(monkeypatch):
+    # Patch the model loader so lifespan injects the mock directly: the real
+    # GLiNER.from_pretrained (weights download + load) is never invoked, with
+    # or without gliner/torch installed in the test environment.
+    monkeypatch.setattr(
+        "app.load_gliner_model", lambda model_id: (MockGlinerModel(), "cpu")
+    )
     with TestClient(app) as test_client:
-        # Inject mock model into app state after lifespan runs
-        test_client.app.state.model = MockGlinerModel()
-        test_client.app.state.device = "cpu"
         yield test_client
     app.state.model = None
 

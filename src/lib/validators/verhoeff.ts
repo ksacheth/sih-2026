@@ -48,17 +48,18 @@ export function verhoeffValidate(numStr: string): boolean {
 
 /**
  * Generates the exact Verhoeff check digit for an input body (e.g. 11 digits).
- * Uses exact inverse-chain walking to guarantee correct check-digit generation (100% accurate).
+ * Standard forward generation: process the body's digits least-significant first
+ * with the permutation row shifted by one (position 0 is reserved for the check
+ * digit itself), then return the digit that would drive the final state to 0.
  */
 export function verhoeffCheckDigit(body: string): number {
   const clean = body.replace(/\D/g, "");
   const b = clean.split("").map(Number).reverse();
   let state = 0;
 
-  for (let i = b.length - 1; i >= 0; i--) {
-    const x = P[(i + 1) % 8][b[i]];
-    state = D.findIndex((row) => row[x] === state);
+  for (let i = 0; i < b.length; i++) {
+    state = D[state][P[(i + 1) % 8][b[i]]];
   }
 
-  return state;
+  return D[state].indexOf(0);
 }

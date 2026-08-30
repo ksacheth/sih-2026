@@ -180,7 +180,7 @@ export async function extractAndFusePII(
     return {
       textLength: 0,
       entities: [],
-      sidecarStatus: "online",
+      sidecarStatus: "skipped",
       partial: false,
       textTruncated: false,
       limitations: EXTRACTION_LIMITATIONS,
@@ -197,7 +197,7 @@ export async function extractAndFusePII(
     return {
       textLength: text.length,
       entities: deterministicEntities,
-      sidecarStatus: "online",
+      sidecarStatus: "skipped",
       partial: false,
       textTruncated: false,
       limitations: EXTRACTION_LIMITATIONS,

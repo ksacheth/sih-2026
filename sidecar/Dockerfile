@@ -37,6 +37,11 @@ COPY --from=builder /app/.venv /app/.venv
 COPY --from=builder /models/huggingface /models/huggingface
 COPY schemas.py runtime.py app.py ./
 
+# Dedicated non-root user: the service needs read access to /app and /models only
+RUN useradd --create-home --uid 10001 sidecar \
+ && chown -R sidecar:sidecar /app /models
+USER sidecar
+
 EXPOSE 8000
 
 # start_period must cover the model load (~10-30s from baked weights on slow disks)
