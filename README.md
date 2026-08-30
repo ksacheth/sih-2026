@@ -4,7 +4,7 @@
 > **Assigned Problem Statement:** Intelligent Personal Data Exposure Monitor  
 > **Details:** Help individuals discover unnecessary exposure of their personal information online, assess associated risks and recommend privacy-protection measures.  
 > **Repository:** [https://github.com/ksacheth/sih-2026](https://github.com/ksacheth/sih-2026)  
-> **Demo Video Link:** `[INSERT_GOOGLE_DRIVE_DEMO_VIDEO_LINK_HERE]` 🎬  
+> **Demo Video Link:** `https://drive.google.com/file/d/1lo7EuaL4RmyxAQI8miFCguUPXnbmRNIp/view?usp=sharing` 🎬  
 
 ---
 
