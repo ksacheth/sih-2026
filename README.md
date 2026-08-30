@@ -4,7 +4,7 @@
 > **Assigned Problem Statement:** Intelligent Personal Data Exposure Monitor  
 > **Details:** Help individuals discover unnecessary exposure of their personal information online, assess associated risks and recommend privacy-protection measures.  
 > **Repository:** [https://github.com/ksacheth/sih-2026](https://github.com/ksacheth/sih-2026)  
-> **Demo Video Link:** `https://drive.google.com/file/d/1lo7EuaL4RmyxAQI8miFCguUPXnbmRNIp/view?usp=sharing` 🎬  
+> **Demo Video Link:** (https://drive.google.com/file/d/1lo7EuaL4RmyxAQI8miFCguUPXnbmRNIp/view?usp=sharing) 🎬  
 
 ---
 
@@ -15,7 +15,7 @@
 When an individual's personal data appears on the public web, in data broker directories, or across breach dumps, naive monitoring systems flood users with false alarms or mistakenly report strangers with similar names as a confirmed match. Worse, existing AI security tools often transmit raw user PII to third-party LLM providers.
 
 **Privacy Lens solves this with a 3-part deterministic-first pipeline:**
-1. **Discover Unnecessary Exposure (Entity Resolution Engine):** Token-set name matching with diacritics/honorific stripping, 2-pass bipartite initials expansion (*`"R. Kumar"` $\leftrightarrow$ `"Rahul Kumar"`*), Top-100 Indian common name penalty dictionary, and **The Hard Rule** (Name similarity alone can NEVER yield a `CONFIRMED` match label; it caps at `0.50` confidence and `POTENTIAL` status).
+1. **Discover Unnecessary Exposure (Entity Resolution Engine):** Token-set name matching with diacritics/honorific stripping, 2-pass bipartite initials expansion (*`"R. Kumar"` -> `"Rahul Kumar"`*), Top-100 Indian common name penalty dictionary, and **The Hard Rule** (Name similarity alone can NEVER yield a `CONFIRMED` match label; it caps at `0.50` confidence and `POTENTIAL` status).
 2. **Assess Associated Risks (Rules Engine & Threat Matrix):** Deterministic scoring ($0.00\text{--}0.98$), co-occurrence threat categorization (`CREDENTIAL_STUFFING`, `TARGETED_PHISHING`, `PHYSICAL_TARGETING`, `IDENTITY_FRAUD_ENABLEMENT`), severity levels (`CRITICAL`, `HIGH`, `MEDIUM`, `LOW`), and priority ranking ($1\text{--}100$).
 3. **Recommend Privacy-Protection Measures (Action & Opt-Out Engine):** Automated data broker opt-out url resolution (`data/brokers.json`), actionable remediation tasks (`CHANGE_PASSWORD`, `ENABLE_MFA`, `OPT_OUT_BROKER`), and a Hard Privacy Boundary LLM explanation layer with deterministic template fallback (`isAiGenerated: false`).
 
@@ -117,7 +117,7 @@ npx tsx "src/lib/llm/__tests__/llmExplanation.test.ts"
 
 ## 🎬 Video Demo Link
 
-▶️ **Google Drive Demo Link:** `https://drive.google.com/file/d/1lo7EuaL4RmyxAQI8miFCguUPXnbmRNIp/view?usp=sharing`
+▶️ **Google Drive Demo Link:** (https://drive.google.com/file/d/1lo7EuaL4RmyxAQI8miFCguUPXnbmRNIp/view?usp=sharing)
 
 ---
 
