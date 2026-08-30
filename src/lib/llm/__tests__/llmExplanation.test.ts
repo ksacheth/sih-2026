@@ -5,28 +5,28 @@ import { buildRedactedFinding } from "../redactor";
 import { generateTemplateFallback } from "../fallback";
 import { explainFinding, explainTopExposures, ExposureWithPriority } from "../explain";
 
-// Auto-load GROQ_API_KEY from .env.local at project root if missing in environment
-if (!process.env.GROQ_API_KEY) {
-  try {
-    const envPath = path.resolve(process.cwd(), ".env.local");
-    if (fs.existsSync(envPath)) {
-      const envContent = fs.readFileSync(envPath, "utf-8");
-      const match = envContent.match(
-        /GROQ_API_KEY\s*=\s*["']?([^"'\r\n]+)["']?/,
-      );
-      if (match && match[1] && !match[1].startsWith("your_")) {
-        process.env.GROQ_API_KEY = match[1].trim();
-      }
+// Auto-load API keys from .env.local at project root if missing in environment
+try {
+  const envPath = path.resolve(process.cwd(), ".env.local");
+  if (fs.existsSync(envPath)) {
+    const envContent = fs.readFileSync(envPath, "utf-8");
+    const geminiMatch = envContent.match(/GEMINI_API_KEY\s*=\s*["']?([^"'\r\n]+)["']?/);
+    if (geminiMatch && geminiMatch[1] && !geminiMatch[1].startsWith("your_")) {
+      process.env.GEMINI_API_KEY = geminiMatch[1].trim();
     }
-  } catch {
-    // Ignore read errors
+    const groqMatch = envContent.match(/GROQ_API_KEY\s*=\s*["']?([^"'\r\n]+)["']?/);
+    if (groqMatch && groqMatch[1] && !groqMatch[1].startsWith("your_")) {
+      process.env.GROQ_API_KEY = groqMatch[1].trim();
+    }
   }
+} catch {
+  // Ignore read errors
 }
 
-process.env.DEBUG_GROQ = "1";
-const SAVED_API_KEY = process.env.GROQ_API_KEY;
+const SAVED_GEMINI_KEY = process.env.GEMINI_API_KEY;
+const SAVED_GROQ_KEY = process.env.GROQ_API_KEY;
 
-// Scenario 1 raw finding shared by the redactor, fallback, and explanation tests
+// Shared raw finding used by the redactor, fallback, and explanation tests
 const rawFinding = {
   severity: "HIGH" as const,
   exposureType: "PUBLIC_PHONE",
@@ -48,7 +48,7 @@ const rawFinding = {
   ],
 };
 
-describe("Groq LLM Explanation Layer & Privacy Boundary", () => {
+describe("Dual SDK LLM Explanation Layer & Privacy Boundary", () => {
   it("redacts raw PII out of the finding payload (hard privacy rule)", () => {
     const redacted = buildRedactedFinding(rawFinding);
 
@@ -65,7 +65,7 @@ describe("Groq LLM Explanation Layer & Privacy Boundary", () => {
     expect(redactedStr).not.toContain("snippet");
   });
 
-  it("renders a deterministic template fallback without an API key", () => {
+  it("renders a deterministic template fallback", () => {
     const redacted = buildRedactedFinding(rawFinding);
     const fallback = generateTemplateFallback(redacted);
 
@@ -76,9 +76,10 @@ describe("Groq LLM Explanation Layer & Privacy Boundary", () => {
     expect(fallback.sourceRelevance).toContain("example.org");
   });
 
-  it("explains a single finding via template fallback when the API key is missing", async () => {
-    delete process.env.GROQ_API_KEY;
+  it("explains a single finding via template fallback when API keys are missing", async () => {
     delete process.env.GEMINI_API_KEY;
+    delete process.env.GROQ_API_KEY;
+
     const explanation = await explainFinding(rawFinding);
 
     expect(explanation.isAiGenerated).toBe(false);
@@ -87,12 +88,14 @@ describe("Groq LLM Explanation Layer & Privacy Boundary", () => {
     expect(typeof explanation.sourceRelevance).toBe("string");
   });
 
-  it("generates a live Groq explanation when GROQ_API_KEY is configured", async () => {
-    if (!SAVED_API_KEY || SAVED_API_KEY.startsWith("your_")) {
-      // Skipped live Groq API call (GROQ_API_KEY not configured in .env.local)
+  it("generates a live Dual SDK explanation when an API key is configured", async () => {
+    if (SAVED_GEMINI_KEY) process.env.GEMINI_API_KEY = SAVED_GEMINI_KEY;
+    if (SAVED_GROQ_KEY) process.env.GROQ_API_KEY = SAVED_GROQ_KEY;
+
+    if (!process.env.GEMINI_API_KEY && !process.env.GROQ_API_KEY) {
+      // Skipped live Dual SDK call (neither GEMINI_API_KEY nor GROQ_API_KEY configured)
       return;
     }
-    process.env.GROQ_API_KEY = SAVED_API_KEY;
 
     const explanation = await explainFinding(rawFinding);
     if (explanation.isAiGenerated) {
@@ -103,7 +106,8 @@ describe("Groq LLM Explanation Layer & Privacy Boundary", () => {
   });
 
   it("explains only the top <= 5 findings and leaves the rest unexplained", async () => {
-    if (SAVED_API_KEY) process.env.GROQ_API_KEY = SAVED_API_KEY;
+    if (SAVED_GEMINI_KEY) process.env.GEMINI_API_KEY = SAVED_GEMINI_KEY;
+    if (SAVED_GROQ_KEY) process.env.GROQ_API_KEY = SAVED_GROQ_KEY;
 
     const mockExposures = [
       {
