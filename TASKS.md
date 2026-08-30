@@ -94,21 +94,6 @@ Build the false-positive-resistant entity correlation engine, deterministic conf
 Build the Next.js application core, Auth.js magic-link authentication, identifier verification subsystem, rate limiting, DPDP erasure API, and the full reactive frontend dashboard.
 
 #### Tasks & Deliverables
-1. **Data Models & Database Layer (`models/`, `lib/db.ts`)**
-   - [ ] MongoDB connection helper with connection pooling.
-   - [ ] Schemas & indexes: `User`, `Identifier`, `Identity`, `Consent`, `Scan`, `Exposure`, `Recommendation`, `VerificationCode`, `AuditEvent`.
-   - [ ] Enforce unique index `{ userId, type, valueHmac }` on identifiers, and partial unique index on active scans `{ identityId }` where status is `QUEUED` or `RUNNING`.
-2. **Auth & Identifier Verification APIs (`app/api/auth/`, `app/api/identifiers/`)**
-   - [ ] Auth.js magic-link email login with dev mode server-console fallback.
-   - [ ] `POST /api/identifiers`: Add email/phone/username. Generate 6-digit code with 10-min TTL (hashed at rest).
-   - [ ] Dev mode fallback: Print 6-digit code to server console and API response for instant testing.
-   - [ ] `POST /api/identifiers/:id/verify`: Verify 6-digit code, create `Consent` record, mark status `VERIFIED`.
-   - [ ] Phone attestation support: Mark phone as `ATTESTED` only if user has ≥1 verified email.
-   - [ ] `DELETE /api/identifiers/:id`: Delete identifier and revoke consent.
-3. **DPDP Erasure & Security Controls (`app/api/account/`, `lib/security/`)**
-   - [ ] `DELETE /api/account`: Atomic erasure of user's identifiers, scans, exposures, recommendations, and consent.
-   - [ ] Response masking utility: Ensure all API responses return masked PII only (`r***@example.com`, `+91 •••• 4321`).
-   - [ ] User rate-limiting middleware: Max 5 scans/day and 20 OTP codes/day.
 4. **Interactive UI Dashboard (`app/`, `components/`)**
    - [ ] Setup Tailwind CSS, shadcn/ui components (Cards, Badges, Tables, Dialogs, Accordions, Tabs, Tooltips).
    - [ ] **Auth & Identifier Management View:** Magic link input, identifier verification modal with 6-digit input, attestation checkbox.
@@ -126,7 +111,22 @@ Build the Next.js application core, Auth.js magic-link authentication, identifie
 Build the external discovery connectors, fetch guard/SSRF protector, in-process async scan pipeline orchestrator with incremental persistence, and the monitoring state machine.
 
 #### Tasks & Deliverables
-1. **Discovery Connectors (`lib/connectors/`)**
+1. **Data Models & Database Layer (`models/`, `lib/db.ts`)**
+   - [ ] MongoDB connection helper with connection pooling.
+   - [ ] Schemas & indexes: `User`, `Identifier`, `Identity`, `Consent`, `Scan`, `Exposure`, `Recommendation`, `VerificationCode`, `AuditEvent`.
+   - [ ] Enforce unique index `{ userId, type, valueHmac }` on identifiers, and partial unique index on active scans `{ identityId }` where status is `QUEUED` or `RUNNING`.
+2. **Auth & Identifier Verification APIs (`app/api/auth/`, `app/api/identifiers/`)**
+   - [ ] Auth.js magic-link email login with dev mode server-console fallback.
+   - [ ] `POST /api/identifiers`: Add email/phone/username. Generate 6-digit code with 10-min TTL (hashed at rest).
+   - [ ] Dev mode fallback: Print 6-digit code to server console and API response for instant testing.
+   - [ ] `POST /api/identifiers/:id/verify`: Verify 6-digit code, create `Consent` record, mark status `VERIFIED`.
+   - [ ] Phone attestation support: Mark phone as `ATTESTED` only if user has ≥1 verified email.
+   - [ ] `DELETE /api/identifiers/:id`: Delete identifier and revoke consent.
+3. **DPDP Erasure & Security Controls (`app/api/account/`, `lib/security/`)**
+   - [ ] `DELETE /api/account`: Atomic erasure of user's identifiers, scans, exposures, recommendations, and consent.
+   - [ ] Response masking utility: Ensure all API responses return masked PII only (`r***@example.com`, `+91 •••• 4321`).
+   - [ ] User rate-limiting middleware: Max 5 scans/day and 20 OTP codes/day.
+4. **Discovery Connectors (`lib/connectors/`)**
    - [ ] `DiscoveryConnector` interface definition.
    - [ ] **Serper.dev Web Search Connector (`lib/connectors/serper.ts`):**
      - Targeted query generator (≤6 queries per scan: `"email"`, `"username"`, `"name" "email"`, `"email" filetype:pdf`, `"name" "org"`).
@@ -140,7 +140,7 @@ Build the external discovery connectors, fetch guard/SSRF protector, in-process 
      - Load `data/brokers.json` (30-50 domains).
      - Match discovered result domains against broker list; surface direct opt-out URL.
    - [ ] **Fixture Mode Switch:** If `FIXTURES=1` or API key missing, seamlessly route connector calls to recorded JSON files in `data/fixtures/`.
-2. **Fetch Guard & Two-Tier Evidence Processor (`lib/pipeline/fetcher.ts`)**
+5. **Fetch Guard & Two-Tier Evidence Processor (`lib/pipeline/fetcher.ts`)**
    - [ ] SSRF protector: Validate URLs before fetching, block local/private IP ranges (`127.0.0.1`, `10.0.0.0/8`, `192.168.0.0/16`, `169.254.169.254`), block `file://`.
    - [ ] Denylist filter: Skip fetching known login-walled domains (LinkedIn, Facebook, Instagram, Twitter/X).
    - [ ] Enforce fetch limits: Max 10 pages/scan, max 512KB/page, 10s timeout/page.
@@ -148,14 +148,14 @@ Build the external discovery connectors, fetch guard/SSRF protector, in-process 
      - Fetched & parsed page -> `evidence_tier: "document"`.
      - Blocked / failed / denylisted fetch -> fallback to search snippet as `evidence_tier: "snippet"`.
    - [ ] Canonical URL normalizer: Strip UTM parameters, tracking query params, remove `www.`, normalize protocols.
-3. **Async Scan Orchestrator (`lib/pipeline/orchestrator.ts`)**
+6. **Async Scan Orchestrator (`lib/pipeline/orchestrator.ts`)**
    - [ ] `POST /api/scan` handler: Verify caller owns identifiers, check all are `VERIFIED`/`ATTESTED`, enforce daily rate limit, create scan record (`QUEUED`), return `202 { scan_id }` immediately.
    - [ ] In-process fire-and-forget runner (`void runScanPipeline(scanId)`).
    - [ ] **Incremental Persistence:** Persist findings to MongoDB per source as each connector completes.
    - [ ] Scan state machine: `QUEUED` -> `RUNNING` -> (`COMPLETED` | `PARTIAL` | `FAILED`).
    - [ ] Graceful cancellation: Handle `POST /api/scan/:id` cancel flag between pipeline stages.
    - [ ] Boot crash recovery: On app startup, auto-mark any scan stuck in `RUNNING` for >10 minutes as `PARTIAL`.
-4. **Monitoring & Re-Scan Fingerprint Engine (`lib/monitoring/stateMachine.ts`)**
+7. **Monitoring & Re-Scan Fingerprint Engine (`lib/monitoring/stateMachine.ts`)**
    - [ ] Fingerprint generator: `SHA256(identity_id + normalized_source + exposure_type + normalized_entity)`.
    - [ ] Re-scan state machine transitions:
      - `FIRST_SEEN` -> `ACTIVE`
