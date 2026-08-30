@@ -31,8 +31,10 @@ services:
 
   sidecar:
     build:
-      context: .
-      dockerfile: sidecar/Dockerfile
+      # Dockerfile-relative COPYs (pyproject.toml, app.py, ...) resolve from
+      # the context root, so it must be the sidecar dir itself.
+      context: ./sidecar
+      dockerfile: Dockerfile
     restart: unless-stopped
     expose:
       - "8000"
@@ -64,6 +66,12 @@ services:
       FIXTURES: ${FIXTURES:-1}
       HMAC_SECRET: ${HMAC_SECRET}
       AUTH_SECRET: ${AUTH_SECRET}
+      # Next.js standalone rebuilds request origin from the container HOSTNAME,
+      # so auth links would point at the container id. Pin the reachable origin.
+      AUTH_URL: http://localhost:3000
+      # Auth.js rejects requests in production unless the host is trusted;
+      # fine for local/docker, use AUTH_URL instead when deploying publicly.
+      AUTH_TRUST_HOST: "true"
       AUTH_RESEND_KEY: ${AUTH_RESEND_KEY:-}
       AUTH_RESEND_FROM: ${AUTH_RESEND_FROM:-onboarding@example.com}
       SERPER_API_KEY: ${SERPER_API_KEY:-}
