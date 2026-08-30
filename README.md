@@ -66,3 +66,21 @@ cd sidecar && uvicorn main:app --host 127.0.0.1 --port 8000
 ## Non-goals (CONTEXT.md §1.3)
 
 No internet-wide crawling, no private-account access, no stolen-password storage, no automated takedowns, and the LLM is never the final authority for identity, severity, or evidence.
+
+
+
+# Privacy Exposure Golden Dataset
+
+Production-ready evaluation dataset for privacy exposure detection and matching logic validation.
+
+## Contents
+- `data/brokers.json` — 36-broker reference catalog
+- `data/eval/corpus/` — 43 golden corpus exposure entries
+- `data/eval/decoys/` — 9 sophisticated decoy profiles
+- `data/eval/ground_truth.json` — Expected results and evaluation rules
+- `data/fixtures/` — Mock connector payloads
+- `generate_advanced_dataset.py` — Dataset generator
+- `advanced_evaluator.py` — Evaluation engine
+- `validate_dataset.py` — Integrity validator
+
+
