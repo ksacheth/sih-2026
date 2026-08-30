@@ -1,0 +1,13 @@
+{
+  "id": "corpus_027",
+  "discovery_date": "2026-04-25T11:01:03.092893",
+  "exposure_type": "resume_db",
+  "severity": "high",
+  "person_id": "person_2",
+  "source_description": "Exposed on resume database",
+  "name": "Priya Singh",
+  "organization": "FinTech Solutions",
+  "identifier_type": "name_only",
+  "match_strength": "weak",
+  "raw_content": "Name: Priya Singh | Organization: FinTech Solutions"
+}

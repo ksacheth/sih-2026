@@ -1,0 +1,130 @@
+{
+  "status": "ok",
+  "version": "v2.0-advanced",
+  "description": "Search engine discovery results for 3 target personas",
+  "generated_at": "2026-08-30T10:00:00Z",
+  "searches": [
+    {
+      "person_id": "person_1",
+      "person_name": "Rahul Kumar",
+      "query": "\"rahul.kumar@abc-tech.in\"",
+      "results": [
+        {
+          "title": "Rahul Kumar | ABC Technologies",
+          "url": "https://abc-tech.in/team/rahul-kumar",
+          "snippet": "Rahul Kumar is a senior systems engineer at ABC Technologies with email rahul.kumar@abc-tech.in, based in Delhi.",
+          "source": "serper",
+          "source_id": "serper-1320186419",
+          "discovered_at": "2026-08-30T09:00:00Z",
+          "confidence": 0.95,
+          "evidence_tier": "direct_match"
+        },
+        {
+          "title": "Rahul Kumar Portfolio",
+          "url": "https://rahulkumar.dev",
+          "snippet": "Portfolio of Rahul Kumar, email rahul.kumar@abc-tech.in, Noida, Delhi NCR.",
+          "source": "serper",
+          "source_id": "serper-1357737656",
+          "discovered_at": "2026-08-29T14:30:00Z",
+          "confidence": 0.93,
+          "evidence_tier": "composite"
+        },
+        {
+          "title": "GitHub Profile - rahul_kumar_dev",
+          "url": "https://github.com/rahul_kumar_dev",
+          "snippet": "GitHub developer from Noida, India. Username: rahul_kumar_dev",
+          "source": "serper",
+          "source_id": "serper-1046082603",
+          "discovered_at": "2026-08-28T11:15:00Z",
+          "confidence": 0.91,
+          "evidence_tier": "username_match"
+        }
+      ]
+    },
+    {
+      "person_id": "person_2",
+      "person_name": "Priya Singh",
+      "query": "\"priya.singh@fintech-co.com\"",
+      "results": [
+        {
+          "title": "Priya Singh - FinTech Solutions",
+          "url": "https://fintech-co.com/team/priya-singh",
+          "snippet": "Priya Singh, Product Manager at FinTech Solutions, Bangalore. Contact: priya.singh@fintech-co.com",
+          "source": "serper",
+          "source_id": "serper-2114556789",
+          "discovered_at": "2026-08-30T09:45:00Z",
+          "confidence": 0.96,
+          "evidence_tier": "direct_match"
+        },
+        {
+          "title": "LinkedIn - Priya Singh",
+          "url": "https://linkedin.com/in/priya-singh",
+          "snippet": "Priya Singh | Product Manager | FinTech Solutions | Bangalore, Karnataka",
+          "source": "serper",
+          "source_id": "serper-2208821901",
+          "discovered_at": "2026-08-27T16:20:00Z",
+          "confidence": 0.94,
+          "evidence_tier": "social_media"
+        },
+        {
+          "title": "Priya Singh Professional Profile",
+          "url": "https://priyasingh-fintech.io",
+          "snippet": "Email: priya.singh@fintech-co.com, Phone: +91 87654 32109, Bangalore India",
+          "source": "serper",
+          "source_id": "serper-2356821340",
+          "discovered_at": "2026-08-26T12:00:00Z",
+          "confidence": 0.92,
+          "evidence_tier": "composite"
+        }
+      ]
+    },
+    {
+      "person_id": "person_3",
+      "person_name": "Amit Patel",
+      "query": "\"amit.patel@cloudservices.io\"",
+      "results": [
+        {
+          "title": "Amit Patel - Cloud Services Inc",
+          "url": "https://cloudservices.io/team/amit-patel",
+          "snippet": "Amit Patel, Senior Cloud Architect at Cloud Services Inc, Mumbai. Email: amit.patel@cloudservices.io",
+          "source": "serper",
+          "source_id": "serper-3102774821",
+          "discovered_at": "2026-08-30T08:30:00Z",
+          "confidence": 0.97,
+          "evidence_tier": "direct_match"
+        },
+        {
+          "title": "AWS Community Builder - Amit Patel",
+          "url": "https://aws.amazon.com/developer/community/amit-patel",
+          "snippet": "Amit Patel, AWS Expert, Mumbai India. Contact: amit.patel@cloudservices.io, Phone: +91 76543 21098",
+          "source": "serper",
+          "source_id": "serper-3245108332",
+          "discovered_at": "2026-08-29T13:45:00Z",
+          "confidence": 0.94,
+          "evidence_tier": "composite"
+        },
+        {
+          "title": "GitHub - amit_patel_cloud",
+          "url": "https://github.com/amit_patel_cloud",
+          "snippet": "Cloud engineer from Mumbai. Username: amit_patel_cloud. Organizations: Cloud Services Inc",
+          "source": "serper",
+          "source_id": "serper-3367951503",
+          "discovered_at": "2026-08-28T10:10:00Z",
+          "confidence": 0.89,
+          "evidence_tier": "username_match"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "total_persons": 3,
+    "total_results": 9,
+    "avg_confidence": 0.934,
+    "evidence_distribution": {
+      "direct_match": 3,
+      "composite": 3,
+      "social_media": 1,
+      "username_match": 2
+    }
+  }
+}

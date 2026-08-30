@@ -1,0 +1,14 @@
+{
+  "id": "corpus_002",
+  "discovery_date": "2026-02-19T11:01:03.090787",
+  "exposure_type": "search_engine",
+  "severity": "medium",
+  "person_id": "person_1",
+  "source_description": "Publicly indexed by search engine",
+  "name": "Rahul Kumar",
+  "email": "rahul.kumar@abc-tech.in",
+  "organization": "ABC Technologies",
+  "identifier_type": "email",
+  "match_strength": "strong",
+  "raw_content": "Contact: rahul.kumar@abc-tech.in | Name: Rahul Kumar | Org: ABC Technologies"
+}

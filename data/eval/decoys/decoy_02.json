@@ -1,0 +1,10 @@
+{
+  "decoy_type": "similar_org_location",
+  "name": "Neha Sharma",
+  "email": "neha.sharma@abc-tech.in",
+  "organization": "ABC Technologies",
+  "location": "Delhi",
+  "phone": "+91 99999 88888",
+  "person_id": "person_1",
+  "expected_classification": "NO_MATCH"
+}

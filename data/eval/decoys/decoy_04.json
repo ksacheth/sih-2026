@@ -1,0 +1,9 @@
+{
+  "decoy_type": "similar_name_diff_contact",
+  "name": "Priya Singh",
+  "email": "user768@gmail.com",
+  "phone": "+91 39896 60246",
+  "organization": "FinTech Solutions",
+  "person_id": "person_2",
+  "expected_classification": "NO_MATCH"
+}
