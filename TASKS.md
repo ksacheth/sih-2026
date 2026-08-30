@@ -2,13 +2,12 @@
 
 **Project:** Intelligent Personal Data Exposure Monitor (SIH 2026)  
 **Architecture:** Next.js App Router (Node runtime) + FastAPI GLiNER Sidecar + MongoDB  
-**Team Composition (6 People):**
+**Team Composition (5 People):**
 1. **ML Engineer 1 (ML-1)** — PII Extraction, Regex/Checksums, GLiNER Sidecar, & Fusion
 2. **ML Engineer 2 (ML-2)** — Entity Resolution, Name Matcher, Threat & Severity Engine, & Gemini LLM Layer
-3. **Fullstack Developer (Dev-1)** — Platform Core, Auth.js, Verification, Scoped APIs, DPDP Erasure & Frontend Dashboard
+3. **Fullstack Developer (Dev-1)** — Platform Core, Auth.js, Verification, Scoped APIs, DPDP Erasure, Frontend Dashboard, Docker Compose, GLiNER Sidecar Containerization (Pre-baked weights), Mongo Init/TTL, Health Probes, CI/CD & Live Demo Failover Harness
 4. **Dev / DevOps Hybrid (Dev-2)** — Discovery Connectors, Fetch Guard/SSRF, Async Scan Pipeline Orchestrator & Monitoring State Machine
-5. **DevOps Engineer (DevOps)** — Docker Compose, GLiNER Sidecar Containerization (Pre-baked weights), Mongo Init/TTL, Health Probes, CI/CD & Live Demo Failover Harness
-6. **Fast-Sprint Specialist (4-Hour Contributor)** — Golden Evaluation Corpus, Synthetic Demo Decoys, `brokers.json` Curation & Offline Fixtures Dataset
+5. **Fast-Sprint Specialist (4-Hour Contributor)** — Golden Evaluation Corpus, Synthetic Demo Decoys, `brokers.json` Curation & Offline Fixtures Dataset
 
 ---
 
@@ -18,9 +17,8 @@
 |---|---|---|---|
 | **ML-1** | PII Extraction Pipeline | `sidecar/`, `lib/extraction/`, `lib/validators/` | FastAPI GLiNER service, Regex+Verhoeff/checksum rules, PII Fusion layer |
 | **ML-2** | Correlation, Rules & LLM | `lib/correlation/`, `lib/rules/`, `lib/llm/` | Indian token-set name matcher, confidence formula, severity engine, Redacted Gemini explanation + fallback |
-| **Dev-1** | Platform, Auth & UI | `app/`, `components/`, `lib/auth/`, `models/` | Magic link auth, 6-digit OTP verification, DPDP erasure, Rate limiting, Responsive Shadcn/Tailwind Dashboard |
+| **Dev-1** | Platform, Auth, UI & Infra | `app/`, `components/`, `lib/auth/`, `models/`, `Dockerfile`, `docker-compose.yml`, `sidecar/Dockerfile`, `scripts/` | Magic link auth, 6-digit OTP verification, DPDP erasure, Rate limiting, Responsive Shadcn/Tailwind Dashboard, Compose stack, Sidecar image with pre-baked weights, MongoDB TTL indexes, Health endpoint, Demo failover scripts |
 | **Dev-2** | Discovery & Scan Pipeline | `lib/connectors/`, `lib/pipeline/`, `lib/monitoring/` | Serper, ExposedOrNot, Broker matcher, SSRF fetch guard, in-process async orchestrator, monitoring state machine |
-| **DevOps** | Infra, Reliability & Demo Setup | `docker-compose.yml`, `sidecar/Dockerfile`, `scripts/` | Docker Compose stack, Sidecar image with pre-downloaded weights, MongoDB TTL indexes, Demo failover scripts |
 | **4-Hour Sprint** | Golden Data & Fixtures (H0–H4) | `data/fixtures/`, `data/brokers.json`, `data/eval/` | 20 synthetic profile pages, 5 near-miss decoys, 30-50 broker directory entries, mock API response recordings |
 
 ---
@@ -88,27 +86,26 @@ Build the false-positive-resistant entity correlation engine, deterministic conf
 
 ---
 
-### Person 3: Fullstack Developer (Dev-1) — Platform, Trust, API & UI Dashboard
+### Person 3: Fullstack Developer (Dev-1) — Platform, Trust, API, UI Dashboard & Infra
 
 #### Objective
-Build the Next.js application core, Auth.js magic-link authentication, identifier verification subsystem, rate limiting, DPDP erasure API, and the full reactive frontend dashboard.
+Build the Next.js application core, Auth.js magic-link authentication, identifier verification subsystem, rate limiting, DPDP erasure API, and the full reactive frontend dashboard, and own the containerized runtime environment (Docker Compose stack, sidecar image with baked weights, Mongo init/TTL, health checks, demo failover harness).
 
 #### Tasks & Deliverables
-1. **Data Models & Database Layer (`models/`, `lib/db.ts`)**
-   - [ ] MongoDB connection helper with connection pooling.
-   - [ ] Schemas & indexes: `User`, `Identifier`, `Identity`, `Consent`, `Scan`, `Exposure`, `Recommendation`, `VerificationCode`, `AuditEvent`.
-   - [ ] Enforce unique index `{ userId, type, valueHmac }` on identifiers, and partial unique index on active scans `{ identityId }` where status is `QUEUED` or `RUNNING`.
-2. **Auth & Identifier Verification APIs (`app/api/auth/`, `app/api/identifiers/`)**
-   - [ ] Auth.js magic-link email login with dev mode server-console fallback.
-   - [ ] `POST /api/identifiers`: Add email/phone/username. Generate 6-digit code with 10-min TTL (hashed at rest).
-   - [ ] Dev mode fallback: Print 6-digit code to server console and API response for instant testing.
-   - [ ] `POST /api/identifiers/:id/verify`: Verify 6-digit code, create `Consent` record, mark status `VERIFIED`.
-   - [ ] Phone attestation support: Mark phone as `ATTESTED` only if user has ≥1 verified email.
-   - [ ] `DELETE /api/identifiers/:id`: Delete identifier and revoke consent.
-3. **DPDP Erasure & Security Controls (`app/api/account/`, `lib/security/`)**
-   - [ ] `DELETE /api/account`: Atomic erasure of user's identifiers, scans, exposures, recommendations, and consent.
-   - [ ] Response masking utility: Ensure all API responses return masked PII only (`r***@example.com`, `+91 •••• 4321`).
-   - [ ] User rate-limiting middleware: Max 5 scans/day and 20 OTP codes/day.
+1. **GLiNER Sidecar Dockerization (`sidecar/Dockerfile`)**
+   - [ ] Multi-stage Python 3.11 slim Dockerfile.
+   - [ ] **Bake weights in build:** Pre-download `urchade/gliner_small-v2.1` into the Docker image so first run requires 0 network calls.
+   - [ ] Expose port `8000`, configure Uvicorn with worker timeouts.
+2. **Next.js App Dockerfile & Compose Stack (`Dockerfile`, `docker-compose.yml`)**
+   - [ ] Next.js standalone Node production build Dockerfile.
+   - [ ] `docker-compose.yml` orchestrating 3 services:
+     - `app`: Next.js frontend/backend (port 3000)
+     - `sidecar`: FastAPI GLiNER (port 8000, 127.0.0.1 binding)
+     - `mongo`: MongoDB 7.0 (port 27017 with persistent volume)
+   - [ ] Configure container restart policies, environment variables (`FIXTURES`, `DATABASE_URL`, `SIDECAR_URL`, `GEMINI_API_KEY`, `SERPER_API_KEY`).
+3. **MongoDB Initialization & Health Checks (`scripts/init-mongo.js`, `app/api/health/`)**
+   - [ ] Mongo startup script to create collections and ensure TTL indexes (`cache` 6h, `verification_codes` 10m, `audit_events` 30d).
+   - [ ] System Health Endpoint `/api/health`: Probe MongoDB ping + Sidecar `/health` endpoint; return comprehensive status JSON.
 4. **Interactive UI Dashboard (`app/`, `components/`)**
    - [ ] Setup Tailwind CSS, shadcn/ui components (Cards, Badges, Tables, Dialogs, Accordions, Tabs, Tooltips).
    - [ ] **Auth & Identifier Management View:** Magic link input, identifier verification modal with 6-digit input, attestation checkbox.
@@ -126,20 +123,21 @@ Build the Next.js application core, Auth.js magic-link authentication, identifie
 Build the external discovery connectors, fetch guard/SSRF protector, in-process async scan pipeline orchestrator with incremental persistence, and the monitoring state machine.
 
 #### Tasks & Deliverables
+
 1. **Discovery Connectors (`lib/connectors/`)**
-   - [ ] `DiscoveryConnector` interface definition.
-   - [ ] **Serper.dev Web Search Connector (`lib/connectors/serper.ts`):**
+   - [x] `DiscoveryConnector` interface definition.
+   - [x] **Serper.dev Web Search Connector (`lib/connectors/serper.ts`):**
      - Targeted query generator (≤6 queries per scan: `"email"`, `"username"`, `"name" "email"`, `"email" filetype:pdf`, `"name" "org"`).
      - Quote values and sanitize search operators (`site:`, `OR`, `-`).
      - Query cache layer backed by Mongo TTL collection using `HMAC(source + query)`.
-   - [ ] **ExposedOrNot Breach Connector (`lib/connectors/exposedOrNot.ts`):**
+   - [x] **ExposedOrNot Breach Connector (`lib/connectors/exposedOrNot.ts`):**
      - Query ExposedOrNot API for breached email domains and leak records.
      - Extract breach metadata and tag `CREDENTIAL_EXPOSURE` if dump includes passwords.
      - Graceful PARTIAL scan handling if API is unreachable.
-   - [ ] **Data Broker Matcher (`lib/connectors/brokers.ts`):**
+   - [x] **Data Broker Matcher (`lib/connectors/brokers.ts`):**
      - Load `data/brokers.json` (30-50 domains).
      - Match discovered result domains against broker list; surface direct opt-out URL.
-   - [ ] **Fixture Mode Switch:** If `FIXTURES=1` or API key missing, seamlessly route connector calls to recorded JSON files in `data/fixtures/`.
+   - [x] **Fixture Mode Switch:** If `FIXTURES=1` or API key missing, seamlessly route connector calls to recorded JSON files in `data/fixtures/`.
 2. **Fetch Guard & Two-Tier Evidence Processor (`lib/pipeline/fetcher.ts`)**
    - [ ] SSRF protector: Validate URLs before fetching, block local/private IP ranges (`127.0.0.1`, `10.0.0.0/8`, `192.168.0.0/16`, `169.254.169.254`), block `file://`.
    - [ ] Denylist filter: Skip fetching known login-walled domains (LinkedIn, Facebook, Instagram, Twitter/X).
@@ -167,35 +165,7 @@ Build the external discovery connectors, fetch guard/SSRF protector, in-process 
 
 ---
 
-### Person 5: DevOps Engineer (DevOps) — Infrastructure, Containers & Demo Reliability
-
-#### Objective
-Containerize the entire stack with Docker Compose, build the GLiNER sidecar image with pre-downloaded weights, configure Mongo TTL & health checks, and build automated failure demo harnesses.
-
-#### Tasks & Deliverables
-1. **GLiNER Sidecar Dockerization (`sidecar/Dockerfile`)**
-   - [ ] Multi-stage Python 3.11 slim Dockerfile.
-   - [ ] **Bake weights in build:** Pre-download `urchade/gliner_small-v2.1` into the Docker image so first run requires 0 network calls.
-   - [ ] Expose port `8000`, configure Uvicorn with worker timeouts.
-2. **Next.js App Dockerfile & Compose Stack (`Dockerfile`, `docker-compose.yml`)**
-   - [ ] Next.js standalone Node production build Dockerfile.
-   - [ ] `docker-compose.yml` orchestrating 3 services:
-     - `app`: Next.js frontend/backend (port 3000)
-     - `sidecar`: FastAPI GLiNER (port 8000, 127.0.0.1 binding)
-     - `mongo`: MongoDB 7.0 (port 27017 with persistent volume)
-   - [ ] Configure container restart policies, environment variables (`FIXTURES`, `DATABASE_URL`, `SIDECAR_URL`, `GEMINI_API_KEY`, `SERPER_API_KEY`).
-3. **MongoDB Initialization & Health Checks (`scripts/init-mongo.js`, `app/api/health/`)**
-   - [ ] Mongo startup script to create collections and ensure TTL indexes (`cache` 6h, `verification_codes` 10m, `audit_events` 30d).
-   - [ ] System Health Endpoint `/api/health`: Probe MongoDB ping + Sidecar `/health` endpoint; return comprehensive status JSON.
-4. **Demo Reliability & Failover Harness (`scripts/demo-harness.sh`)**
-   - [ ] Seed script: Populate Mongo with demo user and sample scan history for instant cold-start rehearsal.
-   - [ ] Rehearsal mode toggler: One-line script to toggle between `FIXTURES=1` and live external APIs.
-   - [ ] Stage Chaos Script: One-click script to kill sidecar container (`docker compose stop sidecar`) during live pitch to demonstrate graceful degradation to `PARTIAL` scan with regex-only findings.
-   - [ ] Automated end-to-end smoke test script validating scan lifecycle on fixtures.
-
----
-
-### Person 6: Fast-Sprint Specialist (4-Hour Contributor) — Golden Corpus & Demo Assets
+### Person 5: Fast-Sprint Specialist (4-Hour Contributor) — Golden Corpus & Demo Assets
 
 #### Time Window: Hours H0 to H4 (First 4 Hours)
 #### Objective
@@ -239,16 +209,16 @@ Deliver the complete evaluation ground-truth dataset, synthetic profile pages, n
 [H21-H24] Freeze & Pitch Polish          --->  Final presentation ready
 ```
 
-| Time Window | Milestone | ML-1 (Extraction) | ML-2 (Rules & LLM) | Dev-1 (Platform & UI) | Dev-2 (Discovery & Pipe) | DevOps (Infra) | 4-Hr Contributor (Data) |
-|---|---|---|---|---|---|---|---|
-| **H0–H2** | **Project Scaffold & Data Kickoff** | Write regex validators (email, phone, Aadhaar, PAN) | Stub token-set name matcher & test cases | Setup Next.js, Mongo schemas & indexes | Scaffold connector interfaces & query builder | Dockerfile for GLiNER (bake weights), docker-compose | Curate `brokers.json` & first 10 synthetic corpus pages |
-| **H2–H4** | **Walking Subsystems & Data Handoff** | FastAPI GLiNER sidecar `/extract` endpoint | Implement Indian common name penalty & initials rule | Auth.js magic-link & 6-digit OTP endpoints + dev console | Serper & ExposedOrNot connectors + fixture loader | Compose stack up with Mongo & Sidecar, verify `/health` | Finish 20 corpus pages, 5 near-miss decoys & recorded fixtures. **Exit & Handoff** |
-| **H4–H8** | **Checkpoint 1: Fake Pipeline E2E** | Multi-detector fusion (Regex + GLiNER) | Confidence scoring formula & threat categorizer | Identifier verification UI + Scan start button & polling | Async orchestrator (`POST /api/scan` 202, fire-and-forget) + fetch guard | Automated smoke test script on fixture pipeline | *(Completed)* |
-| **H8–H12** | **Full Feature Integration** | GLiNER client error handling & `sidecar_down` PARTIAL state | Recommendation mapper & Redacted Gemini LLM prompt | Exposures list, severity badges & evidence drawer UI | Incremental Mongo persistence per source + SSRF guard | Mongo TTL index verification & container health monitors | *(Completed)* |
-| **H12–H16** | **State Machine & Hardening** | Golden dataset precision/recall eval (Target: F1 ≥ 0.80) | Fallback deterministic explanation generator | Remediation toggle UI, re-scan trigger & DPDP erasure button | Re-scan state machine (`REMEDIATED` -> `REAPPEARED` escalation) | Chaos test script: Sidecar kill test (`docker compose stop sidecar`) | *(Completed)* |
-| **H16–H18** | **Checkpoint 2: Real Pipeline E2E** | Fix extraction false positives on Indian names | Validate name-only decoy rule (0 false CONFIRMED) | End-to-end UI polish, error states & empty states | Crash recovery on boot + scan cancel flag support | Rehearsal environment toggles (`FIXTURES=1` vs LIVE) | *(Completed)* |
-| **H18–H21** | **Checkpoint 3: Rehearsals & Dry Runs** | Support demo rehearsal triage | Support demo rehearsal triage | Dry run with UI, fix layout glitches | Dry run pipeline timings under 90s budget | Record backup demo video, verify cold start on clean machine | *(Completed)* |
-| **H21–H24** | **Code Freeze & Pitch Preparation** | Code freeze; prepare extraction architecture slides | Code freeze; prepare correlation & LLM boundary slides | Code freeze; assist with live demo UI flow | Code freeze; assist with connector resilience slides | Code freeze; lock compose environment & stand by | *(Completed)* |
+| Time Window | Milestone | ML-1 (Extraction) | ML-2 (Rules & LLM) | Dev-1 (Platform, UI & Infra) | Dev-2 (Discovery & Pipe) | 4-Hr Contributor (Data) |
+|---|---|---|---|---|---|---|
+| **H0–H2** | **Project Scaffold & Data Kickoff** | Write regex validators (email, phone, Aadhaar, PAN) | Stub token-set name matcher & test cases | Setup Next.js, Mongo schemas & indexes; Dockerfile for GLiNER (bake weights), docker-compose | Scaffold connector interfaces & query builder | Curate `brokers.json` & first 10 synthetic corpus pages |
+| **H2–H4** | **Walking Subsystems & Data Handoff** | FastAPI GLiNER sidecar `/extract` endpoint | Implement Indian common name penalty & initials rule | Auth.js magic-link & 6-digit OTP endpoints + dev console; Compose stack up with Mongo & Sidecar, verify `/health` | Serper & ExposedOrNot connectors + fixture loader | Finish 20 corpus pages, 5 near-miss decoys & recorded fixtures. **Exit & Handoff** |
+| **H4–H8** | **Checkpoint 1: Fake Pipeline E2E** | Multi-detector fusion (Regex + GLiNER) | Confidence scoring formula & threat categorizer | Identifier verification UI + Scan start button & polling; automated smoke test script on fixture pipeline | Async orchestrator (`POST /api/scan` 202, fire-and-forget) + fetch guard | *(Completed)* |
+| **H8–H12** | **Full Feature Integration** | GLiNER client error handling & `sidecar_down` PARTIAL state | Recommendation mapper & Redacted Gemini LLM prompt | Exposures list, severity badges & evidence drawer UI; Mongo TTL index verification & container health monitors | Incremental Mongo persistence per source + SSRF guard | *(Completed)* |
+| **H12–H16** | **State Machine & Hardening** | Golden dataset precision/recall eval (Target: F1 ≥ 0.80) | Fallback deterministic explanation generator | Remediation toggle UI, re-scan trigger & DPDP erasure button; chaos test script: sidecar kill test (`docker compose stop sidecar`) | Re-scan state machine (`REMEDIATED` -> `REAPPEARED` escalation) | *(Completed)* |
+| **H16–H18** | **Checkpoint 2: Real Pipeline E2E** | Fix extraction false positives on Indian names | Validate name-only decoy rule (0 false CONFIRMED) | End-to-end UI polish, error states & empty states; rehearsal environment toggles (`FIXTURES=1` vs LIVE) | Crash recovery on boot + scan cancel flag support | *(Completed)* |
+| **H18–H21** | **Checkpoint 3: Rehearsals & Dry Runs** | Support demo rehearsal triage | Support demo rehearsal triage | Dry run with UI, fix layout glitches; record backup demo video, verify cold start on clean machine | Dry run pipeline timings under 90s budget | *(Completed)* |
+| **H21–H24** | **Code Freeze & Pitch Preparation** | Code freeze; prepare extraction architecture slides | Code freeze; prepare correlation & LLM boundary slides | Code freeze; assist with live demo UI flow; lock compose environment & stand by | Code freeze; assist with connector resilience slides | *(Completed)* |
 
 ---
 
@@ -353,7 +323,7 @@ All team members must align their components to support the following exact demo
 | 3 | 1:45–3:00 | **Correlated Findings & Name Matcher Test:** Show high-severity findings with document/snippet evidence tiers. Show that decoy identical name is tagged `POTENTIAL` (never `CONFIRMED`). | ML-2 | Hardcoded Indian common-name rule ensures decoy passes test deterministically. |
 | 4 | 3:00–3:45 | **Gemini Explanation & Redacted Privacy Boundary:** Inspect finding explanation. Highlight that Gemini received zero raw PII (only redacted schema). Show deterministic fallback. | ML-2 | Deterministic template renders automatically if Gemini API times out. |
 | 5 | 3:45–4:30 | **Remediation & Re-Scan Escalation:** Click "Mark as Remediated" on an exposure. Trigger manual re-scan. Show `REAPPEARED` status trigger with escalated warning. | Dev-2 & Dev-1 | State machine runs locally in Mongo; 100% reproducible. |
-| 6 | 4:30–5:15 | **Graceful Degradation (Chaos Test):** Stop sidecar container (`docker compose stop sidecar`). Trigger scan -> System finishes with `PARTIAL` status and regex findings intact. | DevOps & ML-1 | Pipeline catches timeout and flags source as `sidecar_down` without crashing. |
+| 6 | 4:30–5:15 | **Graceful Degradation (Chaos Test):** Stop sidecar container (`docker compose stop sidecar`). Trigger scan -> System finishes with `PARTIAL` status and regex findings intact. | Dev-1 & ML-1 | Pipeline catches timeout and flags source as `sidecar_down` without crashing. |
 | 7 | 5:15–6:00 | **DPDP Account Erasure & Pitch Conclusion:** Click "Delete Account & Data". Show instant full purge of all identifiers, scans, and findings. | Dev-1 | Atomic MongoDB delete query leaves only hashed security audit logs. |
 
 ---

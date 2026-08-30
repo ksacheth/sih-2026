@@ -12,6 +12,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Local agent skills are reference material, not application source.
+    ".agents/**",
+    ".claude/**",
+    ".zcode/**",
     // Local Python virtual environment for the GLiNER sidecar.
     "sidecar/.venv/**",
     "sidecar/__pycache__/**",

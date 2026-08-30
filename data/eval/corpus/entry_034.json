@@ -1,0 +1,15 @@
+{
+  "id": "corpus_034",
+  "discovery_date": "2026-08-08T11:01:03.093514",
+  "exposure_type": "social_media",
+  "severity": "low",
+  "person_id": "person_3",
+  "source_description": "Public social media profile",
+  "name": "Amit Patel",
+  "username": "amit_patel_cloud",
+  "email": "amit.patel@cloudservices.io",
+  "organization": "Cloud Services Inc",
+  "identifier_type": "username",
+  "match_strength": "strong",
+  "raw_content": "Username: amit_patel_cloud | Email: amit.patel@cloudservices.io | Organization: Cloud Services Inc"
+}

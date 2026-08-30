@@ -1,0 +1,19 @@
+{
+  "id": "corpus_009",
+  "discovery_date": "2025-10-25T11:01:03.091441",
+  "exposure_type": "resume_db",
+  "severity": "high",
+  "person_id": "person_1",
+  "source_description": "Exposed on resume database",
+  "name": "Rahul Kumar",
+  "organization": "ABC Technologies",
+  "location": "Delhi",
+  "city": "New Delhi",
+  "identifier_type": "composite",
+  "match_strength": "composite",
+  "corroborating_signals": [
+    "Delhi",
+    "New Delhi"
+  ],
+  "raw_content": "Name: Rahul Kumar | Delhi | New Delhi"
+}

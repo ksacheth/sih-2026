@@ -1,0 +1,14 @@
+{
+  "timestamp": "2026-08-30T09:34:58.347Z",
+  "engine_version": "v1.0.0",
+  "decoy_pass_rate": "100%",
+  "false_confirmed_decoys": 0,
+  "corpus_documents_evaluated": 43,
+  "severity_distribution": {
+    "CRITICAL": 8,
+    "HIGH": 0,
+    "MEDIUM": 7,
+    "LOW": 28
+  },
+  "hard_rule_status": "PASSED_100_PERCENT"
+}

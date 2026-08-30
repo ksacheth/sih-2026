@@ -1,0 +1,16 @@
+{
+  "id": "corpus_030",
+  "discovery_date": "2026-02-16T11:01:03.093173",
+  "exposure_type": "breach",
+  "severity": "critical",
+  "person_id": "person_3",
+  "source_description": "Part of confirmed data breach",
+  "name": "Amit Patel",
+  "username": "amit_patel_cloud",
+  "email": "amit.patel@cloudservices.io",
+  "organization": "Cloud Services Inc",
+  "identifier_type": "username",
+  "match_strength": "strong",
+  "breach_name": "DataBreach_2024",
+  "raw_content": "Username: amit_patel_cloud | Email: amit.patel@cloudservices.io | Organization: Cloud Services Inc"
+}

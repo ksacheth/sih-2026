@@ -1,0 +1,14 @@
+{
+  "id": "corpus_005",
+  "discovery_date": "2026-02-22T11:01:03.091108",
+  "exposure_type": "resume_db",
+  "severity": "high",
+  "person_id": "person_1",
+  "source_description": "Exposed on resume database",
+  "name": "Rahul Kumar",
+  "email": "rahul.kumar@abc-tech.in",
+  "organization": "ABC Technologies",
+  "identifier_type": "email",
+  "match_strength": "strong",
+  "raw_content": "Contact: rahul.kumar@abc-tech.in | Name: Rahul Kumar | Org: ABC Technologies"
+}

@@ -1,0 +1,19 @@
+{
+  "id": "corpus_038",
+  "discovery_date": "2026-03-14T11:01:03.093937",
+  "exposure_type": "resume_db",
+  "severity": "high",
+  "person_id": "person_3",
+  "source_description": "Exposed on resume database",
+  "name": "Amit Patel",
+  "organization": "Cloud Services Inc",
+  "location": "Mumbai",
+  "city": "Mumbai",
+  "identifier_type": "composite",
+  "match_strength": "composite",
+  "corroborating_signals": [
+    "Mumbai",
+    "Cloud Services Inc"
+  ],
+  "raw_content": "Name: Amit Patel | Mumbai | Cloud Services Inc"
+}
