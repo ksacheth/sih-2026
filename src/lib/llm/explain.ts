@@ -98,20 +98,23 @@ export async function explainFinding(
             generatedAt: new Date().toISOString(),
           };
         }
-      } catch (err: any) {
+      } catch (err) {
         clearTimeout(timeoutId);
         if (process.env.DEBUG_GROQ) {
           console.error(
             `Groq API error on model ${modelName}:`,
-            err?.message || err,
+            err instanceof Error ? err.message : err,
           );
         }
         // Try next model in loop
       }
     }
-  } catch (err: any) {
+  } catch (err) {
     if (process.env.DEBUG_GROQ) {
-      console.error("Groq SDK initialization error:", err?.message || err);
+      console.error(
+        "Groq SDK initialization error:",
+        err instanceof Error ? err.message : err,
+      );
     }
   }
 

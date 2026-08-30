@@ -16,6 +16,9 @@ const eslintConfig = defineConfig([
     ".agents/**",
     ".claude/**",
     ".zcode/**",
+    // Local Python virtual environment for the GLiNER sidecar.
+    "sidecar/.venv/**",
+    "sidecar/__pycache__/**",
   ]),
 ]);
 

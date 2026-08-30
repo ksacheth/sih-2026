@@ -1,7 +1,5 @@
 import { lookupBrokerByDomain } from "./brokerLookup";
 
-export const RULE_VERSION = "v1.0.0";
-
 export type ActionCode =
   | "CHANGE_PASSWORD"
   | "CHECK_PASSWORD_REUSE"

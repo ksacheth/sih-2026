@@ -36,7 +36,7 @@ function loadBrokersMap(): Map<string, BrokerEntry> {
 }
 
 function cleanDomain(input: string): string {
-  let domain = input
+  const domain = input
     .trim()
     .toLowerCase()
     .replace(/^https?:\/\//, "")

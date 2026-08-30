@@ -112,7 +112,7 @@ export function calculateIdentityConfidence(
   }
 
   // Raw score before caps
-  let rawScore = baseScore + corroborationBonus - penaltiesApplied;
+  const rawScore = baseScore + corroborationBonus - penaltiesApplied;
   let finalScore = rawScore;
 
   // 4. Enforce Hard Caps (CONTEXT.md §7.4)
