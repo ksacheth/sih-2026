@@ -1,13 +1,14 @@
+import { GoogleGenAI } from "@google/genai";
 import Groq from "groq-sdk";
 import { RedactedFindingForLLM, ExplanationOutput } from "./types";
 import { buildRedactedFinding, RawExposureInput } from "./redactor";
 import { generateTemplateFallback } from "./fallback";
 
 export const RULE_VERSION = "v1.0.0";
-const GROQ_TIMEOUT_MS = 5000;
+const LLM_TIMEOUT_MS = 5000;
 
 /**
- * System prompt enforcing strict privacy and structured JSON output rules for Groq LLM.
+ * System prompt enforcing strict privacy and structured JSON output rules for LLM providers.
  */
 const SYSTEM_PROMPT = `
 You are a security intelligence assistant for a privacy exposure monitor.
@@ -24,19 +25,126 @@ CRITICAL INSTRUCTIONS:
 4. Do NOT output markdown code fences (\`\`\`json), output raw JSON string only.
 `;
 
-/**
- * Active Groq production models for ultra-fast privacy threat explanations.
- */
+const GEMINI_MODELS = ["gemini-2.5-flash", "gemini-2.0-flash"];
 const GROQ_MODELS = [
-  "qwen/qwen3.8-27b",
-  "openai/gpt-oss-20b",
   "groq/compound-mini",
   "groq/compound",
+  "openai/gpt-oss-20b",
+  "qwen/qwen3.8-27b",
 ];
 
 /**
- * Generates an explanation for a single finding using Groq LLM over a redacted schema (CONTEXT.md §9).
- * Automatically falls back to deterministic template if Groq API key is missing, network fails, or times out.
+ * Attempts Gemini API explanation via @google/genai SDK (CONTEXT.md §9.0).
+ */
+async function explainWithGemini(
+  apiKey: string,
+  userPrompt: string,
+): Promise<{ summary: string; sourceRelevance: string } | null> {
+  const ai = new GoogleGenAI({ apiKey });
+
+  for (const modelName of GEMINI_MODELS) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), LLM_TIMEOUT_MS);
+
+    try {
+      const response = await ai.models.generateContent({
+        model: modelName,
+        contents: [
+          { role: "user", parts: [{ text: `${SYSTEM_PROMPT}\n\n${userPrompt}` }] },
+        ],
+        config: {
+          responseMimeType: "application/json",
+          temperature: 0.2,
+          maxOutputTokens: 300,
+        },
+      });
+
+      clearTimeout(timeoutId);
+      const rawText = response.text ? response.text.trim() : "";
+      if (!rawText) continue;
+
+      const cleanJson = rawText
+        .replace(/^```json\s*/i, "")
+        .replace(/^```\s*/, "")
+        .replace(/\s*```$/, "");
+      const parsed = JSON.parse(cleanJson);
+
+      if (parsed.summary && parsed.sourceRelevance) {
+        return {
+          summary: String(parsed.summary),
+          sourceRelevance: String(parsed.sourceRelevance),
+        };
+      }
+    } catch (err: any) {
+      clearTimeout(timeoutId);
+      if (process.env.DEBUG_LLM) {
+        console.error(`Gemini API error on model ${modelName}:`, err?.message || err);
+      }
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Attempts Groq API explanation via groq-sdk.
+ */
+async function explainWithGroq(
+  apiKey: string,
+  userPrompt: string,
+): Promise<{ summary: string; sourceRelevance: string } | null> {
+  const groq = new Groq({ apiKey });
+
+  for (const modelName of GROQ_MODELS) {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), LLM_TIMEOUT_MS);
+
+    try {
+      const response = await groq.chat.completions.create(
+        {
+          model: modelName,
+          messages: [
+            { role: "system", content: SYSTEM_PROMPT },
+            { role: "user", content: userPrompt },
+          ],
+          response_format: { type: "json_object" },
+          temperature: 0.2,
+          max_tokens: 300,
+        },
+        { signal: controller.signal }
+      );
+
+      clearTimeout(timeoutId);
+      const rawText = response.choices[0]?.message?.content?.trim() || "";
+      if (!rawText) continue;
+
+      const cleanJson = rawText
+        .replace(/^```json\s*/i, "")
+        .replace(/^```\s*/, "")
+        .replace(/\s*```$/, "");
+      const parsed = JSON.parse(cleanJson);
+
+      if (parsed.summary && parsed.sourceRelevance) {
+        return {
+          summary: String(parsed.summary),
+          sourceRelevance: String(parsed.sourceRelevance),
+        };
+      }
+    } catch (err: any) {
+      clearTimeout(timeoutId);
+      if (process.env.DEBUG_LLM) {
+        console.error(`Groq API error on model ${modelName}:`, err?.message || err);
+      }
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Generates an explanation for a single finding using Dual SDK support (Gemini / Groq LLM)
+ * over a redacted schema (CONTEXT.md §9).
+ * Automatically falls back to deterministic template if API keys are missing, network fails, or times out.
  *
  * @param input - Raw exposure object or pre-redacted schema
  * @returns Promise<ExplanationOutput>
@@ -50,71 +158,36 @@ export async function explainFinding(
       ? (input as RedactedFindingForLLM)
       : buildRedactedFinding(input as RawExposureInput);
 
-  const apiKey = process.env.GROQ_API_KEY || process.env.GEMINI_API_KEY;
-  if (!apiKey || apiKey.startsWith("your_")) {
-    return generateTemplateFallback(redacted);
-  }
+  const geminiKey = process.env.GEMINI_API_KEY;
+  const groqKey = process.env.GROQ_API_KEY;
 
-  try {
-    const groq = new Groq({ apiKey });
-    const userPrompt = `Redacted Exposure Finding Schema:\n${JSON.stringify(redacted, null, 2)}`;
+  const userPrompt = `Redacted Exposure Finding Schema:\n${JSON.stringify(redacted, null, 2)}`;
 
-    for (const modelName of GROQ_MODELS) {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), GROQ_TIMEOUT_MS);
-
-      try {
-        const response = await groq.chat.completions.create(
-          {
-            model: modelName,
-            messages: [
-              { role: "system", content: SYSTEM_PROMPT },
-              { role: "user", content: userPrompt },
-            ],
-            response_format: { type: "json_object" },
-            temperature: 0.2,
-            max_tokens: 300,
-          },
-          { signal: controller.signal },
-        );
-
-        clearTimeout(timeoutId);
-
-        const rawText = response.choices[0]?.message?.content?.trim() || "";
-        if (!rawText) continue;
-
-        // Clean markdown fenced code block delimiters if present
-        const cleanJson = rawText
-          .replace(/^```json\s*/i, "")
-          .replace(/^```\s*/, "")
-          .replace(/\s*```$/, "");
-        const parsed = JSON.parse(cleanJson);
-
-        if (parsed.summary && parsed.sourceRelevance) {
-          return {
-            summary: String(parsed.summary),
-            sourceRelevance: String(parsed.sourceRelevance),
-            isAiGenerated: true,
-            generatedAt: new Date().toISOString(),
-          };
-        }
-      } catch (err: any) {
-        clearTimeout(timeoutId);
-        if (process.env.DEBUG_GROQ) {
-          console.error(
-            `Groq API error on model ${modelName}:`,
-            err?.message || err,
-          );
-        }
-        // Try next model in loop
-      }
-    }
-  } catch (err: any) {
-    if (process.env.DEBUG_GROQ) {
-      console.error("Groq SDK initialization error:", err?.message || err);
+  // Priority 1: Gemini API
+  if (geminiKey && !geminiKey.startsWith("your_")) {
+    const result = await explainWithGemini(geminiKey, userPrompt);
+    if (result) {
+      return {
+        ...result,
+        isAiGenerated: true,
+        generatedAt: new Date().toISOString(),
+      };
     }
   }
 
+  // Priority 2: Groq API
+  if (groqKey && !groqKey.startsWith("your_")) {
+    const result = await explainWithGroq(groqKey, userPrompt);
+    if (result) {
+      return {
+        ...result,
+        isAiGenerated: true,
+        generatedAt: new Date().toISOString(),
+      };
+    }
+  }
+
+  // Fallback: Deterministic Template
   return generateTemplateFallback(redacted);
 }
 
@@ -158,9 +231,12 @@ export async function explainTopExposures<T extends ExposureWithPriority>(
   // Top <= 5 findings get LLM explanations
   const topFindings = sorted.slice(0, maxCount);
 
-  // Generate explanations in parallel
-  const explanationPromises = topFindings.map((exp) => explainFinding(exp));
-  const explanations = await Promise.all(explanationPromises);
+  // Generate explanations sequentially to respect API rate limits
+  const explanations: ExplanationOutput[] = [];
+  for (const exp of topFindings) {
+    const res = await explainFinding(exp);
+    explanations.push(res);
+  }
 
   // Map explanations back to items
   const explanationMap = new Map<string | number, ExplanationOutput>();

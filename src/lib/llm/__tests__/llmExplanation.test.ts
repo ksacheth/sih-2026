@@ -4,26 +4,26 @@ import { buildRedactedFinding } from "../redactor";
 import { generateTemplateFallback } from "../fallback";
 import { explainFinding, explainTopExposures } from "../explain";
 
-// Auto-load GROQ_API_KEY from .env.local at project root if missing in environment
-if (!process.env.GROQ_API_KEY) {
-  try {
-    const envPath = path.resolve(process.cwd(), ".env.local");
-    if (fs.existsSync(envPath)) {
-      const envContent = fs.readFileSync(envPath, "utf-8");
-      const match = envContent.match(
-        /GROQ_API_KEY\s*=\s*["']?([^"'\r\n]+)["']?/,
-      );
-      if (match && match[1] && !match[1].startsWith("your_")) {
-        process.env.GROQ_API_KEY = match[1].trim();
-      }
+// Auto-load API keys from .env.local at project root if missing in environment
+try {
+  const envPath = path.resolve(process.cwd(), ".env.local");
+  if (fs.existsSync(envPath)) {
+    const envContent = fs.readFileSync(envPath, "utf-8");
+    const geminiMatch = envContent.match(/GEMINI_API_KEY\s*=\s*["']?([^"'\r\n]+)["']?/);
+    if (geminiMatch && geminiMatch[1] && !geminiMatch[1].startsWith("your_")) {
+      process.env.GEMINI_API_KEY = geminiMatch[1].trim();
     }
-  } catch {
-    // Ignore read errors
+    const groqMatch = envContent.match(/GROQ_API_KEY\s*=\s*["']?([^"'\r\n]+)["']?/);
+    if (groqMatch && groqMatch[1] && !groqMatch[1].startsWith("your_")) {
+      process.env.GROQ_API_KEY = groqMatch[1].trim();
+    }
   }
+} catch {
+  // Ignore read errors
 }
 
-process.env.DEBUG_GROQ = "1";
-const SAVED_API_KEY = process.env.GROQ_API_KEY;
+const SAVED_GEMINI_KEY = process.env.GEMINI_API_KEY;
+const SAVED_GROQ_KEY = process.env.GROQ_API_KEY;
 
 function assert(condition: boolean, message: string) {
   if (!condition) {
@@ -35,7 +35,7 @@ function assert(condition: boolean, message: string) {
 }
 
 console.log(
-  "=== Running Groq LLM Explanation Layer & Privacy Boundary Unit Tests ===\n",
+  "=== Running Dual SDK LLM Explanation Layer & Privacy Boundary Unit Tests ===\n",
 );
 
 // Scenario 1: Privacy Boundary Redactor Test
@@ -118,16 +118,17 @@ assert(
   "Fallback sourceRelevance includes domain",
 );
 
-// Scenario 3: Explain Single Finding (Fallback Mode without API key)
+// Scenario 3: Explain Single Finding (Fallback Mode without API keys)
 console.log("\n--- Scenario 3: Explain Single Finding (Fallback Mode) ---");
 async function testExplainSingleFallback() {
-  delete process.env.GROQ_API_KEY;
   delete process.env.GEMINI_API_KEY;
+  delete process.env.GROQ_API_KEY;
+
   const explanation = await explainFinding(rawFinding);
 
   assert(
     explanation.isAiGenerated === false,
-    "Returns template fallback when API key is missing",
+    "Returns template fallback when API keys are missing",
   );
   assert(
     typeof explanation.summary === "string" && explanation.summary.length > 20,
@@ -139,45 +140,33 @@ async function testExplainSingleFallback() {
   );
 }
 
-// Scenario 4: Live Groq API Explanation Test (when API key is configured)
-console.log("\n--- Scenario 4: Live Groq API Explanation ---");
-async function testExplainLiveGroq() {
-  if (!SAVED_API_KEY || SAVED_API_KEY.startsWith("your_")) {
-    console.log(
-      "ℹ️ Skipped live Groq API call (GROQ_API_KEY not configured in .env.local)",
-    );
+// Scenario 4: Live Dual SDK Explanation Test (when API keys are configured)
+console.log("\n--- Scenario 4: Live Dual SDK API Explanation ---");
+async function testExplainLiveDualSDK() {
+  if (SAVED_GEMINI_KEY) process.env.GEMINI_API_KEY = SAVED_GEMINI_KEY;
+  if (SAVED_GROQ_KEY) process.env.GROQ_API_KEY = SAVED_GROQ_KEY;
+
+  if (!process.env.GEMINI_API_KEY && !process.env.GROQ_API_KEY) {
+    console.log("ℹ️ Skipped live Dual SDK call (Neither GEMINI_API_KEY nor GROQ_API_KEY configured)");
     return;
   }
-  process.env.GROQ_API_KEY = SAVED_API_KEY;
-  console.log("Testing live Groq API call...");
+  console.log("Testing live Dual SDK explanation call...");
 
   const explanation = await explainFinding(rawFinding);
   if (explanation.isAiGenerated) {
-    assert(
-      explanation.isAiGenerated === true,
-      "Live Groq generated explanation successfully",
-    );
-    assert(
-      typeof explanation.summary === "string" &&
-        explanation.summary.length > 10,
-      "Groq generated non-empty summary",
-    );
-    assert(
-      typeof explanation.sourceRelevance === "string" &&
-        explanation.sourceRelevance.length > 10,
-      "Groq generated non-empty sourceRelevance",
-    );
+    assert(explanation.isAiGenerated === true, "Live Dual SDK generated explanation successfully");
+    assert(typeof explanation.summary === "string" && explanation.summary.length > 10, "Generated non-empty summary");
+    assert(typeof explanation.sourceRelevance === "string" && explanation.sourceRelevance.length > 10, "Generated non-empty sourceRelevance");
   } else {
-    console.log(
-      "⚠️ Live Groq call timed out or failed; fallback rendered safely (isAiGenerated: false)",
-    );
+    console.log("⚠️ Live API call timed out or fell back safely (isAiGenerated: false)");
   }
 }
 
 // Scenario 5: Async Batch Processor for Top <= 5 Findings
 console.log("\n--- Scenario 5: Async Batch Processor (Top <= 5 Findings) ---");
 async function testBatchProcessor() {
-  if (SAVED_API_KEY) process.env.GROQ_API_KEY = SAVED_API_KEY;
+  if (SAVED_GEMINI_KEY) process.env.GEMINI_API_KEY = SAVED_GEMINI_KEY;
+  if (SAVED_GROQ_KEY) process.env.GROQ_API_KEY = SAVED_GROQ_KEY;
 
   const mockExposures = [
     {
@@ -259,9 +248,9 @@ async function testBatchProcessor() {
 
 async function runAllTests() {
   await testExplainSingleFallback();
-  await testExplainLiveGroq();
+  await testExplainLiveDualSDK();
   await testBatchProcessor();
-  console.log("\n🎉 ALL GROQ LLM EXPLANATION & PRIVACY BOUNDARY TESTS PASSED!");
+  console.log("\n🎉 ALL DUAL SDK LLM EXPLANATION & PRIVACY BOUNDARY TESTS PASSED!");
 }
 
 runAllTests().catch((err) => {
