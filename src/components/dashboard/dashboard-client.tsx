@@ -15,7 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { mockFindings, mockIdentifiers } from "./mock-data";
+import { mockFindings } from "./mock-data";
 import { AccountSettings } from "./sections/account-settings";
 import { EvidenceDrawer } from "./sections/evidence-drawer";
 import { FindingsGrid } from "./sections/findings-grid";
@@ -32,7 +32,7 @@ const scanSources: ScanSource[] = [
 ];
 
 export function DashboardClient() {
-  const [identifiers, setIdentifiers] = useState<Identifier[]>(mockIdentifiers);
+  const [identifiers, setIdentifiers] = useState<Identifier[]>([]);
   const [findings, setFindings] = useState<Finding[]>(mockFindings);
   const [selected, setSelected] = useState<Finding | null>(null);
   const [scanning, setScanning] = useState(false);
@@ -44,10 +44,9 @@ export function DashboardClient() {
 
   useEffect(() => {
     fetch("/api/identifiers")
-      .then(async (response) => response.ok ? response.json() : { identifiers: [] })
+      .then(async (response) => (response.ok ? response.json() : []))
       .then((data) => {
-        const savedIdentifiers = data.identifiers ?? [];
-        if (savedIdentifiers.length > 0) setIdentifiers(savedIdentifiers);
+        setIdentifiers(Array.isArray(data) ? data : []);
       })
       .catch(() => undefined);
   }, []);
@@ -80,25 +79,33 @@ export function DashboardClient() {
   );
 
   const startScan = async () => {
-    const identifierIds = identifiers.filter((item) => item.status === "VERIFIED" || item.status === "ATTESTED").map((item) => item.id);
+    const scanable = identifiers.filter(
+      (item) => item.status === "VERIFIED" || item.status === "ATTESTED",
+    );
     setScanError("");
     setScanAccepted(false);
-    if (identifierIds.length === 0) {
+    if (scanable.length === 0) {
       setScanError("Verify or attest at least one identifier before scanning.");
-      return;
+      return false;
     }
     try {
-      const response = await fetch("/api/scan", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ identifierIds }) });
+      const response = await fetch("/api/scan", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ identityId: scanable[0].identityId }),
+      });
       const data = await response.json().catch(() => ({}));
       if (!response.ok) {
         setScanError(data.error ?? "The scan was rejected. Please try again.");
-        return;
+        return false;
       }
       setCompleted([]);
       setScanning(true);
       setScanAccepted(true);
+      return true;
     } catch {
       setScanError("We couldn't reach the scan service. Check your connection and try again.");
+      return false;
     }
   };
   const remediate = (id: number) => {
@@ -111,15 +118,21 @@ export function DashboardClient() {
       item?.id === id ? { ...item, status: "REMEDIATED" } : item,
     );
   };
-  const rescan = () => {
+  const rescan = async () => {
+    const accepted = await startScan();
+    if (!accepted) return;
     setFindings((items) =>
       items.map((item) =>
         item.status === "REMEDIATED" ? { ...item, status: "REAPPEARED" } : item,
       ),
     );
-    startScan();
   };
-  const erase = () => {
+  const erase = async () => {
+    const response = await fetch("/api/account", { method: "DELETE" });
+    if (!response.ok) {
+      const data = await response.json().catch(() => ({}));
+      throw new Error(data.error ?? "The erasure request failed. Please try again.");
+    }
     setIdentifiers([]);
     setFindings([]);
     setSelected(null);

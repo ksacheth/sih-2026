@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
 import {
   ArrowLeft,
   CheckCircle2,
@@ -25,34 +26,26 @@ export function OnboardingClient() {
   const [email, setEmail] = useState("");
   const [screen, setScreen] = useState<Screen>("form");
   const [error, setError] = useState("");
-  const [devMagicLink, setDevMagicLink] = useState("");
   const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   const sendMagicLink = async () => {
     if (!isValid) return;
     setScreen("sending");
     setError("");
-    const controller = new AbortController();
-    const timeout = window.setTimeout(() => controller.abort(), 15_000);
     try {
-      const response = await fetch("/api/auth/magic-link", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-        signal: controller.signal,
+      const result = await signIn("resend", {
+        email,
+        redirect: false,
+        callbackUrl: "/dashboard",
       });
-      const data = await response.json().catch(() => ({}));
-      if (!response.ok) {
-        setError(data.error ?? "Unable to send a magic link.");
+      if (result?.error) {
+        setError("Unable to send a magic link. Check the address and try again.");
         setScreen("form");
         return;
       }
-      setDevMagicLink(data.devMagicLink ?? "");
       setScreen("sent");
     } catch {
       setError("We couldn't send your magic link. Check your connection and try again.");
       setScreen("form");
-    } finally {
-      window.clearTimeout(timeout);
     }
   };
 
@@ -180,14 +173,6 @@ export function OnboardingClient() {
                   <span className="font-medium text-slate-800">{email}</span>.
                   Open it to continue securely.
                 </p>
-                {devMagicLink && (
-                  <a
-                    href={devMagicLink}
-                    className="mt-4 inline-flex text-sm font-medium text-blue-700 hover:underline"
-                  >
-                    Continue with local magic link
-                  </a>
-                )}
                 <div className="mt-6 rounded-lg border border-blue-100 bg-blue-50 p-3 text-left text-sm leading-6 text-blue-900">
                   Once signed in, you&apos;ll verify any identifier you want us
                   to scan with a separate 6-digit ownership code.

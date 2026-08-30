@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { ShieldAlert, Trash2, X } from "lucide-react";
+import { LoaderCircle, ShieldAlert, Trash2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,13 +9,35 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-export function AccountSettings({ onErase }: { onErase: () => void }) {
+export function AccountSettings({
+  onErase,
+}: {
+  onErase: () => Promise<void>;
+}) {
   const [open, setOpen] = useState(false);
   const [confirmation, setConfirmation] = useState("");
-  const erase = () => {
-    if (confirmation === "DELETE") {
-      onErase();
-      setOpen(false);
+  const [erasing, setErasing] = useState(false);
+  const [error, setError] = useState("");
+  const close = () => {
+    setConfirmation("");
+    setError("");
+    setOpen(false);
+  };
+  const erase = async () => {
+    if (confirmation !== "DELETE" || erasing) return;
+    setErasing(true);
+    setError("");
+    try {
+      await onErase();
+      close();
+    } catch (e) {
+      setError(
+        e instanceof Error
+          ? e.message
+          : "The erasure request failed. Please try again.",
+      );
+    } finally {
+      setErasing(false);
     }
   };
   return (
@@ -49,7 +71,7 @@ export function AccountSettings({ onErase }: { onErase: () => void }) {
             <button
               aria-label="Close account erasure confirmation"
               className="absolute right-5 top-5 text-slate-500"
-              onClick={() => setOpen(false)}
+              onClick={close}
             >
               <X className="size-5" />
             </button>
@@ -67,13 +89,15 @@ export function AccountSettings({ onErase }: { onErase: () => void }) {
                 placeholder="Type DELETE"
                 className="h-10 rounded-md border border-slate-300 px-3 outline-none focus:border-red-500"
               />
+              {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
               <Button
+                className="mt-4"
                 variant="destructive"
-                disabled={confirmation !== "DELETE"}
+                disabled={confirmation !== "DELETE" || erasing}
                 onClick={erase}
               >
-                <Trash2 />
-                Permanently erase data
+                {erasing ? <LoaderCircle className="animate-spin" /> : <Trash2 />}
+                {erasing ? "Erasing data..." : "Permanently erase data"}
               </Button>
             </CardContent>
           </Card>

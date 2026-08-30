@@ -1,19 +1,4 @@
-import type { Finding, Identifier } from "./types";
-
-export const mockIdentifiers: Identifier[] = [
-  {
-    id: "email",
-    type: "email",
-    maskedValue: "r***@example.com",
-    status: "VERIFIED",
-  },
-  {
-    id: "phone",
-    type: "phone",
-    maskedValue: "+91 •••• 4321",
-    status: "ATTESTED",
-  },
-];
+import type { Finding } from "./types";
 
 export const mockFindings: Finding[] = [
   {

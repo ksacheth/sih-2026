@@ -23,7 +23,12 @@ import {
 } from "@/components/ui/card";
 import type { Identifier } from "../types";
 
-const iconByType = { email: Mail, phone: Phone, username: UserRound };
+const iconByType: Record<Identifier["type"], typeof Mail> = {
+  EMAIL: Mail,
+  PHONE: Phone,
+  USERNAME: UserRound,
+  NAME: UserRound,
+};
 
 export function IdentifierManager({
   identifiers,
@@ -41,14 +46,16 @@ export function IdentifierManager({
   const [code, setCode] = useState("");
   const [attested, setAttested] = useState(false);
   const [identifierType, setIdentifierType] =
-    useState<Identifier["type"]>("email");
+    useState<Identifier["type"]>("EMAIL");
   const [identifierValue, setIdentifierValue] = useState("");
   const [message, setMessage] = useState("");
+  const [verifyError, setVerifyError] = useState("");
   const [phoneConsent, setPhoneConsent] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
+  const [isResending, setIsResending] = useState(false);
   const [secondsUntilResend, setSecondsUntilResend] = useState(0);
-  const pendingEmail = identifiers.some((item) => item.type === "email" && item.status === "PENDING");
+  const pendingEmail = identifiers.some((item) => item.type === "EMAIL" && item.status === "PENDING");
 
   useEffect(() => {
     if (secondsUntilResend <= 0) return;
@@ -59,7 +66,7 @@ export function IdentifierManager({
   const resendLabel = `${Math.floor(secondsUntilResend / 60)}:${String(secondsUntilResend % 60).padStart(2, "0")}`;
   const complete = async () => {
     const identifier = identifiers.find(
-      (item) => item.type === "email" && item.status === "PENDING",
+      (item) => item.type === "EMAIL" && item.status === "PENDING",
     );
     if (!identifier || code.length !== 6 || !attested) return;
     setIsVerifying(true);
@@ -71,40 +78,85 @@ export function IdentifierManager({
       });
       const data = await response.json().catch(() => ({}));
       if (!response.ok) {
-        setMessage(data.error ?? "Unable to verify this identifier.");
+        setVerifyError(data.error ?? "Unable to verify this identifier.");
         return;
       }
       onVerify(identifier.id);
       setVerifyOpen(false);
       setCode("");
+      setVerifyError("");
       setMessage("");
     } catch {
-      setMessage("We couldn't verify this identifier. Check your connection and try again.");
+      setVerifyError("We couldn't verify this identifier. Check your connection and try again.");
     } finally {
       setIsVerifying(false);
     }
   };
+  const resendCode = async () => {
+    const identifier = identifiers.find(
+      (item) => item.type === "EMAIL" && item.status === "PENDING",
+    );
+    if (!identifier) return;
+    setIsResending(true);
+    try {
+      const response = await fetch(`/api/identifiers/${identifier.id}/resend`, {
+        method: "POST",
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        setVerifyError(data.error ?? "Unable to resend the code.");
+        setVerifyOpen(true);
+        return;
+      }
+      setSecondsUntilResend(600);
+      setMessage(
+        data.devVerificationCode
+          ? `New code sent. Dev verification code: ${data.devVerificationCode}`
+          : "New code sent. Check your email for the ownership code.",
+      );
+    } catch {
+      setVerifyError("We couldn't resend the code. Check your connection and try again.");
+      setVerifyOpen(true);
+    } finally {
+      setIsResending(false);
+    }
+  };
   const addIdentifier = async () => {
     const value = identifierValue.trim();
-    if (!value || (identifierType === "phone" && !phoneConsent)) return;
+    if (!value || (identifierType === "PHONE" && !phoneConsent)) return;
     setIsAdding(true);
     try {
       const response = await fetch("/api/identifiers", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ type: identifierType, value }),
+        body: JSON.stringify({
+          type: identifierType,
+          value,
+          ...(identifierType === "PHONE"
+            ? { attestPhoneOwnership: phoneConsent }
+            : {}),
+        }),
       });
       const data = await response.json().catch(() => ({}));
       if (!response.ok) {
         setMessage(data.error ?? "Unable to add this identifier.");
         return;
       }
-      onAdd(data.identifier);
-      if (identifierType === "email") setSecondsUntilResend(600);
+      const added = data?.identifier ?? (data?.id ? data : undefined);
+      if (!added || !(added.type in iconByType)) {
+        setMessage("The identifier could not be read from the server response.");
+        return;
+      }
+      onAdd(added);
+      if (identifierType === "EMAIL") setSecondsUntilResend(600);
       setIdentifierValue("");
       setPhoneConsent(false);
       setAddOpen(false);
-      setMessage(data.message ?? "Identifier added. Check your email for the ownership code.");
+      setMessage(
+        data.devVerificationCode
+          ? `Identifier added. Dev verification code: ${data.devVerificationCode}`
+          : "Identifier added. Check your email for the ownership code.",
+      );
     } catch {
       setMessage("We couldn't add this identifier. Check your connection and try again.");
     } finally {
@@ -153,7 +205,7 @@ export function IdentifierManager({
                         <Icon className="size-5 shrink-0 text-blue-600" />
                         <div>
                           <p className="font-medium text-slate-800">
-                            {item.maskedValue}
+                            {item.value}
                           </p>
                           <p className="text-xs capitalize text-slate-500">
                             {item.type} identifier
@@ -186,14 +238,31 @@ export function IdentifierManager({
             )}
             {pendingEmail && (
               <div className="mt-4 flex flex-wrap items-center gap-3">
-                <Button onClick={() => setVerifyOpen(true)}>
+                <Button
+                  onClick={() => {
+                    setVerifyError("");
+                    setVerifyOpen(true);
+                  }}
+                >
                   <ShieldCheck />
                   Verify pending email
                 </Button>
                 {secondsUntilResend > 0 ? (
                   <p className="text-sm text-slate-500">You can resend a code in {resendLabel}.</p>
                 ) : (
-                  <p className="text-sm text-slate-500">Code expires after 10 minutes.</p>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled={isResending}
+                    onClick={resendCode}
+                  >
+                    {isResending ? (
+                      <LoaderCircle className="animate-spin" />
+                    ) : (
+                      <Mail />
+                    )}
+                    Resend code
+                  </Button>
                 )}
               </div>
             )}
@@ -251,9 +320,9 @@ export function IdentifierManager({
             }}
             className="mt-2 h-10 w-full rounded-md border border-slate-300 bg-white px-3"
           >
-            <option value="email">Email address</option>
-            <option value="phone">Phone number</option>
-            <option value="username">Username</option>
+            <option value="EMAIL">Email address</option>
+            <option value="PHONE">Phone number</option>
+            <option value="USERNAME">Username</option>
           </select>
           <label
             className="mt-4 block text-sm font-medium"
@@ -266,15 +335,15 @@ export function IdentifierManager({
             value={identifierValue}
             onChange={(event) => setIdentifierValue(event.target.value)}
             placeholder={
-              identifierType === "email"
+              identifierType === "EMAIL"
                 ? "you@example.com"
-                : identifierType === "phone"
+                : identifierType === "PHONE"
                   ? "+91 98765 43210"
                   : "yourhandle"
             }
             className="mt-2 h-10 w-full rounded-md border border-slate-300 px-3 outline-none focus:border-blue-500"
           />
-          {identifierType === "phone" && (
+          {identifierType === "PHONE" && (
             <label className="mt-4 flex cursor-pointer items-start gap-3 rounded-lg bg-slate-50 p-3 text-sm leading-5 text-slate-600">
               <input
                 type="checkbox"
@@ -287,7 +356,7 @@ export function IdentifierManager({
           )}
           <Button
             className="mt-5 w-full"
-            disabled={!identifierValue.trim() || isAdding || (identifierType === "phone" && !phoneConsent)}
+            disabled={!identifierValue.trim() || isAdding || (identifierType === "PHONE" && !phoneConsent)}
             onClick={addIdentifier}
           >
             {isAdding && <LoaderCircle className="animate-spin" />}
@@ -299,7 +368,10 @@ export function IdentifierManager({
         <Modal
           title="Verify your email identifier"
           description="Enter the 6-digit ownership code. It expires after 10 minutes."
-          onClose={() => setVerifyOpen(false)}
+          onClose={() => {
+            setVerifyError("");
+            setVerifyOpen(false);
+          }}
         >
           <input
             aria-label="Six digit verification code"
@@ -319,7 +391,7 @@ export function IdentifierManager({
             />
             I control this identifier and authorize this privacy scan.
           </label>
-          {message && <p className="mt-3 text-sm text-red-600">{message}</p>}
+          {verifyError && <p className="mt-3 text-sm text-red-600">{verifyError}</p>}
           <Button
             className="mt-5 w-full"
             disabled={code.length !== 6 || !attested || isVerifying}

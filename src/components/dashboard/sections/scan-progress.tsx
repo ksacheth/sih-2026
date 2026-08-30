@@ -96,9 +96,9 @@ export function ScanProgress({
         <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-4">
           <div className="flex items-center justify-between text-sm">
             <span className="font-medium text-slate-700">
-              {active
+              {active && current
                 ? "Checking " + current + "…"
-                : completed.length === 4
+                : completed.length === sources.length
                   ? "Scan complete"
                   : verified
                     ? "Ready to scan"
