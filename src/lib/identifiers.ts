@@ -1,4 +1,4 @@
-import { getDb } from "@/lib/models/db";
+import { getDb, type AppDocument } from "@/lib/models/db";
 import { hmac } from "@/lib/security/crypto";
 import { maskIdentifier } from "@/lib/security/masking";
 import type { IdentifierType } from "@/lib/models";
@@ -28,7 +28,9 @@ export async function hasVerifiedEmail(userId: string) {
   }));
 }
 
-export function publicIdentifier(doc: any) {
+// Accepts AppDocument so loosely-typed driver results and locally built
+// docs both fit without per-call casts; field reads stay permissive.
+export function publicIdentifier(doc: AppDocument) {
   return {
     id: doc._id,
     identityId: doc.identityId,
