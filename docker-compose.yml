@@ -1,0 +1,59 @@
+services:
+  mongo:
+    image: mongo:7.0
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_DATABASE: exposure_monitor
+      MONGODB_USERNAME: techsachethkoushal_db_user
+      MONGODB_PASSWORD: e3jeN5n0OeyQmwp6
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+      - ./scripts/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  sidecar:
+    build:
+      context: .
+      dockerfile: sidecar/Dockerfile
+    restart: unless-stopped
+    expose:
+      - "8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      mongo:
+        condition: service_healthy
+      sidecar:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: mongodb+srv://techsachethkoushal_db_user:<db_password>@cluster0.yzclzvj.mongodb.net/?appName=Cluster0
+      MONGO_DB_NAME: exposure_monitor
+      SIDECAR_URL: http://sidecar:8000
+      FIXTURES: ${FIXTURES:-1}
+      HMAC_SECRET: ${HMAC_SECRET}
+      AUTH_SECRET: ${AUTH_SECRET}
+      AUTH_RESEND_KEY: ${AUTH_RESEND_KEY:-}
+      AUTH_RESEND_FROM: ${AUTH_RESEND_FROM:-onboarding@example.com}
+      SERPER_API_KEY: ${SERPER_API_KEY:-}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+
+volumes:
+  mongo_data:
