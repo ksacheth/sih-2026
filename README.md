@@ -117,7 +117,7 @@ npx tsx "src/lib/llm/__tests__/llmExplanation.test.ts"
 
 ## 🎬 Video Demo Link
 
-▶️ **Google Drive Demo Link:** `[INSERT_GOOGLE_DRIVE_DEMO_VIDEO_LINK_HERE]`
+▶️ **Google Drive Demo Link:** `https://drive.google.com/file/d/1lo7EuaL4RmyxAQI8miFCguUPXnbmRNIp/view?usp=sharing`
 
 ---
 
