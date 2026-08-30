@@ -24,7 +24,7 @@ export async function getDb(): Promise<AppDb> {
 // type-checking.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- deliberate: permissive index signature keeps driver filter/insert types workable for hex-string _ids
 export type AppDocument = { [key: string]: any; _id?: any };
-type AppDb = Omit<Db, "collection"> & {
+export type AppDb = Omit<Db, "collection"> & {
   collection<T extends AppDocument = AppDocument>(name: string): Collection<T>;
 };
 
