@@ -2,18 +2,32 @@ services:
   mongo:
     image: mongo:7.0
     restart: unless-stopped
-    environment:
-      MONGO_INITDB_DATABASE: exposure_monitor
+    # Single-node replica set: multi-document transactions (account erasure,
+    # identifier deletion) fail on a standalone mongod.
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
     ports:
-      - "27017:27017"
+      # Loopback only — the image starts with no auth configured.
+      - "127.0.0.1:27017:27017"
     volumes:
       - mongo_data:/data/db
-      - ./scripts/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
     healthcheck:
-      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      # Healthy only once the set has a writable primary; initiates the set
+      # on first boot. Retries give the single-node election time to finish.
+      test: ["CMD", "mongosh", "--quiet", "--eval", "try { db.hello().isWritablePrimary ? quit(0) : rs.initiate({ _id: 'rs0', members: [{ _id: 0, host: 'mongo:27017' }] }); } catch (e) {} quit(1)"]
       interval: 5s
-      timeout: 3s
-      retries: 10
+      timeout: 10s
+      retries: 12
+      start_period: 15s
+
+  mongo-init:
+    image: mongo:7.0
+    depends_on:
+      mongo:
+        condition: service_healthy
+    restart: "no"
+    volumes:
+      - ./scripts/init-mongo.js:/scripts/init-mongo.js:ro
+    entrypoint: ["mongosh", "--quiet", "mongodb://mongo:27017/exposure_monitor", "/scripts/init-mongo.js"]
 
   sidecar:
     build:
@@ -36,6 +50,8 @@ services:
     depends_on:
       mongo:
         condition: service_healthy
+      mongo-init:
+        condition: service_completed_successfully
       sidecar:
         condition: service_healthy
     ports:

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireUser } from "@/lib/auth/require-user";
+import { routeError } from "@/lib/http";
 import { getOwnedIdentifier } from "@/lib/identifiers";
 import { verifyCode } from "@/lib/verification";
 import { verifyCodeSchema } from "@/lib/validation";
@@ -27,6 +28,6 @@ export async function POST(
     if (message === "INVALID_CODE") return NextResponse.json({ error: "Invalid code" }, { status: 400 });
     if (message === "CODE_EXPIRED") return NextResponse.json({ error: "Code expired" }, { status: 400 });
     if (message === "TOO_MANY_ATTEMPTS") return NextResponse.json({ error: "Too many attempts" }, { status: 429 });
-    throw e;
+    return routeError(e);
   }
 }

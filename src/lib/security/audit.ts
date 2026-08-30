@@ -1,5 +1,5 @@
 import { getDb } from "@/lib/models/db";
-import { sha256 } from "./hash";
+import { sha256 } from "./crypto";
 
 export async function audit(
   event: string,

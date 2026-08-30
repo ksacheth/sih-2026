@@ -11,9 +11,26 @@ const clientPromise =
   globalForMongo.mongoPromise ??
   (globalForMongo.mongoPromise = new MongoClient(uri).connect());
 
-export async function getDb(): Promise<Db> {
+export async function getDb(): Promise<AppDb> {
   const client = await clientPromise;
-  return client.db(process.env.MONGO_DB_NAME ?? "exposure_monitor");
+  return client.db(
+    process.env.MONGO_DB_NAME ?? "exposure_monitor"
+  ) as unknown as AppDb;
+}
+
+// Documents in this app use hex-string _ids (ObjectId().toHexString()), so
+// the collection generic defaults to a string-id document instead of the
+// driver's ObjectId-typed Document — otherwise every _id filter fails
+// type-checking.
+export type AppDocument = { [key: string]: any; _id?: any };
+type AppDb = Omit<Db, "collection"> & {
+  collection<T extends AppDocument = AppDocument>(name: string): Collection<T>;
+};
+
+// Typed loosely (any) so it satisfies the driver's ObjectId-oriented
+// insertOne/update-filter types without per-call casts.
+export function newId(): any {
+  return new ObjectId().toHexString();
 }
 
 export { ObjectId };

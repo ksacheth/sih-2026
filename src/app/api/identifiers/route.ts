@@ -1,9 +1,9 @@
-import { ObjectId } from "mongodb";
 import { NextResponse } from "next/server";
-import { getDb } from "@/lib/models/db";
+import { getDb, newId } from "@/lib/models/db";
 import { requireUser } from "@/lib/auth/require-user";
 import { identifierCreateSchema } from "@/lib/validation";
 import { enforceUserLimit } from "@/lib/security/rate-limit";
+import { routeError } from "@/lib/http";
 import { audit } from "@/lib/security/audit";
 import {
   normalizeIdentifier, identifierHmac, publicIdentifier, hasVerifiedEmail,
@@ -47,12 +47,18 @@ export async function POST(request: Request) {
     const existing = await db.collection("identifiers").findOne({ userId: user.id, valueHmac });
     if (existing) return NextResponse.json(publicIdentifier(existing), { status: 200 });
 
+    // Cap emails that trigger verification delivery. Checked after the
+    // duplicate lookup so re-adding an existing identifier is free.
+    await enforceUserLimit(user.id, "verification", {
+      count: 20, windowMs: 24 * 60 * 60 * 1000,
+    });
+
     let identity = await db.collection("identities").findOne({
       userId: user.id,
       ...(body.context ? { context: body.context } : {}),
     });
 
-    const identityId = identity?._id?.toString() ?? new ObjectId().toHexString();
+    const identityId = identity?._id?.toString() ?? newId();
 
     if (!identity) {
       await db.collection("identities").insertOne({
@@ -65,8 +71,9 @@ export async function POST(request: Request) {
     }
 
     const status = body.type === "PHONE" ? "ATTESTED" : "PENDING";
+    const docId = newId();
     const doc = {
-      _id: new ObjectId().toHexString(),
+      _id: docId,
       userId: user.id,
       identityId,
       type: body.type,
@@ -98,10 +105,6 @@ export async function POST(request: Request) {
       ...(devCode ? { devVerificationCode: devCode } : {}),
     }, { status: 201 });
   } catch (e) {
-    if ((e as Error).message === "UNAUTHORIZED")
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    if (e instanceof Error && e.name === "ZodError")
-      return NextResponse.json({ error: "Invalid input" }, { status: 400 });
-    throw e;
+    return routeError(e);
   }
 }
