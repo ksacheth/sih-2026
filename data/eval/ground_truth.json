@@ -1,0 +1,351 @@
+{
+  "dataset_version": "2.0",
+  "generated_date": "2026-08-30T11:01:03.090607",
+  "target_profiles": [
+    {
+      "id": "person_1",
+      "name": "Rahul Kumar",
+      "email": "rahul.kumar@abc-tech.in",
+      "phone": "+91 98765 43210",
+      "username": "rahul_kumar_dev",
+      "organization": "ABC Technologies",
+      "location": "Delhi",
+      "linkedin": "linkedin.com/in/rahul-kumar-abc",
+      "dob": "1990-03-15",
+      "city": "New Delhi",
+      "state": "Delhi",
+      "country": "India"
+    },
+    {
+      "id": "person_2",
+      "name": "Priya Singh",
+      "email": "priya.singh@fintech-co.com",
+      "phone": "+91 87654 32109",
+      "username": "priya_singh_fintech",
+      "organization": "FinTech Solutions",
+      "location": "Bangalore",
+      "linkedin": "linkedin.com/in/priya-singh",
+      "dob": "1992-07-22",
+      "city": "Bangalore",
+      "state": "Karnataka",
+      "country": "India"
+    },
+    {
+      "id": "person_3",
+      "name": "Amit Patel",
+      "email": "amit.patel@cloudservices.io",
+      "phone": "+91 76543 21098",
+      "username": "amit_patel_cloud",
+      "organization": "Cloud Services Inc",
+      "location": "Mumbai",
+      "linkedin": "linkedin.com/in/amit-patel-cloud",
+      "dob": "1988-11-08",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "country": "India"
+    }
+  ],
+  "corpus_structure": {
+    "strong_matches": [
+      {
+        "file": "eval/corpus/entry_001.json",
+        "person_id": "person_1",
+        "expected_classification": "CONFIRMED"
+      },
+      {
+        "file": "eval/corpus/entry_002.json",
+        "person_id": "person_1",
+        "expected_classification": "CONFIRMED"
+      },
+      {
+        "file": "eval/corpus/entry_003.json",
+        "person_id": "person_1",
+        "expected_classification": "CONFIRMED"
+      },
+      {
+        "file": "eval/corpus/entry_004.json",
+        "person_id": "person_1",
+        "expected_classification": "CONFIRMED"
+      },
+      {
+        "file": "eval/corpus/entry_005.json",
+        "person_id": "person_1",
+        "expected_classification": "CONFIRMED"
+      },
+      {
+        "file": "eval/corpus/entry_006.json",
+        "person_id": "person_1",
+        "expected_classification": "CONFIRMED"
+      },
+      {
+        "file": "eval/corpus/entry_007.json",
+        "person_id": "person_1",
+        "expected_classification": "CONFIRMED"
+      },
+      {
+        "file": "eval/corpus/entry_008.json",
+        "person_id": "person_1",
+        "expected_classification": "CONFIRMED"
+      },
+      {
+        "file": "eval/corpus/entry_015.json",
+        "person_id": "person_2",
+        "expected_classification": "CONFIRMED"
+      },
+      {
+        "file": "eval/corpus/entry_016.json",
+        "person_id": "person_2",
+        "expected_classification": "CONFIRMED"
+      },
+      {
+        "file": "eval/corpus/entry_017.json",
+        "person_id": "person_2",
+        "expected_classification": "CONFIRMED"
+      },
+      {
+        "file": "eval/corpus/entry_018.json",
+        "person_id": "person_2",
+        "expected_classification": "CONFIRMED"
+      },
+      {
+        "file": "eval/corpus/entry_019.json",
+        "person_id": "person_2",
+        "expected_classification": "CONFIRMED"
+      },
+      {
+        "file": "eval/corpus/entry_020.json",
+        "person_id": "person_2",
+        "expected_classification": "CONFIRMED"
+      },
+      {
+        "file": "eval/corpus/entry_021.json",
+        "person_id": "person_2",
+        "expected_classification": "CONFIRMED"
+      },
+      {
+        "file": "eval/corpus/entry_022.json",
+        "person_id": "person_2",
+        "expected_classification": "CONFIRMED"
+      },
+      {
+        "file": "eval/corpus/entry_028.json",
+        "person_id": "person_3",
+        "expected_classification": "CONFIRMED"
+      },
+      {
+        "file": "eval/corpus/entry_029.json",
+        "person_id": "person_3",
+        "expected_classification": "CONFIRMED"
+      },
+      {
+        "file": "eval/corpus/entry_030.json",
+        "person_id": "person_3",
+        "expected_classification": "CONFIRMED"
+      },
+      {
+        "file": "eval/corpus/entry_031.json",
+        "person_id": "person_3",
+        "expected_classification": "CONFIRMED"
+      },
+      {
+        "file": "eval/corpus/entry_032.json",
+        "person_id": "person_3",
+        "expected_classification": "CONFIRMED"
+      },
+      {
+        "file": "eval/corpus/entry_033.json",
+        "person_id": "person_3",
+        "expected_classification": "CONFIRMED"
+      },
+      {
+        "file": "eval/corpus/entry_034.json",
+        "person_id": "person_3",
+        "expected_classification": "CONFIRMED"
+      },
+      {
+        "file": "eval/corpus/entry_035.json",
+        "person_id": "person_3",
+        "expected_classification": "CONFIRMED"
+      },
+      {
+        "file": "eval/corpus/entry_036.json",
+        "person_id": "person_3",
+        "expected_classification": "CONFIRMED"
+      },
+      {
+        "file": "eval/corpus/entry_037.json",
+        "person_id": "person_3",
+        "expected_classification": "CONFIRMED"
+      }
+    ],
+    "composite_matches": [
+      {
+        "file": "eval/corpus/entry_009.json",
+        "person_id": "person_1",
+        "expected_classification": "POTENTIAL"
+      },
+      {
+        "file": "eval/corpus/entry_010.json",
+        "person_id": "person_1",
+        "expected_classification": "POTENTIAL"
+      },
+      {
+        "file": "eval/corpus/entry_011.json",
+        "person_id": "person_1",
+        "expected_classification": "POTENTIAL"
+      },
+      {
+        "file": "eval/corpus/entry_012.json",
+        "person_id": "person_1",
+        "expected_classification": "POTENTIAL"
+      },
+      {
+        "file": "eval/corpus/entry_023.json",
+        "person_id": "person_2",
+        "expected_classification": "POTENTIAL"
+      },
+      {
+        "file": "eval/corpus/entry_024.json",
+        "person_id": "person_2",
+        "expected_classification": "POTENTIAL"
+      },
+      {
+        "file": "eval/corpus/entry_025.json",
+        "person_id": "person_2",
+        "expected_classification": "POTENTIAL"
+      },
+      {
+        "file": "eval/corpus/entry_038.json",
+        "person_id": "person_3",
+        "expected_classification": "POTENTIAL"
+      },
+      {
+        "file": "eval/corpus/entry_039.json",
+        "person_id": "person_3",
+        "expected_classification": "POTENTIAL"
+      },
+      {
+        "file": "eval/corpus/entry_040.json",
+        "person_id": "person_3",
+        "expected_classification": "POTENTIAL"
+      },
+      {
+        "file": "eval/corpus/entry_041.json",
+        "person_id": "person_3",
+        "expected_classification": "POTENTIAL"
+      }
+    ],
+    "weak_matches": [
+      {
+        "file": "eval/corpus/entry_013.json",
+        "person_id": "person_1",
+        "expected_classification": "NO_MATCH"
+      },
+      {
+        "file": "eval/corpus/entry_014.json",
+        "person_id": "person_1",
+        "expected_classification": "NO_MATCH"
+      },
+      {
+        "file": "eval/corpus/entry_026.json",
+        "person_id": "person_2",
+        "expected_classification": "NO_MATCH"
+      },
+      {
+        "file": "eval/corpus/entry_027.json",
+        "person_id": "person_2",
+        "expected_classification": "NO_MATCH"
+      },
+      {
+        "file": "eval/corpus/entry_042.json",
+        "person_id": "person_3",
+        "expected_classification": "NO_MATCH"
+      },
+      {
+        "file": "eval/corpus/entry_043.json",
+        "person_id": "person_3",
+        "expected_classification": "NO_MATCH"
+      }
+    ],
+    "ambiguous_cases": []
+  },
+  "evaluation_rules": {
+    "confirmed": "Exact email, phone, or username match (strong identifier)",
+    "potential": "Name + 2+ corroborating signals (composite match)",
+    "no_match": "Name only, or conflicting identifiers",
+    "hard_rule": "Name similarity alone must NEVER become CONFIRMED"
+  },
+  "decoy_profiles": [
+    {
+      "file": "eval/decoys/decoy_01.json",
+      "person_id": "person_1",
+      "decoy_type": "partial_overlap",
+      "expected_classification": "NO_MATCH"
+    },
+    {
+      "file": "eval/decoys/decoy_02.json",
+      "person_id": "person_1",
+      "decoy_type": "similar_org_location",
+      "expected_classification": "NO_MATCH"
+    },
+    {
+      "file": "eval/decoys/decoy_03.json",
+      "person_id": "person_1",
+      "decoy_type": "similar_name_diff_contact",
+      "expected_classification": "NO_MATCH"
+    },
+    {
+      "file": "eval/decoys/decoy_04.json",
+      "person_id": "person_2",
+      "decoy_type": "similar_name_diff_contact",
+      "expected_classification": "NO_MATCH"
+    },
+    {
+      "file": "eval/decoys/decoy_05.json",
+      "person_id": "person_2",
+      "decoy_type": "name_typo_real_contact",
+      "expected_classification": "NO_MATCH"
+    },
+    {
+      "file": "eval/decoys/decoy_06.json",
+      "person_id": "person_2",
+      "decoy_type": "similar_org_location",
+      "expected_classification": "NO_MATCH"
+    },
+    {
+      "file": "eval/decoys/decoy_07.json",
+      "person_id": "person_3",
+      "decoy_type": "similar_name_diff_contact",
+      "expected_classification": "NO_MATCH"
+    },
+    {
+      "file": "eval/decoys/decoy_08.json",
+      "person_id": "person_3",
+      "decoy_type": "name_typo_real_contact",
+      "expected_classification": "NO_MATCH"
+    },
+    {
+      "file": "eval/decoys/decoy_09.json",
+      "person_id": "person_3",
+      "decoy_type": "name_typo_real_contact",
+      "expected_classification": "NO_MATCH"
+    }
+  ],
+  "expected_results": {
+    "person_1": {
+      "confirmed": 8,
+      "potential": 4,
+      "no_match": 2
+    },
+    "person_2": {
+      "confirmed": 8,
+      "potential": 3,
+      "no_match": 2
+    },
+    "person_3": {
+      "confirmed": 10,
+      "potential": 4,
+      "no_match": 2
+    }
+  }
+}

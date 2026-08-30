@@ -1,0 +1,14 @@
+{
+  "id": "corpus_031",
+  "discovery_date": "2026-08-22T11:01:03.093264",
+  "exposure_type": "directory",
+  "severity": "medium",
+  "person_id": "person_3",
+  "source_description": "Listed in online directory",
+  "name": "Amit Patel",
+  "email": "amit.patel@cloudservices.io",
+  "organization": "Cloud Services Inc",
+  "identifier_type": "email",
+  "match_strength": "strong",
+  "raw_content": "Contact: amit.patel@cloudservices.io | Name: Amit Patel | Org: Cloud Services Inc"
+}

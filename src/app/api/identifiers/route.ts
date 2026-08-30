@@ -1,41 +1,110 @@
 import { NextResponse } from "next/server";
-import { z } from "zod";
-import { connectToDatabase } from "@/lib/db";
-import { IdentifierModel, VerificationCode } from "@/lib/models";
-import { getSessionUserId, hash, maskIdentifier } from "@/lib/security";
-import { deliverEmail } from "@/lib/email";
+import { getDb, newId } from "@/lib/models/db";
+import { requireUser } from "@/lib/auth/require-user";
+import { identifierCreateSchema } from "@/lib/validation";
+import { enforceUserLimit } from "@/lib/security/rate-limit";
+import { routeError } from "@/lib/http";
+import { audit } from "@/lib/security/audit";
+import {
+  normalizeIdentifier, identifierHmac, publicIdentifier, hasVerifiedEmail,
+} from "@/lib/identifiers";
+import { issueVerificationCode } from "@/lib/verification";
 
-const input = z.object({ type: z.enum(["email", "phone", "username"]), value: z.string().trim().min(2).max(254) });
-const serialize = (item: { _id: unknown; type: "email" | "phone" | "username"; maskedValue: string; status: "PENDING" | "VERIFIED" | "ATTESTED" }) => ({ id: String(item._id), type: item.type, maskedValue: item.maskedValue, status: item.status });
+export const runtime = "nodejs";
 
 export async function GET() {
-  const userId = await getSessionUserId();
-  if (!userId) return NextResponse.json({ error: "Sign in is required." }, { status: 401 });
-  await connectToDatabase();
-  return NextResponse.json({ identifiers: (await IdentifierModel.find({ userId }).sort({ createdAt: -1 })).map(serialize) });
+  try {
+    const user = await requireUser();
+    const db = await getDb();
+    const docs = await db.collection("identifiers")
+      .find({ userId: user.id }).project({ valueEncrypted: 0, normalizedValue: 0, valueHmac: 0 }).toArray();
+    return NextResponse.json(docs.map(publicIdentifier));
+  } catch (e) {
+    if ((e as Error).message === "UNAUTHORIZED")
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    throw e;
+  }
 }
 
 export async function POST(request: Request) {
-  const userId = await getSessionUserId();
-  if (!userId) return NextResponse.json({ error: "Sign in is required." }, { status: 401 });
-  const parsed = input.safeParse(await request.json());
-  if (!parsed.success) return NextResponse.json({ error: "Provide a valid identifier." }, { status: 400 });
-  const { type } = parsed.data;
-  const value = type === "email" ? parsed.data.value.toLowerCase() : parsed.data.value;
-  if (type === "email" && !z.string().email().safeParse(value).success) return NextResponse.json({ error: "Provide a valid email address." }, { status: 400 });
-  await connectToDatabase();
-  const hasVerifiedEmail = await IdentifierModel.exists({ userId, type: "email", status: "VERIFIED" });
-  if (type === "phone" && !hasVerifiedEmail) return NextResponse.json({ error: "Verify an email before attesting a phone number." }, { status: 400 });
   try {
-    const identifier = await IdentifierModel.create({ userId, type, valueHmac: hash(`${type}:${value}`), maskedValue: maskIdentifier(type, value), status: type === "phone" ? "ATTESTED" : "PENDING" });
-    if (type !== "email") return NextResponse.json({ identifier: serialize(identifier) }, { status: 201 });
-    const code = String(Math.floor(100000 + Math.random() * 900000));
-    await VerificationCode.deleteMany({ identifierId: identifier._id });
-    await VerificationCode.create({ identifierId: identifier._id, codeHash: hash(code), expiresAt: new Date(Date.now() + 10 * 60 * 1000) });
-    await deliverEmail({ to: value, subject: "Your Privacy Lens verification code", text: `Your 6-digit identifier verification code is ${code}. It expires in 10 minutes.` });
-    return NextResponse.json({ identifier: serialize(identifier), message: "Verification code sent. It expires in 10 minutes.", ...(process.env.NODE_ENV !== "production" ? { devCode: code } : {}) }, { status: 201 });
-  } catch (error) {
-    if (error instanceof Error && error.message.includes("duplicate key")) return NextResponse.json({ error: "This identifier is already added." }, { status: 409 });
-    throw error;
+    const user = await requireUser();
+    const body = identifierCreateSchema.parse(await request.json());
+
+    if (body.type === "PHONE") {
+      if (!body.attestPhoneOwnership) {
+        return NextResponse.json({ error: "Phone attestation is required" }, { status: 400 });
+      }
+      if (!(await hasVerifiedEmail(user.id))) {
+        return NextResponse.json({ error: "Verify an email before attesting a phone" }, { status: 403 });
+      }
+    }
+
+    const db = await getDb();
+    const normalized = normalizeIdentifier(body.type, body.value);
+    const valueHmac = identifierHmac(normalized);
+
+    const existing = await db.collection("identifiers").findOne({ userId: user.id, valueHmac });
+    if (existing) return NextResponse.json(publicIdentifier(existing), { status: 200 });
+
+    // Cap emails that trigger verification delivery. Checked after the
+    // duplicate lookup so re-adding an existing identifier is free.
+    await enforceUserLimit(user.id, "verification", {
+      count: 20, windowMs: 24 * 60 * 60 * 1000,
+    });
+
+    let identity = await db.collection("identities").findOne({
+      userId: user.id,
+      ...(body.context ? { context: body.context } : {}),
+    });
+
+    const identityId = identity?._id?.toString() ?? newId();
+
+    if (!identity) {
+      await db.collection("identities").insertOne({
+        _id: identityId,
+        userId: user.id,
+        context: body.context,
+        identifierIds: [],
+        createdAt: new Date(),
+      });
+    }
+
+    const status = body.type === "PHONE" ? "ATTESTED" : "PENDING";
+    const docId = newId();
+    const doc = {
+      _id: docId,
+      userId: user.id,
+      identityId,
+      type: body.type,
+      valueHmac,
+      normalizedValue: normalized,
+      maskedValue: body.type === "PHONE"
+        ? `+${normalized.replace(/\D/g, "").slice(0, 2)} •••• ${normalized.replace(/\D/g, "").slice(-4)}`
+        : body.type === "EMAIL"
+          ? `${normalized.slice(0, 1)}***@${normalized.split("@")[1] ?? ""}`
+          : `${normalized.slice(0, 1)}••••${normalized.slice(-2)}`,
+      status,
+      createdAt: new Date(),
+    };
+
+    await db.collection("identifiers").insertOne(doc);
+    await db.collection("identities").updateOne(
+      { _id: identityId, userId: user.id },
+      { $addToSet: { identifierIds: doc._id } }
+    );
+
+    let devCode: string | undefined;
+    if (body.type === "EMAIL") {
+      devCode = await issueVerificationCode(user.id, doc._id, normalized);
+    }
+
+    await audit("IDENTIFIER_CREATED", user.id, { identifierId: doc._id, type: body.type });
+    return NextResponse.json({
+      identifier: publicIdentifier(doc),
+      ...(devCode ? { devVerificationCode: devCode } : {}),
+    }, { status: 201 });
+  } catch (e) {
+    return routeError(e);
   }
 }

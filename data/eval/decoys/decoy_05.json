@@ -1,0 +1,9 @@
+{
+  "decoy_type": "name_typo_real_contact",
+  "name": "Priya Singh Sr.",
+  "email": "similar.fintech-co.com",
+  "phone": "+91 11111 11111",
+  "note": "Name variant with similar email domain - should NOT confirm",
+  "person_id": "person_2",
+  "expected_classification": "NO_MATCH"
+}

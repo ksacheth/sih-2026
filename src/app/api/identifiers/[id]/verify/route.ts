@@ -1,21 +1,33 @@
 import { NextResponse } from "next/server";
-import { z } from "zod";
-import { connectToDatabase } from "@/lib/db";
-import { IdentifierModel, VerificationCode } from "@/lib/models";
-import { getSessionUserId, hash } from "@/lib/security";
+import { requireUser } from "@/lib/auth/require-user";
+import { routeError } from "@/lib/http";
+import { getOwnedIdentifier } from "@/lib/identifiers";
+import { verifyCode } from "@/lib/verification";
+import { verifyCodeSchema } from "@/lib/validation";
+import { audit } from "@/lib/security/audit";
 
-const input = z.object({ code: z.string().regex(/^\d{6}$/) });
-export async function POST(request: Request, { params }: { params: Promise<{ id: string }> }) {
-  const userId = await getSessionUserId();
-  if (!userId) return NextResponse.json({ error: "Sign in is required." }, { status: 401 });
-  const parsed = input.safeParse(await request.json());
-  if (!parsed.success) return NextResponse.json({ error: "Enter the 6-digit code." }, { status: 400 });
-  await connectToDatabase();
-  const identifier = await IdentifierModel.findOne({ _id: (await params).id, userId, type: "email", status: "PENDING" });
-  if (!identifier) return NextResponse.json({ error: "Pending email identifier not found." }, { status: 404 });
-  const code = await VerificationCode.findOneAndDelete({ identifierId: identifier._id, codeHash: hash(parsed.data.code), expiresAt: { $gt: new Date() } });
-  if (!code) return NextResponse.json({ error: "That code is invalid or expired." }, { status: 400 });
-  identifier.status = "VERIFIED";
-  await identifier.save();
-  return NextResponse.json({ identifier: { id: String(identifier._id), type: identifier.type, maskedValue: identifier.maskedValue, status: identifier.status } });
+export const runtime = "nodejs";
+
+export async function POST(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const user = await requireUser();
+    const { id } = await params;
+    const identifier = await getOwnedIdentifier(user.id, id);
+    if (!identifier) return NextResponse.json({ error: "Not found" }, { status: 404 });
+
+    const { code } = verifyCodeSchema.parse(await request.json());
+    await verifyCode(user.id, id, code);
+    await audit("IDENTIFIER_VERIFIED", user.id, { identifierId: id });
+    return NextResponse.json({ status: "VERIFIED" });
+  } catch (e) {
+    const message = (e as Error).message;
+    if (message === "UNAUTHORIZED") return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (message === "INVALID_CODE") return NextResponse.json({ error: "Invalid code" }, { status: 400 });
+    if (message === "CODE_EXPIRED") return NextResponse.json({ error: "Code expired" }, { status: 400 });
+    if (message === "TOO_MANY_ATTEMPTS") return NextResponse.json({ error: "Too many attempts" }, { status: 429 });
+    return routeError(e);
+  }
 }

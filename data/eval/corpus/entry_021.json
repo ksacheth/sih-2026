@@ -1,0 +1,14 @@
+{
+  "id": "corpus_021",
+  "discovery_date": "2026-01-04T11:01:03.092422",
+  "exposure_type": "paste_site",
+  "severity": "high",
+  "person_id": "person_2",
+  "source_description": "Data exposed on paste site",
+  "name": "Priya Singh",
+  "email": "priya.singh@fintech-co.com",
+  "organization": "FinTech Solutions",
+  "identifier_type": "email",
+  "match_strength": "strong",
+  "raw_content": "Contact: priya.singh@fintech-co.com | Name: Priya Singh | Org: FinTech Solutions"
+}

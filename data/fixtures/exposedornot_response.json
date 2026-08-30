@@ -1,0 +1,111 @@
+{
+  "status": "ok",
+  "version": "v2.0-advanced",
+  "description": "Breach exposure results for 3 target personas",
+  "generated_at": "2026-08-30T10:00:00Z",
+  "breaches": [
+    {
+      "person_id": "person_1",
+      "person_name": "Rahul Kumar",
+      "email": "rahul.kumar@abc-tech.in",
+      "breach_name": "CodeDump-2024",
+      "source": "exposedornot",
+      "exposure_type": "CREDENTIAL_EXPOSURE",
+      "severity": "high",
+      "passwords_included": true,
+      "confidence": 0.96,
+      "occurred_at": "2024-05-16T00:00:00Z",
+      "record_count": 1,
+      "exposure_date": "2024-05-20T00:00:00Z",
+      "status": "CONFIRMED"
+    },
+    {
+      "person_id": "person_1",
+      "person_name": "Rahul Kumar",
+      "email": "rahul.kumar@abc-tech.in",
+      "breach_name": "TechDB-2023",
+      "source": "exposedornot",
+      "exposure_type": "EMAIL_EXPOSURE",
+      "severity": "medium",
+      "passwords_included": false,
+      "confidence": 0.88,
+      "occurred_at": "2023-09-12T00:00:00Z",
+      "record_count": 1,
+      "exposure_date": "2023-09-15T00:00:00Z",
+      "status": "CONFIRMED"
+    },
+    {
+      "person_id": "person_2",
+      "person_name": "Priya Singh",
+      "email": "priya.singh@fintech-co.com",
+      "breach_name": "FinanceLeaks-2025",
+      "source": "exposedornot",
+      "exposure_type": "CREDENTIAL_EXPOSURE",
+      "severity": "critical",
+      "passwords_included": true,
+      "confidence": 0.98,
+      "occurred_at": "2025-02-08T00:00:00Z",
+      "record_count": 1,
+      "exposure_date": "2025-02-10T00:00:00Z",
+      "status": "CONFIRMED"
+    },
+    {
+      "person_id": "person_2",
+      "person_name": "Priya Singh",
+      "email": "priya.singh@fintech-co.com",
+      "breach_name": "EmailCache-2024",
+      "source": "exposedornot",
+      "exposure_type": "EMAIL_EXPOSURE",
+      "severity": "medium",
+      "passwords_included": false,
+      "confidence": 0.85,
+      "occurred_at": "2024-11-03T00:00:00Z",
+      "record_count": 1,
+      "exposure_date": "2024-11-05T00:00:00Z",
+      "status": "CONFIRMED"
+    },
+    {
+      "person_id": "person_3",
+      "person_name": "Amit Patel",
+      "email": "amit.patel@cloudservices.io",
+      "breach_name": "CloudBreach-2024",
+      "source": "exposedornot",
+      "exposure_type": "CREDENTIAL_EXPOSURE",
+      "severity": "high",
+      "passwords_included": true,
+      "confidence": 0.92,
+      "occurred_at": "2024-07-22T00:00:00Z",
+      "record_count": 1,
+      "exposure_date": "2024-07-25T00:00:00Z",
+      "status": "CONFIRMED"
+    },
+    {
+      "person_id": "person_3",
+      "person_name": "Amit Patel",
+      "email": "amit.patel@cloudservices.io",
+      "breach_name": "DevTools-2023",
+      "source": "exposedornot",
+      "exposure_type": "API_KEY_EXPOSURE",
+      "severity": "critical",
+      "passwords_included": false,
+      "confidence": 0.94,
+      "occurred_at": "2023-03-14T00:00:00Z",
+      "record_count": 1,
+      "exposure_date": "2023-03-18T00:00:00Z",
+      "status": "CONFIRMED"
+    }
+  ],
+  "summary": {
+    "total_persons": 3,
+    "total_breaches": 6,
+    "critical_count": 2,
+    "high_count": 2,
+    "medium_count": 2,
+    "avg_confidence": 0.922,
+    "exposure_types": {
+      "CREDENTIAL_EXPOSURE": 3,
+      "EMAIL_EXPOSURE": 2,
+      "API_KEY_EXPOSURE": 1
+    }
+  }
+}

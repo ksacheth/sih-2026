@@ -1,0 +1,14 @@
+{
+  "id": "corpus_026",
+  "discovery_date": "2026-07-27T11:01:03.092819",
+  "exposure_type": "people_broker",
+  "severity": "high",
+  "person_id": "person_2",
+  "source_description": "Listed on people search broker",
+  "name": "Priya Singh",
+  "organization": "FinTech Solutions",
+  "identifier_type": "name_only",
+  "match_strength": "weak",
+  "broker_name": "Radaris",
+  "raw_content": "Name: Priya Singh | Organization: FinTech Solutions"
+}
