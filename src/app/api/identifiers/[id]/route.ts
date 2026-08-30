@@ -30,6 +30,7 @@ export async function DELETE(
           { _id: identifier.identityId, userId: user.id },
           // Cast: the driver types $pull values as array-filter operators;
           // a plain id string removes the matching element.
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any -- deliberate: driver types $pull as array-filter operators
           { $pull: { identifierIds: id as any } },
           { session }
         );

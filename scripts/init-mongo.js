@@ -9,7 +9,7 @@ function awaitPrimary() {
   for (let i = 0; i < 120; i++) {
     try {
       if (db.getSiblingDB("admin").runCommand({ hello: 1 }).isWritablePrimary) return;
-    } catch (e) {}
+    } catch {}
     sleep(500);
   }
   throw new Error("mongo has no writable primary; aborting schema bootstrap");

@@ -53,7 +53,7 @@ export async function POST(request: Request) {
       count: 20, windowMs: 24 * 60 * 60 * 1000,
     });
 
-    let identity = await db.collection("identities").findOne({
+    const identity = await db.collection("identities").findOne({
       userId: user.id,
       ...(body.context ? { context: body.context } : {}),
     });

@@ -14,6 +14,8 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // Local agent skills are reference material, not application source.
     ".agents/**",
+    ".claude/**",
+    ".zcode/**",
   ]),
 ]);
 
