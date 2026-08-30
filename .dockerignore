@@ -1,0 +1,19 @@
+# Applies to the app build (context = repo root). Keep node_modules/.next out —
+# deps are installed via `npm ci` and the bundle is produced by `npm run build`.
+node_modules
+.next
+.git
+.env
+.env.*
+
+# Python sidecar has its own build context (./sidecar in Docker-compose.yml)
+sidecar
+
+# Repo docs, agent config, datasets only used by tests/docs
+.agents
+.claude
+.zcode
+docs
+*.md
+bun.lock
+Docker-compose.yml
