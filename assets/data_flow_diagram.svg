@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 360" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b0f19" />
+      <stop offset="100%" stop-color="#030508" />
+    </linearGradient>
+    <linearGradient id="panel" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#161f33" />
+      <stop offset="100%" stop-color="#0f1626" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="850" height="360" fill="url(#bg)" rx="12" />
+  <rect width="848" height="358" x="1" y="1" fill="none" stroke="#1e293b" stroke-width="2" rx="12" />
+
+  <!-- Title -->
+  <text x="425" y="38" font-family="sans-serif" font-size="20" font-weight="700" fill="#f8fafc" text-anchor="middle">
+    3-Part Deterministic Exposure Pipeline Flow
+  </text>
+  <text x="425" y="58" font-family="sans-serif" font-size="12" fill="#94a3b8" text-anchor="middle">
+    From Raw Candidate Leaks to Anonymized Actionable Remediation
+  </text>
+
+  <!-- Step 1 Panel -->
+  <g transform="translate(30, 90)">
+    <rect width="240" height="230" fill="url(#panel)" stroke="#06b6d4" stroke-width="1.5" rx="8" />
+    <rect x="0" y="0" width="240" height="35" fill="#0891b2" rx="8" />
+    <text x="120" y="23" font-family="sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">STEP 1: DISCOVER &amp; EXTRACT</text>
+    
+    <text x="15" y="60" font-family="sans-serif" font-size="11" font-weight="700" fill="#06b6d4">• Web &amp; Breach Discovery:</text>
+    <text x="25" y="78" font-family="sans-serif" font-size="11" fill="#cbd5e1">Serper API + ExposedOrNot</text>
+    
+    <text x="15" y="110" font-family="sans-serif" font-size="11" font-weight="700" fill="#06b6d4">• NER Extraction Sidecar:</text>
+    <text x="25" y="128" font-family="sans-serif" font-size="11" fill="#cbd5e1">GLiNER (gliner_small-v2.1)</text>
+    <text x="25" y="145" font-family="sans-serif" font-size="11" fill="#94a3b8">8 PII Entity Types Extracted</text>
+
+    <text x="15" y="180" font-family="sans-serif" font-size="11" font-weight="700" fill="#06b6d4">• Rule Pre-Validation:</text>
+    <text x="25" y="198" font-family="sans-serif" font-size="11" fill="#cbd5e1">Aadhaar/PAN Checksums</text>
+  </g>
+
+  <!-- Arrow 1 -> 2 -->
+  <path d="M 280 205 L 305 205" stroke="#38bdf8" stroke-width="3" />
+  <polygon points="305,200 315,205 305,210" fill="#38bdf8" />
+
+  <!-- Step 2 Panel -->
+  <g transform="translate(315, 90)">
+    <rect width="240" height="230" fill="url(#panel)" stroke="#f43f5e" stroke-width="1.5" rx="8" />
+    <rect x="0" y="0" width="240" height="35" fill="#e11d48" rx="8" />
+    <text x="120" y="23" font-family="sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">STEP 2: CORRELATE &amp; CAP</text>
+
+    <text x="15" y="60" font-family="sans-serif" font-size="11" font-weight="700" fill="#fb7185">• Token-Set Name Matcher:</text>
+    <text x="25" y="78" font-family="sans-serif" font-size="11" fill="#cbd5e1">Diacritics &amp; Honorific Stripping</text>
+    <text x="25" y="95" font-family="sans-serif" font-size="11" fill="#cbd5e1">2-Pass Initials Expansion</text>
+
+    <text x="15" y="125" font-family="sans-serif" font-size="11" font-weight="700" fill="#fb7185">• Indian Name Penalty:</text>
+    <text x="25" y="143" font-family="sans-serif" font-size="11" fill="#cbd5e1">-0.10 Top-100 Name Penalty</text>
+
+    <text x="15" y="173" font-family="sans-serif" font-size="11" font-weight="700" fill="#f43f5e">• THE HARD RULE GUARD:</text>
+    <text x="25" y="191" font-family="sans-serif" font-size="11" font-weight="600" fill="#fecdd3">Name match capped at 0.50</text>
+    <text x="25" y="208" font-family="sans-serif" font-size="10" fill="#94a3b8">Requires Exact ID for CONFIRMED</text>
+  </g>
+
+  <!-- Arrow 2 -> 3 -->
+  <path d="M 565 205 L 590 205" stroke="#fb7185" stroke-width="3" />
+  <polygon points="590,200 600,205 590,210" fill="#fb7185" />
+
+  <!-- Step 3 Panel -->
+  <g transform="translate(600, 90)">
+    <rect width="220" height="230" fill="url(#panel)" stroke="#10b981" stroke-width="1.5" rx="8" />
+    <rect x="0" y="0" width="220" height="35" fill="#059669" rx="8" />
+    <text x="110" y="23" font-family="sans-serif" font-size="13" font-weight="700" fill="#ffffff" text-anchor="middle">STEP 3: ASSESS &amp; EXPLAIN</text>
+
+    <text x="15" y="60" font-family="sans-serif" font-size="11" font-weight="700" fill="#34d399">• Threat &amp; Severity Matrix:</text>
+    <text x="25" y="78" font-family="sans-serif" font-size="11" fill="#cbd5e1">CRITICAL/HIGH/MEDIUM/LOW</text>
+    <text x="25" y="95" font-family="sans-serif" font-size="11" fill="#cbd5e1">Priority Rank (1-100)</text>
+
+    <text x="15" y="125" font-family="sans-serif" font-size="11" font-weight="700" fill="#34d399">• Data Broker Opt-Outs:</text>
+    <text x="25" y="143" font-family="sans-serif" font-size="11" fill="#cbd5e1">Auto-resolves brokers.json</text>
+
+    <text x="15" y="173" font-family="sans-serif" font-size="11" font-weight="700" fill="#34d399">• Redacted LLM Layer:</text>
+    <text x="25" y="191" font-family="sans-serif" font-size="11" fill="#cbd5e1">100% PII Stripped Payload</text>
+    <text x="25" y="208" font-family="sans-serif" font-size="10" fill="#94a3b8">Template Fallback Enabled</text>
+  </g>
+</svg>
