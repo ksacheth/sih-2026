@@ -135,6 +135,12 @@
   *::after {
     scroll-behavior: auto !important;
   }
+
+  /* Continuous indicators become static status marks instead of animating. */
+  .animate-spin,
+  .animate-ping {
+    animation: none !important;
+  }
 }
 
 /* Dashboard navigation intentionally overrides the generic tab active state. */

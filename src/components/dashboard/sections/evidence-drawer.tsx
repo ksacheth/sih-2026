@@ -1,4 +1,5 @@
 "use client";
+import { useRef } from "react";
 import {
   CheckCircle2,
   ExternalLink,
@@ -16,6 +17,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import type { Finding } from "../types";
+import { useDialogA11y } from "../use-dialog-a11y";
 export function EvidenceDrawer({
   finding,
   onClose,
@@ -25,13 +27,17 @@ export function EvidenceDrawer({
   onClose: () => void;
   onRemediate: (id: number) => void;
 }) {
+  const dialogRef = useRef<HTMLDivElement>(null);
+  useDialogA11y(dialogRef, Boolean(finding), onClose);
   if (!finding) return null;
   return (
     <div
+      ref={dialogRef}
       role="dialog"
       aria-modal="true"
       aria-labelledby="finding-title"
-      className="fixed inset-0 z-50 flex justify-end bg-slate-950/35"
+      tabIndex={-1}
+      className="fixed inset-0 z-50 flex justify-end bg-slate-950/35 outline-none"
     >
       <section className="h-full w-full max-w-xl overflow-y-auto bg-white p-4 shadow-2xl sm:p-6">
         <button

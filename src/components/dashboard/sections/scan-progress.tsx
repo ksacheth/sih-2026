@@ -42,10 +42,7 @@ export function ScanProgress({
   onStart: () => void;
 }) {
   const current = sources[completed.length]?.name;
-  const progress =
-    active || completed.length
-      ? Math.round((completed.length / sources.length) * 100)
-      : 0;
+  const progress = Math.round((completed.length / sources.length) * 100);
   return (
     <Card className="border-slate-200 shadow-sm">
       <CardHeader className="gap-4 sm:flex sm:flex-row sm:items-start sm:justify-between">

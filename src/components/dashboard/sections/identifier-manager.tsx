@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   CheckCircle2,
   Mail,
@@ -22,6 +22,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import type { Identifier } from "../types";
+import { useDialogA11y } from "../use-dialog-a11y";
 
 const iconByType: Record<Identifier["type"], typeof Mail> = {
   EMAIL: Mail,
@@ -55,7 +56,11 @@ export function IdentifierManager({
   const [isVerifying, setIsVerifying] = useState(false);
   const [isResending, setIsResending] = useState(false);
   const [secondsUntilResend, setSecondsUntilResend] = useState(0);
+  const [pendingId, setPendingId] = useState<string | null>(null);
   const pendingEmail = identifiers.some((item) => item.type === "EMAIL" && item.status === "PENDING");
+  const pendingIdentifier =
+    identifiers.find((item) => item.id === pendingId) ??
+    identifiers.find((item) => item.type === "EMAIL" && item.status === "PENDING");
 
   useEffect(() => {
     if (secondsUntilResend <= 0) return;
@@ -65,9 +70,7 @@ export function IdentifierManager({
 
   const resendLabel = `${Math.floor(secondsUntilResend / 60)}:${String(secondsUntilResend % 60).padStart(2, "0")}`;
   const complete = async () => {
-    const identifier = identifiers.find(
-      (item) => item.type === "EMAIL" && item.status === "PENDING",
-    );
+    const identifier = pendingIdentifier;
     if (!identifier || code.length !== 6 || !attested) return;
     setIsVerifying(true);
     try {
@@ -93,9 +96,7 @@ export function IdentifierManager({
     }
   };
   const resendCode = async () => {
-    const identifier = identifiers.find(
-      (item) => item.type === "EMAIL" && item.status === "PENDING",
-    );
+    const identifier = pendingIdentifier;
     if (!identifier) return;
     setIsResending(true);
     try {
@@ -240,6 +241,11 @@ export function IdentifierManager({
               <div className="mt-4 flex flex-wrap items-center gap-3">
                 <Button
                   onClick={() => {
+                    setPendingId(
+                      identifiers.find(
+                        (item) => item.type === "EMAIL" && item.status === "PENDING",
+                      )?.id ?? null,
+                    );
                     setVerifyError("");
                     setVerifyOpen(true);
                   }}
@@ -417,12 +423,16 @@ function Modal({
   onClose: () => void;
   children: ReactNode;
 }) {
+  const dialogRef = useRef<HTMLDivElement>(null);
+  useDialogA11y(dialogRef, true, onClose);
   return (
     <div
+      ref={dialogRef}
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-title"
-      className="fixed inset-0 z-50 grid place-items-center bg-slate-950/40 p-4"
+      tabIndex={-1}
+      className="fixed inset-0 z-50 grid place-items-center bg-slate-950/40 p-4 outline-none"
     >
       <Card className="relative w-full max-w-md border-slate-200 shadow-2xl">
         <button

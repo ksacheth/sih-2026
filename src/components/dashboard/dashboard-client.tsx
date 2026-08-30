@@ -15,7 +15,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { mockFindings } from "./mock-data";
 import { AccountSettings } from "./sections/account-settings";
 import { EvidenceDrawer } from "./sections/evidence-drawer";
 import { FindingsGrid } from "./sections/findings-grid";
@@ -33,7 +32,7 @@ const scanSources: ScanSource[] = [
 
 export function DashboardClient() {
   const [identifiers, setIdentifiers] = useState<Identifier[]>([]);
-  const [findings, setFindings] = useState<Finding[]>(mockFindings);
+  const [findings, setFindings] = useState<Finding[]>([]);
   const [selected, setSelected] = useState<Finding | null>(null);
   const [scanning, setScanning] = useState(false);
   const [completed, setCompleted] = useState<ScanSource[]>([]);
